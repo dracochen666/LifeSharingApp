@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5124EFF480158902C1180B05 /* Pods_LifeSharingApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 13BADDBA756627F566010044 /* Pods_LifeSharingApp.framework */; };
 		AB13400429C44ECF009DB821 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB13400329C44ECF009DB821 /* AppDelegate.swift */; };
 		AB13400629C44ECF009DB821 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB13400529C44ECF009DB821 /* SceneDelegate.swift */; };
 		AB13400829C44ECF009DB821 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB13400729C44ECF009DB821 /* ViewController.swift */; };
@@ -14,9 +15,22 @@
 		AB13400E29C44ECF009DB821 /* LifeSharingApp.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = AB13400C29C44ECF009DB821 /* LifeSharingApp.xcdatamodeld */; };
 		AB13401029C44ED3009DB821 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AB13400F29C44ED3009DB821 /* Assets.xcassets */; };
 		AB13401329C44ED3009DB821 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AB13401129C44ED3009DB821 /* LaunchScreen.storyboard */; };
+		AB13401B29C59638009DB821 /* LS-TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB13401A29C59638009DB821 /* LS-TabBarController.swift */; };
+		AB13402029C59846009DB821 /* LS-AboutPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB13401C29C59845009DB821 /* LS-AboutPageViewController.swift */; };
+		AB13402129C59846009DB821 /* LS-MessagePageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB13401D29C59845009DB821 /* LS-MessagePageViewController.swift */; };
+		AB13402229C59846009DB821 /* LS-MemoPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB13401E29C59845009DB821 /* LS-MemoPageViewController.swift */; };
+		AB13402329C59846009DB821 /* LS-PostPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB13401F29C59845009DB821 /* LS-PostPageViewController.swift */; };
+		AB13402929C5987C009DB821 /* LS-Front-FollowVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB13402529C5987C009DB821 /* LS-Front-FollowVC.swift */; };
+		AB13402A29C5987C009DB821 /* LS-Front-DiscoveryVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB13402629C5987C009DB821 /* LS-Front-DiscoveryVC.swift */; };
+		AB13402B29C5987C009DB821 /* LS-Front-NearbyVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB13402729C5987C009DB821 /* LS-Front-NearbyVC.swift */; };
+		AB13402C29C5987C009DB821 /* LS-FrontPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB13402829C5987C009DB821 /* LS-FrontPageViewController.swift */; };
+		AB13402E29C5BD2D009DB821 /* PagedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB13402D29C5BD2C009DB821 /* PagedView.swift */; };
+		AB13403029C71B35009DB821 /* PageCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB13402F29C71B35009DB821 /* PageCollectionViewCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		13BADDBA756627F566010044 /* Pods_LifeSharingApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_LifeSharingApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		63EE23C550A6A4C64FBF47FE /* Pods-LifeSharingApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LifeSharingApp.release.xcconfig"; path = "Target Support Files/Pods-LifeSharingApp/Pods-LifeSharingApp.release.xcconfig"; sourceTree = "<group>"; };
 		AB13400029C44ECF009DB821 /* LifeSharingApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LifeSharingApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		AB13400329C44ECF009DB821 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		AB13400529C44ECF009DB821 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -26,6 +40,18 @@
 		AB13400F29C44ED3009DB821 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		AB13401229C44ED3009DB821 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		AB13401429C44ED3009DB821 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		AB13401A29C59638009DB821 /* LS-TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LS-TabBarController.swift"; sourceTree = "<group>"; };
+		AB13401C29C59845009DB821 /* LS-AboutPageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "LS-AboutPageViewController.swift"; sourceTree = "<group>"; };
+		AB13401D29C59845009DB821 /* LS-MessagePageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "LS-MessagePageViewController.swift"; sourceTree = "<group>"; };
+		AB13401E29C59845009DB821 /* LS-MemoPageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "LS-MemoPageViewController.swift"; sourceTree = "<group>"; };
+		AB13401F29C59845009DB821 /* LS-PostPageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "LS-PostPageViewController.swift"; sourceTree = "<group>"; };
+		AB13402529C5987C009DB821 /* LS-Front-FollowVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "LS-Front-FollowVC.swift"; sourceTree = "<group>"; };
+		AB13402629C5987C009DB821 /* LS-Front-DiscoveryVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "LS-Front-DiscoveryVC.swift"; sourceTree = "<group>"; };
+		AB13402729C5987C009DB821 /* LS-Front-NearbyVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "LS-Front-NearbyVC.swift"; sourceTree = "<group>"; };
+		AB13402829C5987C009DB821 /* LS-FrontPageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "LS-FrontPageViewController.swift"; sourceTree = "<group>"; };
+		AB13402D29C5BD2C009DB821 /* PagedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PagedView.swift; sourceTree = "<group>"; };
+		AB13402F29C71B35009DB821 /* PageCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageCollectionViewCell.swift; sourceTree = "<group>"; };
+		DD730710E5191C6F36A13781 /* Pods-LifeSharingApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LifeSharingApp.debug.xcconfig"; path = "Target Support Files/Pods-LifeSharingApp/Pods-LifeSharingApp.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -33,17 +59,37 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5124EFF480158902C1180B05 /* Pods_LifeSharingApp.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		4E60EB96C66CE09828EF0A15 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				DD730710E5191C6F36A13781 /* Pods-LifeSharingApp.debug.xcconfig */,
+				63EE23C550A6A4C64FBF47FE /* Pods-LifeSharingApp.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
+		667DE30AF013F5AA5AB14608 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				13BADDBA756627F566010044 /* Pods_LifeSharingApp.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		AB133FF729C44ECF009DB821 = {
 			isa = PBXGroup;
 			children = (
 				AB13400229C44ECF009DB821 /* LifeSharingApp */,
 				AB13400129C44ECF009DB821 /* Products */,
+				4E60EB96C66CE09828EF0A15 /* Pods */,
+				667DE30AF013F5AA5AB14608 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -61,13 +107,32 @@
 				AB13400329C44ECF009DB821 /* AppDelegate.swift */,
 				AB13400529C44ECF009DB821 /* SceneDelegate.swift */,
 				AB13400729C44ECF009DB821 /* ViewController.swift */,
+				AB13401A29C59638009DB821 /* LS-TabBarController.swift */,
+				AB13401C29C59845009DB821 /* LS-AboutPageViewController.swift */,
+				AB13401E29C59845009DB821 /* LS-MemoPageViewController.swift */,
+				AB13401D29C59845009DB821 /* LS-MessagePageViewController.swift */,
+				AB13401F29C59845009DB821 /* LS-PostPageViewController.swift */,
+				AB13402429C5987C009DB821 /* FrontPage */,
 				AB13400929C44ECF009DB821 /* Main.storyboard */,
 				AB13400F29C44ED3009DB821 /* Assets.xcassets */,
 				AB13401129C44ED3009DB821 /* LaunchScreen.storyboard */,
 				AB13401429C44ED3009DB821 /* Info.plist */,
 				AB13400C29C44ECF009DB821 /* LifeSharingApp.xcdatamodeld */,
+				AB13402D29C5BD2C009DB821 /* PagedView.swift */,
+				AB13402F29C71B35009DB821 /* PageCollectionViewCell.swift */,
 			);
 			path = LifeSharingApp;
+			sourceTree = "<group>";
+		};
+		AB13402429C5987C009DB821 /* FrontPage */ = {
+			isa = PBXGroup;
+			children = (
+				AB13402829C5987C009DB821 /* LS-FrontPageViewController.swift */,
+				AB13402529C5987C009DB821 /* LS-Front-FollowVC.swift */,
+				AB13402629C5987C009DB821 /* LS-Front-DiscoveryVC.swift */,
+				AB13402729C5987C009DB821 /* LS-Front-NearbyVC.swift */,
+			);
+			path = FrontPage;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -77,9 +142,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = AB13401729C44ED3009DB821 /* Build configuration list for PBXNativeTarget "LifeSharingApp" */;
 			buildPhases = (
+				C3736DE4314D440C1EE4ACF4 /* [CP] Check Pods Manifest.lock */,
 				AB133FFC29C44ECF009DB821 /* Sources */,
 				AB133FFD29C44ECF009DB821 /* Frameworks */,
 				AB133FFE29C44ECF009DB821 /* Resources */,
+				14D3E639983F19F9CC3BDB1A /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -136,15 +203,68 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		14D3E639983F19F9CC3BDB1A /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-LifeSharingApp/Pods-LifeSharingApp-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-LifeSharingApp/Pods-LifeSharingApp-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-LifeSharingApp/Pods-LifeSharingApp-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		C3736DE4314D440C1EE4ACF4 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-LifeSharingApp-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		AB133FFC29C44ECF009DB821 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AB13402229C59846009DB821 /* LS-MemoPageViewController.swift in Sources */,
 				AB13400E29C44ECF009DB821 /* LifeSharingApp.xcdatamodeld in Sources */,
+				AB13403029C71B35009DB821 /* PageCollectionViewCell.swift in Sources */,
+				AB13402929C5987C009DB821 /* LS-Front-FollowVC.swift in Sources */,
 				AB13400829C44ECF009DB821 /* ViewController.swift in Sources */,
 				AB13400429C44ECF009DB821 /* AppDelegate.swift in Sources */,
+				AB13402129C59846009DB821 /* LS-MessagePageViewController.swift in Sources */,
 				AB13400629C44ECF009DB821 /* SceneDelegate.swift in Sources */,
+				AB13402029C59846009DB821 /* LS-AboutPageViewController.swift in Sources */,
+				AB13402C29C5987C009DB821 /* LS-FrontPageViewController.swift in Sources */,
+				AB13402A29C5987C009DB821 /* LS-Front-DiscoveryVC.swift in Sources */,
+				AB13402E29C5BD2D009DB821 /* PagedView.swift in Sources */,
+				AB13402329C59846009DB821 /* LS-PostPageViewController.swift in Sources */,
+				AB13402B29C5987C009DB821 /* LS-Front-NearbyVC.swift in Sources */,
+				AB13401B29C59638009DB821 /* LS-TabBarController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -286,6 +406,7 @@
 		};
 		AB13401829C44ED3009DB821 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = DD730710E5191C6F36A13781 /* Pods-LifeSharingApp.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -301,6 +422,7 @@
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -316,6 +438,7 @@
 		};
 		AB13401929C44ED3009DB821 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 63EE23C550A6A4C64FBF47FE /* Pods-LifeSharingApp.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -331,6 +454,7 @@
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
