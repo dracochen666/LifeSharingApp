@@ -1,0 +1,6 @@
+framework module Pods_LifeSharingApp {
+  umbrella header "Pods-LifeSharingApp-umbrella.h"
+
+  export *
+  module * { export * }
+}
