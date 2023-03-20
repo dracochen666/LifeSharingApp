@@ -13,7 +13,7 @@ class TabbedItem: UIView, TabItemProtocol {
     init(title: String) {
         self.title = title
         super.init(frame: .zero)
-        self.backgroundColor = .purple
+        self.backgroundColor = .systemBackground
         self.setupUI()
     }
     
@@ -44,12 +44,14 @@ class TabbedItem: UIView, TabItemProtocol {
     //MARK: 自定义方法
     func setupUI() {
         self.addSubview(label)
-        label.leftAnchor /==/ self.leftAnchor + 10
-        label.rightAnchor /==/ self.rightAnchor - 10
-        label.topAnchor /==/ self.topAnchor
-        label.bottomAnchor /==/ self.bottomAnchor
+//        label.leftAnchor /==/ self.leftAnchor + 10
+//        label.rightAnchor /==/ self.rightAnchor - 10
+//        label.topAnchor /==/ self.topAnchor
+//        label.bottomAnchor /==/ self.bottomAnchor
 
-        
+        label.centerXAnchor /==/ self.centerXAnchor
+        label.centerYAnchor /==/ self.centerYAnchor
+
         
     }
     
@@ -60,8 +62,8 @@ class TabbedItem: UIView, TabItemProtocol {
         
         self.addSubview(borderView)
         let borderViewConstraints = Anchorage.batch(active: false) {
-            borderView.leftAnchor /==/ label.leftAnchor
-            borderView.rightAnchor /==/ label.rightAnchor
+            borderView.leftAnchor /==/ self.leftAnchor
+            borderView.rightAnchor /==/ self.rightAnchor
             borderView.bottomAnchor /==/ self.bottomAnchor
             borderView.heightAnchor /==/ 2
 

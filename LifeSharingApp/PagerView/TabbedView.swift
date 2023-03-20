@@ -77,8 +77,8 @@ class TabbedView: UIView {
         
         self.addSubview(collectionView)
         
-        collectionView.leftAnchor /==/ self.leftAnchor + 50
-        collectionView.rightAnchor /==/ self.rightAnchor - 50
+        collectionView.leftAnchor /==/ self.leftAnchor
+        collectionView.rightAnchor /==/ self.rightAnchor
         collectionView.topAnchor /==/ self.topAnchor
         collectionView.bottomAnchor /==/ self.bottomAnchor
     }
