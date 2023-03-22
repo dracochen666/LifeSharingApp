@@ -1,16 +1,22 @@
 PODS:
   - Anchorage (4.5.0)
+  - CHTCollectionViewWaterfallLayout (0.9.10):
+    - CHTCollectionViewWaterfallLayout/Swift (= 0.9.10)
+  - CHTCollectionViewWaterfallLayout/Swift (0.9.10)
 
 DEPENDENCIES:
   - Anchorage
+  - CHTCollectionViewWaterfallLayout
 
 SPEC REPOS:
   trunk:
     - Anchorage
+    - CHTCollectionViewWaterfallLayout
 
 SPEC CHECKSUMS:
   Anchorage: 1961bc81c84aeed54ad7ffc697c50cd9de748ba6
+  CHTCollectionViewWaterfallLayout: b989a459788d7657ac010e03bc0f7eedca95a420
 
-PODFILE CHECKSUM: 512cd2ec34ec1a78c5a892db7b7df2ca0db59e16
+PODFILE CHECKSUM: 07d336e769822b679f9b31cdfb4da570194f4e8e
 
 COCOAPODS: 1.11.3

@@ -26,6 +26,14 @@
 		AB13402C29C5987C009DB821 /* LS-FrontPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB13402829C5987C009DB821 /* LS-FrontPageViewController.swift */; };
 		AB13402E29C5BD2D009DB821 /* PagedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB13402D29C5BD2C009DB821 /* PagedView.swift */; };
 		AB13403029C71B35009DB821 /* PageCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB13402F29C71B35009DB821 /* PageCollectionViewCell.swift */; };
+		AB13403229C73CE8009DB821 /* TabbedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB13403129C73CE8009DB821 /* TabbedView.swift */; };
+		AB13403429C7486E009DB821 /* TabbedCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB13403329C7486E009DB821 /* TabbedCollectionViewCell.swift */; };
+		AB13403629C84995009DB821 /* ViewPager.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB13403529C84995009DB821 /* ViewPager.swift */; };
+		AB13403829C85090009DB821 /* PagerTestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB13403729C85090009DB821 /* PagerTestViewController.swift */; };
+		AB13403A29C8540B009DB821 /* TabbedItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB13403929C8540B009DB821 /* TabbedItem.swift */; };
+		AB13406229C9C2CE009DB821 /* WaterFallViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB13406129C9C2CE009DB821 /* WaterFallViewController.swift */; };
+		AB13406429C9C553009DB821 /* WaterFallCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB13406329C9C553009DB821 /* WaterFallCollectionViewCell.swift */; };
+		ABD134D629CB41D70030F358 /* Constant.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABD134D529CB41D70030F358 /* Constant.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -51,6 +59,14 @@
 		AB13402829C5987C009DB821 /* LS-FrontPageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "LS-FrontPageViewController.swift"; sourceTree = "<group>"; };
 		AB13402D29C5BD2C009DB821 /* PagedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PagedView.swift; sourceTree = "<group>"; };
 		AB13402F29C71B35009DB821 /* PageCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageCollectionViewCell.swift; sourceTree = "<group>"; };
+		AB13403129C73CE8009DB821 /* TabbedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabbedView.swift; sourceTree = "<group>"; };
+		AB13403329C7486E009DB821 /* TabbedCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabbedCollectionViewCell.swift; sourceTree = "<group>"; };
+		AB13403529C84995009DB821 /* ViewPager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewPager.swift; sourceTree = "<group>"; };
+		AB13403729C85090009DB821 /* PagerTestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PagerTestViewController.swift; sourceTree = "<group>"; };
+		AB13403929C8540B009DB821 /* TabbedItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabbedItem.swift; sourceTree = "<group>"; };
+		AB13406129C9C2CE009DB821 /* WaterFallViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaterFallViewController.swift; sourceTree = "<group>"; };
+		AB13406329C9C553009DB821 /* WaterFallCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaterFallCollectionViewCell.swift; sourceTree = "<group>"; };
+		ABD134D529CB41D70030F358 /* Constant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constant.swift; sourceTree = "<group>"; };
 		DD730710E5191C6F36A13781 /* Pods-LifeSharingApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LifeSharingApp.debug.xcconfig"; path = "Target Support Files/Pods-LifeSharingApp/Pods-LifeSharingApp.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -112,14 +128,15 @@
 				AB13401E29C59845009DB821 /* LS-MemoPageViewController.swift */,
 				AB13401D29C59845009DB821 /* LS-MessagePageViewController.swift */,
 				AB13401F29C59845009DB821 /* LS-PostPageViewController.swift */,
+				ABD134D529CB41D70030F358 /* Constant.swift */,
 				AB13402429C5987C009DB821 /* FrontPage */,
+				ABD134D729CB572C0030F358 /* WaterFallVIew */,
+				AB13403C29C8AAA2009DB821 /* PagerView */,
 				AB13400929C44ECF009DB821 /* Main.storyboard */,
 				AB13400F29C44ED3009DB821 /* Assets.xcassets */,
 				AB13401129C44ED3009DB821 /* LaunchScreen.storyboard */,
 				AB13401429C44ED3009DB821 /* Info.plist */,
 				AB13400C29C44ECF009DB821 /* LifeSharingApp.xcdatamodeld */,
-				AB13402D29C5BD2C009DB821 /* PagedView.swift */,
-				AB13402F29C71B35009DB821 /* PageCollectionViewCell.swift */,
 			);
 			path = LifeSharingApp;
 			sourceTree = "<group>";
@@ -133,6 +150,29 @@
 				AB13402729C5987C009DB821 /* LS-Front-NearbyVC.swift */,
 			);
 			path = FrontPage;
+			sourceTree = "<group>";
+		};
+		AB13403C29C8AAA2009DB821 /* PagerView */ = {
+			isa = PBXGroup;
+			children = (
+				AB13402D29C5BD2C009DB821 /* PagedView.swift */,
+				AB13403129C73CE8009DB821 /* TabbedView.swift */,
+				AB13403929C8540B009DB821 /* TabbedItem.swift */,
+				AB13403329C7486E009DB821 /* TabbedCollectionViewCell.swift */,
+				AB13402F29C71B35009DB821 /* PageCollectionViewCell.swift */,
+				AB13403529C84995009DB821 /* ViewPager.swift */,
+				AB13403729C85090009DB821 /* PagerTestViewController.swift */,
+			);
+			path = PagerView;
+			sourceTree = "<group>";
+		};
+		ABD134D729CB572C0030F358 /* WaterFallVIew */ = {
+			isa = PBXGroup;
+			children = (
+				AB13406129C9C2CE009DB821 /* WaterFallViewController.swift */,
+				AB13406329C9C553009DB821 /* WaterFallCollectionViewCell.swift */,
+			);
+			path = WaterFallVIew;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -250,20 +290,28 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AB13403A29C8540B009DB821 /* TabbedItem.swift in Sources */,
 				AB13402229C59846009DB821 /* LS-MemoPageViewController.swift in Sources */,
 				AB13400E29C44ECF009DB821 /* LifeSharingApp.xcdatamodeld in Sources */,
 				AB13403029C71B35009DB821 /* PageCollectionViewCell.swift in Sources */,
 				AB13402929C5987C009DB821 /* LS-Front-FollowVC.swift in Sources */,
 				AB13400829C44ECF009DB821 /* ViewController.swift in Sources */,
 				AB13400429C44ECF009DB821 /* AppDelegate.swift in Sources */,
+				AB13403829C85090009DB821 /* PagerTestViewController.swift in Sources */,
+				AB13403429C7486E009DB821 /* TabbedCollectionViewCell.swift in Sources */,
 				AB13402129C59846009DB821 /* LS-MessagePageViewController.swift in Sources */,
+				ABD134D629CB41D70030F358 /* Constant.swift in Sources */,
 				AB13400629C44ECF009DB821 /* SceneDelegate.swift in Sources */,
+				AB13403229C73CE8009DB821 /* TabbedView.swift in Sources */,
 				AB13402029C59846009DB821 /* LS-AboutPageViewController.swift in Sources */,
 				AB13402C29C5987C009DB821 /* LS-FrontPageViewController.swift in Sources */,
+				AB13406229C9C2CE009DB821 /* WaterFallViewController.swift in Sources */,
 				AB13402A29C5987C009DB821 /* LS-Front-DiscoveryVC.swift in Sources */,
 				AB13402E29C5BD2D009DB821 /* PagedView.swift in Sources */,
+				AB13403629C84995009DB821 /* ViewPager.swift in Sources */,
 				AB13402329C59846009DB821 /* LS-PostPageViewController.swift in Sources */,
 				AB13402B29C5987C009DB821 /* LS-Front-NearbyVC.swift in Sources */,
+				AB13406429C9C553009DB821 /* WaterFallCollectionViewCell.swift in Sources */,
 				AB13401B29C59638009DB821 /* LS-TabBarController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -1,2 +1,3 @@
 ${PODS_ROOT}/Target Support Files/Pods-LifeSharingApp/Pods-LifeSharingApp-frameworks.sh
 ${BUILT_PRODUCTS_DIR}/Anchorage/Anchorage.framework
+${BUILT_PRODUCTS_DIR}/CHTCollectionViewWaterfallLayout/CHTCollectionViewWaterfallLayout.framework

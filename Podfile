@@ -7,5 +7,6 @@ target 'LifeSharingApp' do
 
   # Pods for LifeSharingApp
   pod 'Anchorage'
+  pod 'CHTCollectionViewWaterfallLayout'
 
 end
