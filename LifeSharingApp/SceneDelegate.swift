@@ -20,7 +20,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard let windowScene = (scene as? UIWindowScene) else { return }
         window = UIWindow(frame: UIScreen.main.bounds)
 //        let home = LS_TabViewController()
-        let home = PagerTestViewController()
+//        let home = PagerTestViewController()
+//        let home = WaterFallTestViewController()
+        let home = WaterFallViewController()
         self.window?.rootViewController = home
         window?.makeKeyAndVisible()
         window?.windowScene = windowScene
