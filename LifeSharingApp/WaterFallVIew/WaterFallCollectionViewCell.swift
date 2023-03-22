@@ -14,7 +14,6 @@ class WaterFallCollectionViewCell: UICollectionViewCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        self.translatesAutoresizingMaskIntoConstraints = false
         self.setupUI()
     }
     
@@ -22,21 +21,26 @@ class WaterFallCollectionViewCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    public lazy var view: UIView = {
-        let view = UIView()
-        view.backgroundColor = .blue
-        view.translatesAutoresizingMaskIntoConstraints = false 
-        return view
+    private lazy var imageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.contentMode = .scaleAspectFill
+        return imageView
     }()
     
     func setupUI() {
-        self.addSubview(view)
+        self.addSubview(imageView)
+        self.translatesAutoresizingMaskIntoConstraints = false
+        self.clipsToBounds = true
         
-        view.leftAnchor /==/ self.leftAnchor
-        view.rightAnchor /==/ self.rightAnchor
-        view.topAnchor /==/ self.topAnchor
-        view.bottomAnchor /==/ self.bottomAnchor
+        imageView.leftAnchor /==/ self.leftAnchor
+        imageView.rightAnchor /==/ self.rightAnchor
+        imageView.topAnchor /==/ self.topAnchor
+        imageView.bottomAnchor /==/ self.bottomAnchor
 
+    }
+    func configure(image: UIImage) {
+        imageView.image = image
     }
     
     override func prepareForReuse() {
