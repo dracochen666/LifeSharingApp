@@ -70,9 +70,7 @@ class WaterFallViewController: UIViewController,UICollectionViewDelegate, UIColl
     }
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: WaterFallCollectionViewCell.identifier, for: indexPath) as? WaterFallCollectionViewCell else { fatalError() }
-//        let view = UIView()
-//        view.backgroundColor = .red
-//        cell.view = view
+
         cell.configure(image: UIImage(named: imageModels[indexPath.item].imageName)!)
         return cell
     }

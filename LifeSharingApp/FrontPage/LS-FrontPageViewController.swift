@@ -14,11 +14,14 @@ class LS_FrontPageViewController:UIViewController, PagedViewDelegate {
     }
     
     let viewPager: ViewPager = {
-        let viewPager = ViewPager(sizeConfiguration: .fillEqually(height: 44, spacing: 0))
+        let viewPager = ViewPager(sizeConfiguration: .fillEqually(height: 44,spacing: 0))
         
         let view1 = WaterFallView()
+//        view1.collectionView.backgroundColor = .white
         let view2 = WaterFallView()
+//        view2.collectionView.backgroundColor = .blue
         let view3 = WaterFallView()
+//        view3.collectionView.backgroundColor = .green
         
         viewPager.pagedView.pages = [view1,view2,view3]
         viewPager.tabbedView.tabs = [
@@ -32,9 +35,7 @@ class LS_FrontPageViewController:UIViewController, PagedViewDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-//        let pages = [v1,v2,v3]
-//        let pageView = PagedView(pages: pages)
-        self.view.backgroundColor = .systemBackground
+        self.view.backgroundColor = kTabbedViewBgColor
         self.setupUI()
     }
     
@@ -50,9 +51,7 @@ class LS_FrontPageViewController:UIViewController, PagedViewDelegate {
 
     }
 
-//    override func calculateStretchedCellWidths(_ minimumCellWidths: [CGFloat], suggestedStretchedCellWidth: CGFloat, previousNumberOfLargeCells: Int) -> CGFloat {
-//        return 10
-//    }
+
     
 
 }

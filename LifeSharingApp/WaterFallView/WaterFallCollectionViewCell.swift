@@ -40,7 +40,7 @@ class WaterFallCollectionViewCell: UICollectionViewCell {
 
     }
     func configure(image: UIImage) {
-        imageView.image = image
+        self.imageView.image = image
     }
     
     override func prepareForReuse() {

@@ -74,6 +74,7 @@ class PagedView: UIView, UICollectionViewDelegateFlowLayout , UICollectionViewDa
     //moveToPage 进行collectionView中page的切换
     func moveToPage(index: Int) {
         self.collectionView.scrollToItem(at: IndexPath(item: index, section: 0), at: .centeredHorizontally, animated: true)
+//        self.collectionView.reloadData()
     }
     
     //MARK: DataSource 代理方法
@@ -97,12 +98,10 @@ class PagedView: UIView, UICollectionViewDelegateFlowLayout , UICollectionViewDa
     //MARK: DelegateFlowlayout 代理方法
     //水平方向滚动情况下，minimumLineSpacing代表页水平间距 minimumInteritemSpacing代表页垂直间距。本次返回0
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        print("minimum")
         return 0
     }
     //返回每个Cell（每页）的大小。本次返回Collectionview的大小
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        print("sizeforitem")
         return CGSize(width: self.collectionView.frame.width,
                               height: self.collectionView.frame.height)
     }

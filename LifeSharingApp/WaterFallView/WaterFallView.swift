@@ -17,7 +17,7 @@ struct imageModel {
 
 class WaterFallView: UIView, UICollectionViewDelegate, UICollectionViewDataSource, CHTCollectionViewDelegateWaterfallLayout{
     
-    var imageModels = [imageModel]()
+    private var imageModels = [imageModel]()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -26,6 +26,7 @@ class WaterFallView: UIView, UICollectionViewDelegate, UICollectionViewDataSourc
             let randNum = CGFloat.random(in: 200...300)
             return imageModel.init(imageName: $0, imageHeight: randNum)
         }
+        
         self.setupUI()
     }
     required init?(coder: NSCoder) {
@@ -33,7 +34,7 @@ class WaterFallView: UIView, UICollectionViewDelegate, UICollectionViewDataSourc
     }
     
     //MARK: 变量区
-    private lazy var collectionView: UICollectionView = {
+    lazy var collectionView: UICollectionView = {
         let layout = CHTCollectionViewWaterfallLayout()
 //        let layout = UICollectionViewFlowLayout()
         layout.itemRenderDirection = .shortestFirst
@@ -72,10 +73,9 @@ class WaterFallView: UIView, UICollectionViewDelegate, UICollectionViewDataSourc
     }
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: WaterFallCollectionViewCell.identifier, for: indexPath) as? WaterFallCollectionViewCell else { fatalError() }
-//        let view = UIView()
-//        view.backgroundColor = .red
-//        cell.view = view
-        cell.configure(image: UIImage(named: imageModels[indexPath.item].imageName)!)
+
+        let image = UIImage(named: imageModels[indexPath.item].imageName)
+        cell.configure(image: image!)
         return cell
     }
     

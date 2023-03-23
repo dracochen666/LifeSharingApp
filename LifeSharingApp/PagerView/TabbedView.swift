@@ -49,7 +49,8 @@ class TabbedView: UIView {
     private lazy var collectionView: UICollectionView = {//显示TabItem
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
-//        layout.estimatedItemSize = .zero
+        layout.estimatedItemSize = .zero
+        
         
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.backgroundColor = .systemBackground
@@ -63,23 +64,31 @@ class TabbedView: UIView {
         
         return collectionView
     }()
-    private var currentlySelectedIndex: Int = 1 //记录当前选中的下标
+    private var currentlySelectedIndex: Int = 0 //记录当前选中的下标
     //存储TabView的每个TabItem的View，该View必须遵循TabItemProtocol的类
     var tabs: [TabItemProtocol] {
         didSet {//赋值后刷新collectionView、根据currentlySelectedIndex初始化状态
-            self.collectionView.reloadData()
             self.tabs[self.currentlySelectedIndex].onSelected()
+            self.delegate?.didMoveToTab(at: currentlySelectedIndex)
+            self.collectionView.reloadData()
+
         }
     }
     //MARK: 自定义方法区
     func setupUI() {
         
         self.addSubview(collectionView)
-        
-        collectionView.leftAnchor /==/ self.leftAnchor
-        collectionView.rightAnchor /==/ self.rightAnchor
+        self.backgroundColor = kTabbedViewBgColor
+//        collectionView.translatesAutoresizingMaskIntoConstraints = false
+        collectionView.leftAnchor /==/ self.leftAnchor + 80
+        collectionView.rightAnchor /==/ self.rightAnchor - 80
         collectionView.topAnchor /==/ self.topAnchor
         collectionView.bottomAnchor /==/ self.bottomAnchor
+        
+//        collectionView.widthAnchor /==/ self.widthAnchor
+//        collectionView.heightAnchor /==/ self.heightAnchor
+//        collectionView.centerXAnchor /==/ self.centerXAnchor
+//        collectionView.centerYAnchor /==/ self.centerYAnchor
     }
     func moveToTab(index: Int) {
         self.collectionView.scrollToItem(at: IndexPath(item: index, section: 0), at: .centeredHorizontally, animated: true)
@@ -114,7 +123,6 @@ extension TabbedView: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "TabbedCollectionViewCell", for: indexPath) as! TabbedCollectionViewCell
         cell.view = tabs[indexPath.item]
-        
         return cell
     }
 }
@@ -123,13 +131,15 @@ extension TabbedView: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         switch sizeConfiguration {
         case let .fillEqually(height, spacing):
-            let totalWidth = self.frame.width
+//            let totalWidth = self.frame.width
+//            print(self.collectionView.frame.width / CGFloat(tabs.count))
+            let totalWidth = self.collectionView.frame.width
             let widthPerItem = (
                 totalWidth - (
                     spacing * CGFloat((self.tabs.count + 1))
                 )
             ) / CGFloat(self.tabs.count)
-            
+            print(widthPerItem)
             return CGSize(width: widthPerItem,
                           height: height)
             
