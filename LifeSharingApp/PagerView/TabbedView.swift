@@ -53,7 +53,6 @@ class TabbedView: UIView {
         
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.backgroundColor = .systemBackground
-        collectionView.translatesAutoresizingMaskIntoConstraints = false
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.bounces = false
         
@@ -64,7 +63,7 @@ class TabbedView: UIView {
         
         return collectionView
     }()
-    private var currentlySelectedIndex: Int = 0 //记录当前选中的下标
+    private var currentlySelectedIndex: Int = 1 //记录当前选中的下标
     //存储TabView的每个TabItem的View，该View必须遵循TabItemProtocol的类
     var tabs: [TabItemProtocol] {
         didSet {//赋值后刷新collectionView、根据currentlySelectedIndex初始化状态

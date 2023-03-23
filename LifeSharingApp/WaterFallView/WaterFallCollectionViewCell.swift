@@ -30,7 +30,7 @@ class WaterFallCollectionViewCell: UICollectionViewCell {
     
     func setupUI() {
         self.addSubview(imageView)
-        self.translatesAutoresizingMaskIntoConstraints = false
+//        self.translatesAutoresizingMaskIntoConstraints = false
         self.clipsToBounds = true
         
         imageView.leftAnchor /==/ self.leftAnchor

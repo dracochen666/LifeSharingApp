@@ -22,7 +22,7 @@ class PagedView: UIView, UICollectionViewDelegateFlowLayout , UICollectionViewDa
 //        self.setupUI()
 //    }
 //
-    init(pages: [UIView] = []) {//增加pages变量的初始化方法
+    init(pages: [WaterFallView] = []) {//增加pages变量的初始化方法
         self.pages = pages
         super.init(frame: .zero)
         self.setupUI()
@@ -53,7 +53,7 @@ class PagedView: UIView, UICollectionViewDelegateFlowLayout , UICollectionViewDa
         return collectionView
     }()
     //页面数组pages用于存储页面。根据pages的count和item分别设置collectionview的页数和页面内容。
-    public var pages: [UIView] {
+    public var pages: [WaterFallView] {
         didSet {
             //当赋值后执行collectionView.reloadData()以再次调用代理方法刷新数据
             self.collectionView.reloadData()

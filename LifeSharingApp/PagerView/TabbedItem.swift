@@ -28,15 +28,13 @@ class TabbedItem: UIView, TabItemProtocol {
         label.text = title
         label.textColor = .label
         label.font = .systemFont(ofSize: 15)
-        label.translatesAutoresizingMaskIntoConstraints = false
-        
         return label
     }()
     //borderView作为选中TabItem下划线，在选中的情况下才添加至Self，默认情况不添加
     lazy var borderView: UIView = {
         let view = UIView()
         view.backgroundColor = .red
-        view.translatesAutoresizingMaskIntoConstraints = false
+//        view.translatesAutoresizingMaskIntoConstraints = false
         
         return view
     }()
@@ -48,10 +46,8 @@ class TabbedItem: UIView, TabItemProtocol {
 //        label.rightAnchor /==/ self.rightAnchor - 10
 //        label.topAnchor /==/ self.topAnchor
 //        label.bottomAnchor /==/ self.bottomAnchor
-
         label.centerXAnchor /==/ self.centerXAnchor
         label.centerYAnchor /==/ self.centerYAnchor
-
         
     }
     

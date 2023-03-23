@@ -21,7 +21,7 @@ class PageCollectionViewCell: UICollectionViewCell {
     }
     
     //创建view作为Cell的主要视图。view为计算属性，在view被赋值后会再次调用setupUI，便会添加至Cell内部并添加约束。
-    public var view: UIView? {
+    public var view: WaterFallView? {
         didSet{
             self.setupUI()
         }

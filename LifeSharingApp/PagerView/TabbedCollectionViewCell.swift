@@ -51,7 +51,6 @@ class TabbedCollectionViewCell: UICollectionViewCell {
             self.contentView.layoutIfNeeded()
         }
     }
-    
     //MARK: 自定义方法
     func setupUI() {
         guard let view = view else { return }

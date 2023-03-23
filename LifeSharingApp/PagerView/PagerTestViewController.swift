@@ -13,12 +13,9 @@ class PagerTestViewController: UIViewController {
     let viewPager: ViewPager = {
         let viewPager = ViewPager(sizeConfiguration: .fillEqually(height: 44, spacing: 0))
         
-        let view1 = UIView()
-        view1.backgroundColor = .systemGray2
-        let view2 = UIView()
-        view2.backgroundColor = .systemGray4
-        let view3 = UIView()
-        view3.backgroundColor = .systemGray6
+        let view1 = WaterFallView()
+        let view2 = WaterFallView()
+        let view3 = WaterFallView()
         
         viewPager.pagedView.pages = [view1,view2,view3]
         viewPager.tabbedView.tabs = [
