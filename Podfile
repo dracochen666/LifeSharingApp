@@ -6,7 +6,8 @@ target 'LifeSharingApp' do
   use_frameworks!
 
   # Pods for LifeSharingApp
-  pod 'Anchorage'
-  pod 'CHTCollectionViewWaterfallLayout'
+  pod 'Anchorage','~> 4.5.0' 
+  pod 'CHTCollectionViewWaterfallLayout','~> 0.9.10'
+  pod 'YPImagePicker','~> 4.5.0'
 
 end
