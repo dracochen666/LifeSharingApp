@@ -63,7 +63,6 @@ class ViewPager: UIView {
 
 extension ViewPager: TabbedViewDelegate, PagedViewDelegate {
     func didMoveToTab(at Index: Int) {
-        print("didMoveToTab")
         self.pagedView.moveToPage(index: Index)
     }
     

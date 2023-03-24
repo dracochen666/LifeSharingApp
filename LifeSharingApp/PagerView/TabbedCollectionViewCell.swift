@@ -56,7 +56,6 @@ class TabbedCollectionViewCell: UICollectionViewCell {
         guard let view = view else { return }
         self.addSubview(view)
         view.translatesAutoresizingMaskIntoConstraints = false
-//        self.translatesAutoresizingMaskIntoConstraints = false
         leftConstraint = view.leftAnchor
             .constraint(equalTo: self.leftAnchor,
                         constant: contentInsets.left)

@@ -49,13 +49,14 @@ class TabbedView: UIView {
     private lazy var collectionView: UICollectionView = {//显示TabItem
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
-        layout.estimatedItemSize = .zero
+//        layout.estimatedItemSize = .zero
         
         
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.backgroundColor = .systemBackground
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.bounces = false
+        collectionView.contentInsetAdjustmentBehavior = .never
         
         collectionView.delegate = self
         collectionView.dataSource = self
@@ -85,10 +86,6 @@ class TabbedView: UIView {
         collectionView.topAnchor /==/ self.topAnchor
         collectionView.bottomAnchor /==/ self.bottomAnchor
         
-//        collectionView.widthAnchor /==/ self.widthAnchor
-//        collectionView.heightAnchor /==/ self.heightAnchor
-//        collectionView.centerXAnchor /==/ self.centerXAnchor
-//        collectionView.centerYAnchor /==/ self.centerYAnchor
     }
     func moveToTab(index: Int) {
         self.collectionView.scrollToItem(at: IndexPath(item: index, section: 0), at: .centeredHorizontally, animated: true)
@@ -139,7 +136,6 @@ extension TabbedView: UICollectionViewDelegateFlowLayout {
                     spacing * CGFloat((self.tabs.count + 1))
                 )
             ) / CGFloat(self.tabs.count)
-            print(widthPerItem)
             return CGSize(width: widthPerItem,
                           height: height)
             
