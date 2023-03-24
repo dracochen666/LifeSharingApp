@@ -3,20 +3,32 @@ PODS:
   - CHTCollectionViewWaterfallLayout (0.9.10):
     - CHTCollectionViewWaterfallLayout/Swift (= 0.9.10)
   - CHTCollectionViewWaterfallLayout/Swift (0.9.10)
+  - PryntTrimmerView (4.0.2)
+  - SteviaLayout (4.7.3)
+  - YPImagePicker (4.5.0):
+    - PryntTrimmerView (~> 4.0.2)
+    - SteviaLayout (~> 4.7.3)
 
 DEPENDENCIES:
-  - Anchorage
-  - CHTCollectionViewWaterfallLayout
+  - Anchorage (~> 4.5.0)
+  - CHTCollectionViewWaterfallLayout (~> 0.9.10)
+  - YPImagePicker (~> 4.5.0)
 
 SPEC REPOS:
   trunk:
     - Anchorage
     - CHTCollectionViewWaterfallLayout
+    - PryntTrimmerView
+    - SteviaLayout
+    - YPImagePicker
 
 SPEC CHECKSUMS:
   Anchorage: 1961bc81c84aeed54ad7ffc697c50cd9de748ba6
   CHTCollectionViewWaterfallLayout: b989a459788d7657ac010e03bc0f7eedca95a420
+  PryntTrimmerView: 6a43cc90df5d99addeabd33d4ba09b1365322130
+  SteviaLayout: c2ecdcff57d44e38fd2f65e54ad52aeae28ca0c4
+  YPImagePicker: 6f410f475bd22fa8cd430495b54d4b2f15865c2d
 
-PODFILE CHECKSUM: 07d336e769822b679f9b31cdfb4da570194f4e8e
+PODFILE CHECKSUM: 2293792c5da2aad72b2a294e85acbf2e65821b41
 
 COCOAPODS: 1.11.3
