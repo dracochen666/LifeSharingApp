@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import YPImagePicker
 
 class LS_TabBarViewController: UITabBarController {
     
@@ -23,6 +24,7 @@ class LS_TabBarViewController: UITabBarController {
         tabBar.backgroundColor = kTabBarBgColor
         tabBar.tintColor = .lightGray
         self.setViewControllers([frontVC, memoVC, publishVC, messageVC, aboutVC], animated: true)
+        self.delegate = self
   
     }
     
@@ -45,4 +47,33 @@ class LS_TabBarViewController: UITabBarController {
         aboutVC.tabBarItem.titlePositionAdjustment = .init(horizontal: 0, vertical: -16)
         
     }
+    
 }
+
+extension LS_TabBarViewController: UITabBarControllerDelegate {
+    
+    func tabBarController(_ tabBarController: UITabBarController, shouldSelect viewController: UIViewController) -> Bool {
+        if let _ = viewController as? LS_PostPageViewController {
+//            self.present(WaterFallViewController(), animated: true)
+            var config = YPImagePickerConfiguration()
+//            config.isScrollToChangeModesEnabled = false
+            config.albumName = "iSHARE Library"
+
+            let picker = YPImagePicker()
+            
+            picker.didFinishPicking { [unowned picker] items, _ in
+                if let photo = items.singlePhoto {
+                    print(photo.fromCamera) // Image source (camera or library)
+                    print(photo.image) // Final image selected by the user
+                    print(photo.originalImage) // original image selected by the user, unfiltered
+                }
+                picker.dismiss(animated: true, completion: nil)
+            }
+            present(picker, animated: true, completion: nil)
+            return false
+        }
+            return true
+    }
+}
+    
+

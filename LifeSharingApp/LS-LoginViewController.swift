@@ -52,19 +52,45 @@ class LS_LoginViewController: UIViewController {
             stackView.widthAnchor /==/ 2 * view.widthAnchor / 3
             stackView.heightAnchor /==/ view.heightAnchor / 4
             
+            self.loadingAnimation()
+
             loginLabel.centerXAnchor /==/ view.centerXAnchor
             loginLabel.bottomAnchor /==/ stackView.topAnchor - 20
             
             
         }
-        
+
         loginButton.addTarget(self, action: #selector(tabToLogin), for: .touchUpInside)
         registerButton.addTarget(self, action: #selector(tabToResgister), for: .touchUpInside)
+    }
+    func loadingAnimation() {
+        // 创建一个UIImageView
+        let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 50, height: 50))
+        // 设置图片
+        let image = UIImage(systemName: "arrow.clockwise")
+        image!.withTintColor(.systemGray3)
+        imageView.image = image
+        // 设置旋转动画
+        let rotationAnimation = CABasicAnimation(keyPath: "transform.rotation.z")
+        rotationAnimation.toValue = NSNumber(value: Double.pi * 2 * 4)
+        rotationAnimation.duration = 1.0
+        rotationAnimation.isCumulative = true
+        rotationAnimation.repeatCount = Float.greatestFiniteMagnitude
+        imageView.layer.add(rotationAnimation, forKey: "rotationAnimation")
+        // 将imageView添加到视图中
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        self.view.addSubview(imageView)
+        
+        imageView.centerXAnchor /==/ self.view.centerXAnchor
+        imageView.centerYAnchor /==/ self.view.centerYAnchor + 200
+//        print("yes")
     }
     
     @objc func tabToLogin() {
         print("login")
         let vc = LS_TabBarViewController()
+        self.loadingAnimation()
+    
         self.navigationController?.pushViewController(vc, animated: true)
     }
     

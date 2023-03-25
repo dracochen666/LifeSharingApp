@@ -32,10 +32,10 @@ class TabbedCollectionViewCell: UICollectionViewCell {
             self.setupUI()
         }
     }
-    var leftConstraint = NSLayoutConstraint()
-    var topConstraint = NSLayoutConstraint()
-    var rightConstraint = NSLayoutConstraint()
-    var bottomConstraint = NSLayoutConstraint()
+    private var leftCons = NSLayoutConstraint()
+    private var topCons = NSLayoutConstraint()
+    private var rightCons = NSLayoutConstraint()
+    private var bottomCons = NSLayoutConstraint()
     //contentInsets设置属性后，所有约束都会相应更新。
     public var contentInsets: UIEdgeInsets = UIEdgeInsets(
         top: 0,
@@ -44,10 +44,10 @@ class TabbedCollectionViewCell: UICollectionViewCell {
         right: 0
     ) {
         didSet {
-            leftConstraint.constant = contentInsets.left
-            topConstraint.constant = contentInsets.top
-            rightConstraint.constant = -contentInsets.right
-            bottomConstraint.constant = -contentInsets.bottom
+            leftCons.constant = contentInsets.left
+            topCons.constant = contentInsets.top
+            rightCons.constant = -contentInsets.right
+            bottomCons.constant = -contentInsets.bottom
             self.contentView.layoutIfNeeded()
         }
     }
@@ -56,24 +56,24 @@ class TabbedCollectionViewCell: UICollectionViewCell {
         guard let view = view else { return }
         self.addSubview(view)
         view.translatesAutoresizingMaskIntoConstraints = false
-        leftConstraint = view.leftAnchor
+        leftCons = view.leftAnchor
             .constraint(equalTo: self.leftAnchor,
                         constant: contentInsets.left)
-        topConstraint = view.topAnchor
+        topCons = view.topAnchor
             .constraint(equalTo: self.topAnchor,
                         constant: contentInsets.top)
-        rightConstraint = view.rightAnchor
+        rightCons = view.rightAnchor
             .constraint(equalTo: self.rightAnchor,
                         constant: -contentInsets.right)
-        bottomConstraint = view.bottomAnchor
+        bottomCons = view.bottomAnchor
             .constraint(equalTo: self.bottomAnchor,
                         constant: -contentInsets.bottom)
         
         NSLayoutConstraint.activate([
-            leftConstraint,
-            topConstraint,
-            rightConstraint,
-            bottomConstraint
+            leftCons,
+            topCons,
+            rightCons,
+            bottomCons
         ])
     }
 }

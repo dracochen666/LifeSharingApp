@@ -2,6 +2,14 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>iShare请求写入权限</string>
+	<key>NSCameraUsageDescription</key>
+	<string>iShare请求访问相机权限</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>iShare请求访问相册权限</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>iShare请求麦克风权限</string>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>
