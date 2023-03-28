@@ -53,15 +53,27 @@ class LS_TabBarViewController: UITabBarController {
 extension LS_TabBarViewController: UITabBarControllerDelegate {
     
     func tabBarController(_ tabBarController: UITabBarController, shouldSelect viewController: UIViewController) -> Bool {
-        if let _ = viewController as? LS_PostPageViewController {
-//            self.present(WaterFallViewController(), animated: true)
-            var config = YPImagePickerConfiguration()
-//            config.isScrollToChangeModesEnabled = false
-            config.albumName = "iSHARE Library"
-
-            let picker = YPImagePicker()
+        if viewController is LS_PostPageViewController {
             
+            //待做 用户登录判断，若未登录则不允许发布
+ 
+            //图片视频选择逻辑：
+            //1.只能选择多个图片或单个视频，图片视频不能混选
+            //2.选择图片后，在笔记编辑页面可删除或追加图片
+            
+            var config = YPImagePickerConfiguration()
+            config.albumName = "iSHARE Library"
+            config.onlySquareImagesFromCamera = false
+            config.maxCameraZoomFactor = 5
+            
+            //相册配置
+            config.library.defaultMultipleSelection = true
+            config.library.maxNumberOfItems = 9
+            config.library.preSelectItemOnMultipleSelection = false
+            
+            let picker = YPImagePicker(configuration: config)
             picker.didFinishPicking { [unowned picker] items, _ in
+                
                 if let photo = items.singlePhoto {
                     print(photo.fromCamera) // Image source (camera or library)
                     print(photo.image) // Final image selected by the user

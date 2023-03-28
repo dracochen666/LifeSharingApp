@@ -45,7 +45,7 @@ class LS_LoginViewController: UIViewController {
         self.view.addSubview(loginLabel)
         self.view.backgroundColor = .systemGray6
         
-        let constraint = Anchorage.batch(active: true) {
+        let _ = Anchorage.batch(active: true) {
             
             stackView.centerXAnchor /==/ view.centerXAnchor
             stackView.centerYAnchor /==/ 2 * view.centerYAnchor / 3
