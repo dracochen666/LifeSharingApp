@@ -11,6 +11,7 @@ extension UITextField {
     
     convenience init(frame: CGRect, placeholder: String = "", borderStyle: UITextField.BorderStyle = .roundedRect, isSecureTextEntry: Bool = false ) {
         self.init()
+        self.backgroundColor = .clear
         self.frame = frame
         self.placeholder = placeholder
         self.borderStyle = borderStyle

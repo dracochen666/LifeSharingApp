@@ -79,8 +79,11 @@ extension LS_TabBarViewController: UITabBarControllerDelegate {
                     print(photo.image) // Final image selected by the user
                     print(photo.originalImage) // original image selected by the user, unfiltered
                 }
-                picker.dismiss(animated: true, completion: nil)
+//                picker.dismiss(animated: true, completion: nil)
+                picker.pushViewController(LS_PostPageViewController(), animated: true)
+                
             }
+            
             present(picker, animated: true, completion: nil)
             return false
         }
