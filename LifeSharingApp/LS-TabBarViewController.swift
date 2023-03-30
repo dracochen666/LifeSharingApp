@@ -64,14 +64,15 @@ extension LS_TabBarViewController: UITabBarControllerDelegate {
             var config = YPImagePickerConfiguration()
             config.albumName = "iSHARE Library"
             config.onlySquareImagesFromCamera = false
-            config.maxCameraZoomFactor = 5
+            config.maxCameraZoomFactor = kPickerCameraZoom
             
             //相册配置
             config.library.defaultMultipleSelection = true
-            config.library.maxNumberOfItems = 9
+            config.library.maxNumberOfItems = kPickerMaxPhotoCount
             config.library.preSelectItemOnMultipleSelection = false
             
             let picker = YPImagePicker(configuration: config)
+            present(picker, animated: true, completion: nil)
             picker.didFinishPicking { [unowned picker] items, _ in
                 
                 if let photo = items.singlePhoto {
@@ -79,12 +80,9 @@ extension LS_TabBarViewController: UITabBarControllerDelegate {
                     print(photo.image) // Final image selected by the user
                     print(photo.originalImage) // original image selected by the user, unfiltered
                 }
-//                picker.dismiss(animated: true, completion: nil)
                 picker.pushViewController(LS_PostPageViewController(), animated: true)
                 
             }
-            
-            present(picker, animated: true, completion: nil)
             return false
         }
             return true

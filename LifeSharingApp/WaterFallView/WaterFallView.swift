@@ -21,7 +21,7 @@ class WaterFallView: UIView, UICollectionViewDelegate, UICollectionViewDataSourc
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        let images = Array(1...12).map { "image\($0)"}
+        let images = Array(0...11).map { "image\($0)"}
         imageModels = images.compactMap {
             let randNum = CGFloat.random(in: 200...300)
             return imageModel.init(imageName: $0, imageHeight: randNum)

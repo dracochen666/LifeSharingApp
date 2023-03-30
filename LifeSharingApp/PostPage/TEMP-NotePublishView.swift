@@ -1,32 +1,24 @@
 //
-//  LS-PostPageViewController.swift
-//  LifeSharing
+//  LS-PostPage-NotesPublishView.swift
+//  LifeSharingApp
 //
-//  Created by 陈龙 on 2023/3/14.
+//  Created by 陈龙 on 2023/3/28.
 //
 
 import UIKit
 import Anchorage
 import YPImagePicker
 
-class LS_PostPageViewController: UIViewController {
+class LS_PostPage_NotePublishView: UIView {
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        view.backgroundColor = .systemPink
+    override init(frame: CGRect) {
+        super.init(frame: frame)
         setupUI()
-//        self.navigationController?.navigationItem.leftBarButtonItem.ad
-//        self.navigationController?.popViewController(animated: true)
     }
     
-    //MARK: 变量区
-    lazy var scrollView: UIScrollView = {
-        let scrollView = UIScrollView(frame: .zero)
-//        scrollView.contentSize = self.view.safeAreaLayoutGuide.layoutFrame.size
-        scrollView.contentSize = self.view.frame.size
-        return scrollView
-    }()
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     //MARK: 变量区
     var photos = [UIImage(named: "image0"), UIImage(named: "image1"), UIImage(named: "image2"), UIImage(named: "image3"), UIImage(named: "image4")]
@@ -66,52 +58,36 @@ class LS_PostPageViewController: UIViewController {
     }()
     //存储传入笔记图片数量
     var photoCount: Int { photos.count }
-
-    var notePublishView = UIView(frame: .zero)
-
+    
     
     //MARK: 自定义方法
     func setupUI() {
-        self.view.addSubview(scrollView)
-        self.scrollView.addSubview(notePublishView)
-        notePublishView.backgroundColor = UIColor(named: kSecondLevelColor)
-        notePublishView.addSubview(imageResourcesCV)
-        notePublishView.addSubview(titleTextField)
-        notePublishView.addSubview(bodyTextView)
+        self.backgroundColor = UIColor(named: kSecondLevelColor)
+        self.addSubview(imageResourcesCV)
+        self.addSubview(titleTextField)
+        self.addSubview(bodyTextView)
         
-        
-        scrollView.leftAnchor /==/ self.view.leftAnchor
-        scrollView.rightAnchor /==/ self.view.rightAnchor
-        scrollView.topAnchor /==/ self.view.topAnchor
-        scrollView.bottomAnchor /==/ self.view.bottomAnchor
-        
-        notePublishView.centerXAnchor /==/ scrollView.centerXAnchor
-        notePublishView.centerYAnchor /==/ scrollView.centerYAnchor
-        notePublishView.widthAnchor /==/ scrollView.widthAnchor
-        notePublishView.heightAnchor /==/ scrollView.heightAnchor
-        
-        imageResourcesCV.leftAnchor /==/ notePublishView.leftAnchor + kCustomGlobalMargin
-        imageResourcesCV.rightAnchor /==/ notePublishView.rightAnchor - kCustomGlobalMargin
-        imageResourcesCV.topAnchor /==/ notePublishView.topAnchor + kCustomGlobalMargin
+        imageResourcesCV.leftAnchor /==/ self.leftAnchor + kCustomGlobalMargin
+        imageResourcesCV.rightAnchor /==/ self.rightAnchor - kCustomGlobalMargin
+        imageResourcesCV.topAnchor /==/ self.topAnchor + kCustomGlobalMargin
+//        imageResourcesCV.bottomAnchor /==/ self.layoutMarginsGuide.bottomAnchor
         imageResourcesCV.heightAnchor /==/ 130
 
-        titleTextField.leftAnchor /==/ notePublishView.leftAnchor + kCustomGlobalMargin
-        titleTextField.rightAnchor /==/ notePublishView.rightAnchor - kCustomGlobalMargin
+        titleTextField.leftAnchor /==/ self.leftAnchor + kCustomGlobalMargin
+        titleTextField.rightAnchor /==/ self.rightAnchor - kCustomGlobalMargin
         titleTextField.topAnchor /==/ imageResourcesCV.bottomAnchor + kCustomGlobalMargin
 
-        bodyTextView.leftAnchor /==/ notePublishView.leftAnchor + kCustomGlobalMargin
-        bodyTextView.rightAnchor /==/ notePublishView.rightAnchor - kCustomGlobalMargin
-        bodyTextView.topAnchor /==/ titleTextField.bottomAnchor + kCustomGlobalMargin
+        bodyTextView.leftAnchor /==/ self.leftAnchor + kCustomGlobalMargin
+        bodyTextView.rightAnchor /==/ self.rightAnchor - kCustomGlobalMargin
+        bodyTextView.topAnchor /==/ self.titleTextField.bottomAnchor + kCustomGlobalMargin
         bodyTextView.heightAnchor /==/ 200
         
-
-
     }
+
 }
 
-
 //MARK: 代理方法
-extension LS_PostPageViewController: UICollectionViewDataSource {
+extension LS_PostPage_NotePublishView: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         photos.count
     }
@@ -133,7 +109,7 @@ extension LS_PostPageViewController: UICollectionViewDataSource {
     }
 }
 
-extension LS_PostPageViewController: UICollectionViewDelegateFlowLayout {
+extension LS_PostPage_NotePublishView: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: 120, height: 120)
     }
@@ -142,7 +118,7 @@ extension LS_PostPageViewController: UICollectionViewDelegateFlowLayout {
 }
 
 //点击事件
-extension LS_PostPageViewController {
+extension LS_PostPage_NotePublishView {
     @objc private func addMore() {
         if photoCount < kPickerMaxPhotoCount {
             var config = YPImagePickerConfiguration()
@@ -163,10 +139,9 @@ extension LS_PostPageViewController {
                 }
                 picker.pushViewController(LS_PostPageViewController(), animated: true)
                 
-                
             }
             
-            present(picker, animated: true, completion: nil)
+//            present(picker, animated: true, completion: nil)
             
         }else {
             

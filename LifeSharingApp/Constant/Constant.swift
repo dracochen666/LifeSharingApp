@@ -7,11 +7,22 @@
 
 import UIKit
 
-//MARK: TabbedView 背景色
-let kTabbedViewBgColor: UIColor = UIColor(named: "SecondaryMainColor")!
-//MARK: TabBar 背景色
-let kTabBarBgColor: UIColor = UIColor(named: "SecondaryMainColor")!
+//MARK: Colors
+let kSecondLevelColor = "SecondLevelColor"
+let kThirdLevelColor = "ThirdLevelColor"
 
+//MARK: TabbedView 背景色
+let kTabbedViewBgColor: UIColor = UIColor(named: kSecondLevelColor)!
+//MARK: TabBar 背景色
+let kTabBarBgColor: UIColor = UIColor(named: kSecondLevelColor)!
+
+//MARK: Layers
+let kGlobalCornerRadius: CGFloat = 8
 
 //MARK: 全局Margin
-let customGlobalMargin = CGFloat(8)
+let kCustomGlobalMargin = CGFloat(8)
+
+//MARK: imagePickerConfig
+let kPickerMaxPhotoCount = 9
+let kPickerCameraZoom: CGFloat  = 5
+
