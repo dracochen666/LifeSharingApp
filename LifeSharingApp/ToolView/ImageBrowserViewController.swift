@@ -8,8 +8,25 @@
 import UIKit
 import Anchorage
 
+protocol ImageBrowserDelegate: AnyObject {
+    func deleteImage(index: Int)
+}
+
 class ImageBrowserViewController: UIViewController {
 
+//    init(index: Int) {
+//        super.init(nibName: nil, bundle: nil)
+//        self.imageIndex = index
+//    }
+//
+//    required init?(coder: NSCoder) {
+//        fatalError("init(coder:) has not been implemented")
+//    }
+    convenience init(imageIndex: Int) {
+        self.init()
+        self.imageIndex = imageIndex
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
@@ -17,6 +34,8 @@ class ImageBrowserViewController: UIViewController {
         
     
     //MARK: 变量区
+    var imageIndex: Int?
+    weak var delegate: ImageBrowserDelegate?
     let imageView = UIImageView()
 
     //MARK: 自定义方法区
@@ -51,6 +70,6 @@ class ImageBrowserViewController: UIViewController {
     
     // 删除图片
     @objc func deleteImage() {
-        imageView.image = nil
+        self.delegate?.deleteImage(index: imageIndex!)
     }
 }

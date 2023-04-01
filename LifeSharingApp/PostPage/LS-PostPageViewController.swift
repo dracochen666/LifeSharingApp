@@ -149,14 +149,27 @@ extension LS_PostPageViewController: UICollectionViewDelegateFlowLayout {
 extension LS_PostPageViewController: UICollectionViewDelegate {
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let vc = ImageBrowserViewController()
+        let vc = ImageBrowserViewController(imageIndex: indexPath.item)
         vc.setImage(photos[indexPath.item]!)
+        vc.delegate = self
         let navi = UINavigationController(rootViewController: vc)
         self.present(navi, animated: true)
     }
+
+}
+extension LS_PostPageViewController: ImageBrowserDelegate {
+    func deleteImage(index: Int) {
+        if photos.count > 1 {
+            photos.remove(at: index)
+            self.imageResourcesCV.reloadData()
+            self.dismiss(animated: true)
+        }else {
+            self.dismiss(animated: true)
+            self.showAlert(title: "提示", subtitle: "无法删除！笔记中至少包含一张图片。")
+        }
+
+    }
     
-
-
 }
 
 //点击事件
