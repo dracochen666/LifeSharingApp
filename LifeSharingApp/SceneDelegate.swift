@@ -23,14 +23,14 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 //        let home = LS_TabBarViewController()
 //        let home = WaterFallViewController()
         
-        let home1 = LS_LoginViewController()
-        let naviVC = UINavigationController(rootViewController: home1)
-        naviVC.isNavigationBarHidden = true
-        self.window?.rootViewController = naviVC
+//        let home1 = LS_LoginViewController()
+//        let naviVC = UINavigationController(rootViewController: home1)
+//        naviVC.isNavigationBarHidden = true
+//        self.window?.rootViewController = naviVC
 
 
-//        let home = LS_PostPageViewController()
-//        self.window?.rootViewController = home
+        let home = LS_PostPageViewController()
+        self.window?.rootViewController = home
         
         window?.makeKeyAndVisible()
         window?.windowScene = windowScene

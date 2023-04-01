@@ -8,6 +8,7 @@
 import UIKit
 import Anchorage
 import YPImagePicker
+import MBProgressHUD
 
 class LS_PostPageViewController: UIViewController {
 
@@ -16,6 +17,8 @@ class LS_PostPageViewController: UIViewController {
         
         view.backgroundColor = .systemPink
         setupUI()
+        let tap = UITapGestureRecognizer(target: self, action: #selector(endEdit))
+        self.notePublishView.addGestureRecognizer(tap)
 //        self.navigationController?.navigationItem.leftBarButtonItem.ad
 //        self.navigationController?.popViewController(animated: true)
     }
@@ -23,8 +26,8 @@ class LS_PostPageViewController: UIViewController {
     //MARK: 变量区
     lazy var scrollView: UIScrollView = {
         let scrollView = UIScrollView(frame: .zero)
-//        scrollView.contentSize = self.view.safeAreaLayoutGuide.layoutFrame.size
         scrollView.contentSize = self.view.frame.size
+        scrollView.showsVerticalScrollIndicator = false
         return scrollView
     }()
     
@@ -52,6 +55,7 @@ class LS_PostPageViewController: UIViewController {
     lazy var titleTextField: UITextField = {
        let textField = UITextField(frame: .zero, placeholder: "请填写标题")
         textField.textColor = .label
+        
         return textField
     }()
     lazy var bodyTextView: UITextView = {
@@ -82,7 +86,7 @@ class LS_PostPageViewController: UIViewController {
         
         scrollView.leftAnchor /==/ self.view.leftAnchor
         scrollView.rightAnchor /==/ self.view.rightAnchor
-        scrollView.topAnchor /==/ self.view.topAnchor
+        scrollView.topAnchor /==/ self.view.topAnchor + 50
         scrollView.bottomAnchor /==/ self.view.bottomAnchor
         
         notePublishView.centerXAnchor /==/ scrollView.centerXAnchor
@@ -154,22 +158,24 @@ extension LS_PostPageViewController {
             config.library.preSelectItemOnMultipleSelection = false
             
             let picker = YPImagePicker(configuration: config)
-            picker.didFinishPicking { [unowned picker] items, _ in
-                
-                if let photo = items.singlePhoto {
-                    print(photo.fromCamera) // Image source (camera or library)
-                    print(photo.image) // Final image selected by the user
-                    print(photo.originalImage) // original image selected by the user, unfiltered
+            picker.didFinishPicking { [unowned picker] items, isCancelled in
+                for item in items {
+                    if case let .photo(p: photo) = item {
+                        self.photos.append(photo.image)
+                    }
                 }
-                picker.pushViewController(LS_PostPageViewController(), animated: true)
-                
-                
+                self.imageResourcesCV.reloadData()
+                picker.dismiss(animated: true)
             }
             
             present(picker, animated: true, completion: nil)
             
         }else {
-            
+            self.showAlert(title: "提示", subtitle: "只能选择9张图片或单个视频")
         }
+    }
+    
+    @objc func endEdit() {
+        self.view.endEditing(true)
     }
 }
