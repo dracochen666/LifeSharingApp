@@ -14,14 +14,6 @@ protocol ImageBrowserDelegate: AnyObject {
 
 class ImageBrowserViewController: UIViewController {
 
-//    init(index: Int) {
-//        super.init(nibName: nil, bundle: nil)
-//        self.imageIndex = index
-//    }
-//
-//    required init?(coder: NSCoder) {
-//        fatalError("init(coder:) has not been implemented")
-//    }
     convenience init(imageIndex: Int) {
         self.init()
         self.imageIndex = imageIndex
@@ -52,6 +44,7 @@ class ImageBrowserViewController: UIViewController {
         let deleteButton = UIBarButtonItem(barButtonSystemItem: .trash, target: self, action: #selector(deleteImage))
         self.navigationItem.rightBarButtonItem = deleteButton
         self.navigationController?.navigationBar.backgroundColor = UIColor(named: kSecondLevelColor)
+        self.navigationItem.rightBarButtonItem?.tintColor = .red
         self.view.backgroundColor = UIColor(named: kThirdLevelColor)?.withAlphaComponent(0.95)
         
         
@@ -70,6 +63,16 @@ class ImageBrowserViewController: UIViewController {
     
     // 删除图片
     @objc func deleteImage() {
-        self.delegate?.deleteImage(index: imageIndex!)
+        let alertController = UIAlertController(title: nil, message: "你确定要删除吗？", preferredStyle: .actionSheet)
+        let deleteAction = UIAlertAction(title: "删除", style: .destructive) { _ in
+            self.delegate?.deleteImage(index: self.imageIndex!)
+        }
+        let cancelAction = UIAlertAction(title: "取消", style: .cancel)
+        
+        alertController.addAction(deleteAction)
+        alertController.addAction(cancelAction)
+        
+        self.present(alertController, animated: true)
+        
     }
 }
