@@ -9,6 +9,7 @@ import UIKit
 import Anchorage
 import YPImagePicker
 import MBProgressHUD
+import AVKit
 
 class LS_PostPageViewController: UIViewController {
 
@@ -17,10 +18,11 @@ class LS_PostPageViewController: UIViewController {
         
         view.backgroundColor = .systemPink
         setupUI()
-//        let tap = UITapGestureRecognizer(target: self, action: #selector(endEdit))
-//        self.notePublishView.addGestureRecognizer(tap)
-//        self.navigationController?.navigationItem.leftBarButtonItem.ad
-//        self.navigationController?.popViewController(animated: true)
+        let tap = UITapGestureRecognizer(target: self, action: #selector(endEdit))
+        
+        tap.cancelsTouchesInView = false
+        self.notePublishView.addGestureRecognizer(tap)
+
     }
     
     //MARK: 变量区
@@ -28,11 +30,15 @@ class LS_PostPageViewController: UIViewController {
         let scrollView = UIScrollView(frame: .zero)
         scrollView.contentSize = self.view.frame.size
         scrollView.showsVerticalScrollIndicator = false
+//        scrollView.delaysContentTouches = true
+//        scrollView.canCancelContentTouches = true
         return scrollView
     }()
     
     //MARK: 变量区
     var photos = [UIImage(named: "image0"), UIImage(named: "image1"), UIImage(named: "image2"), UIImage(named: "image3"), UIImage(named: "image4")]
+    var videoURL: URL?
+    var isVideo: Bool { videoURL != nil }
     lazy var imageResourcesCV: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
@@ -85,6 +91,19 @@ class LS_PostPageViewController: UIViewController {
         notePublishView.addSubview(titleTextField)
         notePublishView.addSubview(bodyTextView)
         
+        
+        //play video
+        let playBtn = UIButton(type: .system)
+        playBtn.backgroundColor = .label
+        playBtn.setTitle("PLAY", for: .normal)
+        playBtn.addTarget(self, action: #selector(playVideo), for: .touchUpInside)
+        playBtn.layer.cornerRadius = 10
+        notePublishView.addSubview(playBtn)
+        playBtn.centerXAnchor /==/ notePublishView.centerXAnchor
+        playBtn.centerYAnchor /==/ notePublishView.centerYAnchor
+
+        
+        //
         
         scrollView.leftAnchor /==/ self.view.leftAnchor
         scrollView.rightAnchor /==/ self.view.rightAnchor
@@ -148,16 +167,27 @@ extension LS_PostPageViewController: UICollectionViewDelegateFlowLayout {
 }
 extension LS_PostPageViewController: UICollectionViewDelegate {
     
+    //用户选中某一个Cell后，识别选中类型是photo还是video决定调用预览方法
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let vc = ImageBrowserViewController(imageIndex: indexPath.item)
-        vc.setImage(photos[indexPath.item]!)
-        vc.delegate = self
-        let navi = UINavigationController(rootViewController: vc)
-        self.present(navi, animated: true)
+        if isVideo {
+            let playerVC = AVPlayerViewController()
+            playerVC.player = AVPlayer(url: videoURL!)
+            playerVC.player?.play()
+            self.present(playerVC, animated: true)
+            
+        }else {
+            let vc = ImageBrowserViewController(imageIndex: indexPath.item)
+            vc.setImage(photos[indexPath.item]!)
+            vc.delegate = self
+            let navi = UINavigationController(rootViewController: vc)
+            self.present(navi, animated: true)
+        }
     }
 
 }
+//图片预览代理方法
 extension LS_PostPageViewController: ImageBrowserDelegate {
+    //点击预览窗口导航栏的删除按钮后调用代理方法
     func deleteImage(index: Int) {
         if photos.count > 1 {
             photos.remove(at: index)
@@ -165,7 +195,7 @@ extension LS_PostPageViewController: ImageBrowserDelegate {
             self.dismiss(animated: true)
         }else {
             self.dismiss(animated: true)
-            self.showAlert(title: "提示", subtitle: "无法删除！笔记中至少包含一张图片。")
+            self.showAlert(title: "提示", subtitle: "无法删除！笔记中至少包含 一张图片。")
         }
 
     }
@@ -175,6 +205,7 @@ extension LS_PostPageViewController: ImageBrowserDelegate {
 //点击事件
 extension LS_PostPageViewController {
     @objc private func addMore() {
+        
         if photoCount < kPickerMaxPhotoCount {
             var config = YPImagePickerConfiguration()
             config.albumName = "iSHARE Library"
@@ -203,6 +234,14 @@ extension LS_PostPageViewController {
     }
     
     @objc func endEdit() {
-        self.view.endEditing(true)
+        self.view.endEditing(false)
+    }
+    
+    @objc func playVideo() {
+        let playerVC = AVPlayerViewController()
+        playerVC.player = AVPlayer(url: Bundle.main.url(forResource: "illusion-or-magic", withExtension: "mp4")!)
+        playerVC.player?.play()
+        self.present(playerVC, animated: true)
+        
     }
 }

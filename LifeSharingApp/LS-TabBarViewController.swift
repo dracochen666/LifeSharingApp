@@ -74,14 +74,19 @@ extension LS_TabBarViewController: UITabBarControllerDelegate {
             let picker = YPImagePicker(configuration: config)
             present(picker, animated: true, completion: nil)
             picker.didFinishPicking { [unowned picker] items, _ in
-                
-                if let photo = items.singlePhoto {
-                    print(photo.fromCamera) // Image source (camera or library)
-                    print(photo.image) // Final image selected by the user
-                    print(photo.originalImage) // original image selected by the user, unfiltered
+//                if let photo = items.singlePhoto {
+//                    print(photo.fromCamera) // Image source (camera or library)
+//                    print(photo.image) // Final image selected by the user
+//                    print(photo.originalImage) // original image selected by the user, unfiltered
+                for item in items {
+                    switch item {
+                    case let .photo(p: photo):
+                        print("photo")
+                    case let .video(v: video):
+                        print("video")
+                    }
                 }
-                picker.pushViewController(LS_PostPageViewController(), animated: true)
-                
+            picker.pushViewController(LS_PostPageViewController(), animated: true)
             }
             return false
         }
