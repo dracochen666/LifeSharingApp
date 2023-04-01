@@ -17,8 +17,8 @@ class LS_PostPageViewController: UIViewController {
         
         view.backgroundColor = .systemPink
         setupUI()
-        let tap = UITapGestureRecognizer(target: self, action: #selector(endEdit))
-        self.notePublishView.addGestureRecognizer(tap)
+//        let tap = UITapGestureRecognizer(target: self, action: #selector(endEdit))
+//        self.notePublishView.addGestureRecognizer(tap)
 //        self.navigationController?.navigationItem.leftBarButtonItem.ad
 //        self.navigationController?.popViewController(animated: true)
     }
@@ -42,8 +42,10 @@ class LS_PostPageViewController: UIViewController {
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.backgroundColor = UIColor(named: kThirdLevelColor)
         collectionView.showsHorizontalScrollIndicator = false
+
         collectionView.register(NoteResourceCollectionViewCell.self, forCellWithReuseIdentifier: "NoteResourceCollectionViewCell")
         collectionView.register(NoteResourceCollectionViewFooter.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter, withReuseIdentifier: "NoteResourceCollectionViewFooter")
+        
         collectionView.layer.cornerRadius = kGlobalCornerRadius
         
         collectionView.delegate = self
@@ -142,6 +144,18 @@ extension LS_PostPageViewController: UICollectionViewDelegateFlowLayout {
         return CGSize(width: 120, height: 120)
     }
     
+
+}
+extension LS_PostPageViewController: UICollectionViewDelegate {
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let vc = ImageBrowserViewController()
+        vc.setImage(photos[indexPath.item]!)
+        let navi = UINavigationController(rootViewController: vc)
+        self.present(navi, animated: true)
+    }
+    
+
 
 }
 
