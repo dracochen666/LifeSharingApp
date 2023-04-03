@@ -26,3 +26,8 @@ let kCustomGlobalMargin = CGFloat(8)
 let kPickerMaxPhotoCount = 9
 let kPickerCameraZoom: CGFloat  = 5
 
+//MARK: 笔记页面
+//标题字数限制
+let kNoteTitleLimit = 20
+//正文字数限制
+let kNoteContentLimit = 10

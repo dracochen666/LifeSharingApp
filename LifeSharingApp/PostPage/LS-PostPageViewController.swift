@@ -19,7 +19,8 @@ class LS_PostPageViewController: UIViewController {
         view.backgroundColor = .systemPink
         setupUI()
         let tap = UITapGestureRecognizer(target: self, action: #selector(endEdit))
-        
+        //        tap.delaysTouchesBegan = false
+//        tap.delaysTouchesEnded = false
         tap.cancelsTouchesInView = false
         self.notePublishView.addGestureRecognizer(tap)
 
@@ -30,8 +31,7 @@ class LS_PostPageViewController: UIViewController {
         let scrollView = UIScrollView(frame: .zero)
         scrollView.contentSize = self.view.frame.size
         scrollView.showsVerticalScrollIndicator = false
-//        scrollView.delaysContentTouches = true
-//        scrollView.canCancelContentTouches = true
+        
         return scrollView
     }()
     
@@ -48,7 +48,7 @@ class LS_PostPageViewController: UIViewController {
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.backgroundColor = UIColor(named: kThirdLevelColor)
         collectionView.showsHorizontalScrollIndicator = false
-
+        
         collectionView.register(NoteResourceCollectionViewCell.self, forCellWithReuseIdentifier: "NoteResourceCollectionViewCell")
         collectionView.register(NoteResourceCollectionViewFooter.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter, withReuseIdentifier: "NoteResourceCollectionViewFooter")
         
@@ -59,38 +59,59 @@ class LS_PostPageViewController: UIViewController {
         
         return collectionView
     }()
-    
+    //信息输入区
     lazy var titleTextField: UITextField = {
-       let textField = UITextField(frame: .zero, placeholder: "请填写标题")
-        textField.textColor = .label
-        
+        let textField = UITextField(frame: .zero,placeholder: "输入标题")
+        textField.delegate = self
         return textField
     }()
-    lazy var bodyTextView: UITextView = {
-        let textView = UITextView(frame: .zero)
-        textView.textColor = .label
-        textView.backgroundColor = .clear
-        textView.layer.borderColor = UIColor.systemGray3.cgColor
-        textView.layer.borderWidth = 0.3
-        textView.layer.cornerRadius = 8
-        
+    lazy var textFieldLabel: UILabel = {
+        let label = UILabel(frame: .zero, text: "0/\(kNoteTitleLimit)", font: 15)
+        return label
+    }()
+    lazy var textViewLabel: UILabel = {
+        let label = UILabel(frame: .zero, text: "0/\(kNoteContentLimit)", font: 15)
+        return label
+    }()
+    lazy var contentTextView: UITextView = {
+        let textView = UITextView(frame: .zero, textColor: .label, bgColor: .clear, borderColor: UIColor.systemGray3.cgColor, borderWidth: 0.3, cornerRadius: 8)
+        textView.delegate = self
         return textView
+    }()
+    lazy var textStackView: UIStackView = {
+        let stackView = UIStackView(frame: .zero)
+        let margin = kCustomGlobalMargin / 2
+        stackView.axis = .vertical
+        stackView.distribution = .fill
+        stackView.spacing = margin
+        stackView.backgroundColor = UIColor(named: kThirdLevelColor)
+        stackView.layer.cornerRadius = kGlobalCornerRadius
+        stackView.isLayoutMarginsRelativeArrangement = true
+        stackView.layoutMargins = UIEdgeInsets(top: margin, left: margin, bottom: margin, right: margin)
+        return stackView
     }()
     //存储传入笔记图片数量
     var photoCount: Int { photos.count }
 
-    var notePublishView = UIView(frame: .zero)
+    lazy var notePublishView: UIView = {
+        let view = UIView(frame: .zero)
+        view.backgroundColor = UIColor(named: kSecondLevelColor)
+        return view
+    }()
 
     
     //MARK: 自定义方法
     func setupUI() {
         self.view.addSubview(scrollView)
         self.scrollView.addSubview(notePublishView)
-        notePublishView.backgroundColor = UIColor(named: kSecondLevelColor)
         notePublishView.addSubview(imageResourcesCV)
-        notePublishView.addSubview(titleTextField)
-        notePublishView.addSubview(bodyTextView)
+        notePublishView.addSubview(textStackView)
+        textStackView.addArrangedSubview(titleTextField)
+        textStackView.addArrangedSubview(textFieldLabel)
+        textStackView.addArrangedSubview(contentTextView)
+        textStackView.addArrangedSubview(textViewLabel)
         
+        imageResourcesCV.dragInteractionEnabled = false
         
         //play video
         let playBtn = UIButton(type: .system)
@@ -100,7 +121,7 @@ class LS_PostPageViewController: UIViewController {
         playBtn.layer.cornerRadius = 10
         notePublishView.addSubview(playBtn)
         playBtn.centerXAnchor /==/ notePublishView.centerXAnchor
-        playBtn.centerYAnchor /==/ notePublishView.centerYAnchor
+        playBtn.centerYAnchor /==/ 1.5 * notePublishView.centerYAnchor
 
         
         //
@@ -120,18 +141,16 @@ class LS_PostPageViewController: UIViewController {
         imageResourcesCV.topAnchor /==/ notePublishView.topAnchor + kCustomGlobalMargin
         imageResourcesCV.heightAnchor /==/ 130
 
-        titleTextField.leftAnchor /==/ notePublishView.leftAnchor + kCustomGlobalMargin
-        titleTextField.rightAnchor /==/ notePublishView.rightAnchor - kCustomGlobalMargin
-        titleTextField.topAnchor /==/ imageResourcesCV.bottomAnchor + kCustomGlobalMargin
+        textStackView.leftAnchor == notePublishView.leftAnchor + kCustomGlobalMargin
+        textStackView.rightAnchor == notePublishView.rightAnchor - kCustomGlobalMargin
+        textStackView.topAnchor == imageResourcesCV.bottomAnchor + kCustomGlobalMargin
+        textStackView.heightAnchor == self.view.frame.size.height / 3
 
-        bodyTextView.leftAnchor /==/ notePublishView.leftAnchor + kCustomGlobalMargin
-        bodyTextView.rightAnchor /==/ notePublishView.rightAnchor - kCustomGlobalMargin
-        bodyTextView.topAnchor /==/ titleTextField.bottomAnchor + kCustomGlobalMargin
-        bodyTextView.heightAnchor /==/ 200
-        
 
 
     }
+    
+    
 }
 
 
@@ -174,7 +193,7 @@ extension LS_PostPageViewController: UICollectionViewDelegate {
             playerVC.player = AVPlayer(url: videoURL!)
             playerVC.player?.play()
             self.present(playerVC, animated: true)
-            
+
         }else {
             let vc = ImageBrowserViewController(imageIndex: indexPath.item)
             vc.setImage(photos[indexPath.item]!)
@@ -186,6 +205,55 @@ extension LS_PostPageViewController: UICollectionViewDelegate {
 
 }
 //图片预览代理方法
+extension LS_PostPageViewController: UITextFieldDelegate, UITextViewDelegate {
+//    func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
+//        print(textField.text!)
+//        return true
+//    }
+//    func textFieldDidEndEditing(_ textField: UITextField) {
+//        print(textField.text?.count)
+//    }
+//
+    func textViewDidChange(_ textView: UITextView) {
+        let text = textView.text
+//        let selectRange = textView.markedTextRange
+//        let newText = textView.text(in: selectRange!)!
+//        print(newText.count)
+//        if (newText.count != nil) {
+//            self.titleTextField.placeholder = "\(textView.text.count)/\(kNoteContentLimit)"
+//        }
+//        print("selectrange:",textView.markedTextRange ?? .none)
+//        let selectRange = textView.markedTextRange!
+//        let newText = textView.text(in: selectRange)
+//        print(newText)
+//        if let selectRange = textView.markedTextRange,
+//           ,newText.count == 0{
+//            self.titleTextField.placeholder = "\(textView.text.count)/\(kNoteContentLimit)"
+//            if textView.text.count > kNoteContentLimit {
+//                let str =  textView.text.prefix(kNoteContentLimit)
+//                textView.text = String(str)
+//                //                textView.text.startIndex
+//            }
+//        }else {
+//
+//        }
+//        let selectRange: UITextRange = textView.markedTextRange
+//        let newText = textView.text(in: selectRange)!
+//        if (newText.count != 0) {
+//            self.titleTextField.placeholder = "\(textView.text.count)/200"
+//        }
+    }
+    
+    func textViewDidEndEditing(_ textView: UITextView) {
+//        print(textView.text)
+//        print(textView.text.count)
+        
+    }
+
+    
+
+}
+//图片预览自定义代理方法
 extension LS_PostPageViewController: ImageBrowserDelegate {
     //点击预览窗口导航栏的删除按钮后调用代理方法
     func deleteImage(index: Int) {
@@ -200,9 +268,10 @@ extension LS_PostPageViewController: ImageBrowserDelegate {
 
     }
     
+    
 }
 
-//点击事件
+//MARK: 点击事件
 extension LS_PostPageViewController {
     @objc private func addMore() {
         

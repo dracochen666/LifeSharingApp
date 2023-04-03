@@ -9,7 +9,7 @@ import UIKit
 
 extension UITextField {
     
-    convenience init(frame: CGRect, placeholder: String = "", borderStyle: UITextField.BorderStyle = .roundedRect, isSecureTextEntry: Bool = false ) {
+    convenience init(frame: CGRect,textColor: UIColor = .label, placeholder: String = "", borderStyle: UITextField.BorderStyle = .roundedRect, isSecureTextEntry: Bool = false ) {
         self.init()
         self.backgroundColor = .clear
         self.frame = frame
