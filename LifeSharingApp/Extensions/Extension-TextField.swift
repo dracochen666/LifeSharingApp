@@ -24,6 +24,6 @@ extension UITextField {
         self.placeholder = placeholder
         self.borderStyle = borderStyle
         self.isSecureTextEntry = isSecureTextEntry
-    }
+        }
     
 }

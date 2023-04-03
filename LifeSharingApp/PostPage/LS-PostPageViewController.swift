@@ -67,13 +67,13 @@ class LS_PostPageViewController: UIViewController {
         textField.addTarget(self, action: #selector(textFieldDidchange), for: .editingChanged)
         return textField
     }()
-    lazy var textFieldLabel = UILabel(frame: .zero, text: "0/\(kNoteTitleLimit)", font: 15, textAlignment: .right)
+    lazy var textFieldLabel = UILabel(frame: .zero, text: "\(kNoteTitleLimit)", font: 15, textAlignment: .right)
     lazy var contentTextView: UITextView = {
         let textView = UITextView(frame: .zero, bgColor: .clear, borderColor: UIColor.systemGray3.cgColor, borderWidth: 0.3, cornerRadius: 8)
         textView.delegate = self
         return textView
     }()
-    lazy var textViewLabel: UILabel =  UILabel(frame: .zero, text: "0/\(kNoteContentLimit)", font: 15, textAlignment: .right)
+    lazy var textViewLabel: UILabel =  UILabel(frame: .zero, text: "\(kNoteContentLimit)", font: 15, textAlignment: .right)
     lazy var textStackView: UIStackView = {
         let stackView = UIStackView(frame: .zero)
         let margin = kCustomGlobalMargin
@@ -208,7 +208,6 @@ extension LS_PostPageViewController: UICollectionViewDragDelegate, UICollectionV
     //Drag
       //开始拖拽时
     func collectionView(_ collectionView: UICollectionView, itemsForBeginning session: UIDragSession, at indexPath: IndexPath) -> [UIDragItem] {
-        print("1")
         let photo = photos[indexPath.item]!
         let itemProvider = NSItemProvider(object: photo)
         let dragItem = UIDragItem(itemProvider: itemProvider)
@@ -219,7 +218,6 @@ extension LS_PostPageViewController: UICollectionViewDragDelegate, UICollectionV
     //Drop
       //拖拽期间
     func collectionView(_ collectionView: UICollectionView, dropSessionDidUpdate session: UIDropSession, withDestinationIndexPath destinationIndexPath: IndexPath?) -> UICollectionViewDropProposal {
-        print("2")
         //判断当前CollectionView是否处于正在拖拽状态并且拖拽项仍在该Section中
         if collectionView.hasActiveDrag {
             //return建议：用户操作为移动格子。 可以提高拖拽性能
@@ -230,7 +228,6 @@ extension LS_PostPageViewController: UICollectionViewDragDelegate, UICollectionV
     }
       //拖拽完毕
     func collectionView(_ collectionView: UICollectionView, performDropWith coordinator: UICollectionViewDropCoordinator) {
-        print("3")
         //四个条件：
         //1.判断是否为move操作
         //2.对coordinator解包，获取拖拽项item
@@ -269,13 +266,17 @@ extension LS_PostPageViewController: UITextViewDelegate {
         //markedTextRange标记了当前输入框中临时输入文本（中文输入法拼写状态）
         //markedTextRange为nil时代表当前输入的是英文或中文输入结束状态
         if (textView.markedTextRange == nil) {
-            //判断文本是否超出字数限制，若超出取字数限制大小子串并发出警告
+            //判断文本是否超出字数限制，字数统计改为红色
             if textView.text.count > kNoteContentLimit {
-                textView.text = String(textView.text.prefix(kNoteContentLimit))
-                self.showAlert(title: "正文字数超限！", subtitle: "")
+                self.textViewLabel.text = "\(kNoteContentLimit - textView.text.count)"
+                self.textViewLabel.textColor = .systemRed
+            }else {
+                if textViewLabel.textColor == .systemRed {
+                    textViewLabel.textColor = .systemGray3
+                }
+                //修改计数Label内容
+                self.textViewLabel.text = "\(kNoteContentLimit - textView.text.count)"
             }
-            //修改计数Label内容
-            self.textViewLabel.text = "\(textView.text.count)/\(kNoteContentLimit)"
         }
         
     }
@@ -285,9 +286,7 @@ extension LS_PostPageViewController: UIScrollViewDelegate {
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         self.view.endEditing(false)
     }
-//    func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
-//        if targetContentOffset > 0
-//    }
+
 }
 
 //图片预览自定义代理方法
@@ -304,7 +303,6 @@ extension LS_PostPageViewController: ImageBrowserDelegate {
         }
 
     }
-    
     
 }
 
@@ -358,7 +356,7 @@ extension LS_PostPageViewController {
                 titleTextField.text = String(titleTextField.text!.prefix(kNoteTitleLimit))
                 self.showAlert(title: "标题字数超限！", subtitle: "")
             }
-            self.textFieldLabel.text = "\(titleTextField.text!.count)/\(kNoteTitleLimit)"
+            self.textFieldLabel.text = "\(kNoteTitleLimit - titleTextField.text!.count)"
         }
     }
 }
