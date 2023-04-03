@@ -31,6 +31,7 @@ class LS_PostPageViewController: UIViewController {
         scrollView.contentSize = self.view.frame.size
         scrollView.showsVerticalScrollIndicator = false
         
+        scrollView.delegate = self
         return scrollView
     }()
     
@@ -63,17 +64,16 @@ class LS_PostPageViewController: UIViewController {
     //信息输入区
     lazy var titleTextField: UITextField = {
         let textField = UITextField(frame: .zero,placeholder: "输入标题")
-        textField.delegate = self
         textField.addTarget(self, action: #selector(textFieldDidchange), for: .editingChanged)
         return textField
     }()
     lazy var textFieldLabel = UILabel(frame: .zero, text: "0/\(kNoteTitleLimit)", font: 15, textAlignment: .right)
-    lazy var textViewLabel: UILabel =  UILabel(frame: .zero, text: "0/\(kNoteContentLimit)", font: 15, textAlignment: .right)
     lazy var contentTextView: UITextView = {
-        let textView = UITextView(frame: .zero, textColor: .label, bgColor: .clear, borderColor: UIColor.systemGray3.cgColor, borderWidth: 0.3, cornerRadius: 8)
+        let textView = UITextView(frame: .zero, bgColor: .clear, borderColor: UIColor.systemGray3.cgColor, borderWidth: 0.3, cornerRadius: 8)
         textView.delegate = self
         return textView
     }()
+    lazy var textViewLabel: UILabel =  UILabel(frame: .zero, text: "0/\(kNoteContentLimit)", font: 15, textAlignment: .right)
     lazy var textStackView: UIStackView = {
         let stackView = UIStackView(frame: .zero)
         let margin = kCustomGlobalMargin
@@ -249,13 +249,21 @@ extension LS_PostPageViewController: UICollectionViewDragDelegate, UICollectionV
         }
     }
 }
-extension LS_PostPageViewController: UITextFieldDelegate {
-//    func textFieldDidEndEditing(_ textField: UITextField) {
-//        <#code#>
-//    }
-}
+//TextView代理方法
 extension LS_PostPageViewController: UITextViewDelegate {
 
+    func textViewDidBeginEditing(_ textView: UITextView) {
+        if textView.text == "输入正文" {
+            textView.text = ""
+            textView.textColor = .label
+        }
+    }
+    func textViewDidEndEditing(_ textView: UITextView) {
+        if textView.text == "" {
+            textView.text = "输入正文"
+            textView.textColor = .placeholderText
+        }
+    }
     func textViewDidChange(_ textView: UITextView) {
 
         //markedTextRange标记了当前输入框中临时输入文本（中文输入法拼写状态）
@@ -271,10 +279,17 @@ extension LS_PostPageViewController: UITextViewDelegate {
         }
         
     }
-    
-    
 
 }
+extension LS_PostPageViewController: UIScrollViewDelegate {
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        self.view.endEditing(false)
+    }
+//    func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
+//        if targetContentOffset > 0
+//    }
+}
+
 //图片预览自定义代理方法
 extension LS_PostPageViewController: ImageBrowserDelegate {
     //点击预览窗口导航栏的删除按钮后调用代理方法

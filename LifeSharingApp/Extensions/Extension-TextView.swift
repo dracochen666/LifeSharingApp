@@ -10,9 +10,10 @@ import UIKit
 extension UITextView {
     
     convenience init(frame: CGRect,
-                     textColor: UIColor = .label,
+                     textColor: UIColor = .placeholderText,
                      bgColor: UIColor = .clear,
                      font: CGFloat = 14,
+                     placeholder: String = "输入正文",
                      borderColor: CGColor = UIColor.systemGray3.cgColor,
                      borderWidth: CGFloat = 0.3,
                      cornerRadius: CGFloat = 8) {
@@ -20,6 +21,7 @@ extension UITextView {
         self.frame = frame
         self.textColor = textColor
         self.backgroundColor = bgColor
+        self.text = placeholder
         self.font = .systemFont(ofSize: font)
         self.layer.borderColor = borderColor
         self.layer.borderWidth = borderWidth

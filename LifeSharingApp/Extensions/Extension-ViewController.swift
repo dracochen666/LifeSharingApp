@@ -11,7 +11,8 @@ import Foundation
 extension UIViewController {
     
     //提示
-    func showAlert(title: String, subtitle: String) {
+    func showAlert(title: String,
+                   subtitle: String) {
         let hud = MBProgressHUD.showAdded(to: view, animated: true)
         hud.mode = .text
         hud.label.text = title
