@@ -19,7 +19,6 @@ class LS_PostPageViewController: UIViewController {
         view.backgroundColor = .systemPink
         setupUI()
         let tap = UITapGestureRecognizer(target: self, action: #selector(endEdit))
-        //        tap.delaysTouchesBegan = false
 //        tap.delaysTouchesEnded = false
         tap.cancelsTouchesInView = false
         self.notePublishView.addGestureRecognizer(tap)
@@ -56,6 +55,8 @@ class LS_PostPageViewController: UIViewController {
         
         collectionView.delegate = self
         collectionView.dataSource = self
+        collectionView.dragDelegate = self
+        collectionView.dropDelegate = self
         
         return collectionView
     }()
@@ -63,16 +64,11 @@ class LS_PostPageViewController: UIViewController {
     lazy var titleTextField: UITextField = {
         let textField = UITextField(frame: .zero,placeholder: "输入标题")
         textField.delegate = self
+        textField.addTarget(self, action: #selector(textFieldDidchange), for: .editingChanged)
         return textField
     }()
-    lazy var textFieldLabel: UILabel = {
-        let label = UILabel(frame: .zero, text: "0/\(kNoteTitleLimit)", font: 15)
-        return label
-    }()
-    lazy var textViewLabel: UILabel = {
-        let label = UILabel(frame: .zero, text: "0/\(kNoteContentLimit)", font: 15)
-        return label
-    }()
+    lazy var textFieldLabel = UILabel(frame: .zero, text: "0/\(kNoteTitleLimit)", font: 15, textAlignment: .right)
+    lazy var textViewLabel: UILabel =  UILabel(frame: .zero, text: "0/\(kNoteContentLimit)", font: 15, textAlignment: .right)
     lazy var contentTextView: UITextView = {
         let textView = UITextView(frame: .zero, textColor: .label, bgColor: .clear, borderColor: UIColor.systemGray3.cgColor, borderWidth: 0.3, cornerRadius: 8)
         textView.delegate = self
@@ -80,14 +76,14 @@ class LS_PostPageViewController: UIViewController {
     }()
     lazy var textStackView: UIStackView = {
         let stackView = UIStackView(frame: .zero)
-        let margin = kCustomGlobalMargin / 2
+        let margin = kCustomGlobalMargin
         stackView.axis = .vertical
         stackView.distribution = .fill
-        stackView.spacing = margin
+        stackView.spacing = margin / 3
         stackView.backgroundColor = UIColor(named: kThirdLevelColor)
         stackView.layer.cornerRadius = kGlobalCornerRadius
         stackView.isLayoutMarginsRelativeArrangement = true
-        stackView.layoutMargins = UIEdgeInsets(top: margin, left: margin, bottom: margin, right: margin)
+        stackView.layoutMargins = UIEdgeInsets(top: margin/2, left: margin/2, bottom: margin/2, right: margin/2)
         return stackView
     }()
     //存储传入笔记图片数量
@@ -141,10 +137,13 @@ class LS_PostPageViewController: UIViewController {
         imageResourcesCV.topAnchor /==/ notePublishView.topAnchor + kCustomGlobalMargin
         imageResourcesCV.heightAnchor /==/ 130
 
+
+        
         textStackView.leftAnchor == notePublishView.leftAnchor + kCustomGlobalMargin
         textStackView.rightAnchor == notePublishView.rightAnchor - kCustomGlobalMargin
         textStackView.topAnchor == imageResourcesCV.bottomAnchor + kCustomGlobalMargin
         textStackView.heightAnchor == self.view.frame.size.height / 3
+
 
 
 
@@ -204,52 +203,75 @@ extension LS_PostPageViewController: UICollectionViewDelegate {
     }
 
 }
-//图片预览代理方法
-extension LS_PostPageViewController: UITextFieldDelegate, UITextViewDelegate {
-//    func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
-//        print(textField.text!)
-//        return true
-//    }
-//    func textFieldDidEndEditing(_ textField: UITextField) {
-//        print(textField.text?.count)
-//    }
-//
-    func textViewDidChange(_ textView: UITextView) {
-        let text = textView.text
-//        let selectRange = textView.markedTextRange
-//        let newText = textView.text(in: selectRange!)!
-//        print(newText.count)
-//        if (newText.count != nil) {
-//            self.titleTextField.placeholder = "\(textView.text.count)/\(kNoteContentLimit)"
-//        }
-//        print("selectrange:",textView.markedTextRange ?? .none)
-//        let selectRange = textView.markedTextRange!
-//        let newText = textView.text(in: selectRange)
-//        print(newText)
-//        if let selectRange = textView.markedTextRange,
-//           ,newText.count == 0{
-//            self.titleTextField.placeholder = "\(textView.text.count)/\(kNoteContentLimit)"
-//            if textView.text.count > kNoteContentLimit {
-//                let str =  textView.text.prefix(kNoteContentLimit)
-//                textView.text = String(str)
-//                //                textView.text.startIndex
-//            }
-//        }else {
-//
-//        }
-//        let selectRange: UITextRange = textView.markedTextRange
-//        let newText = textView.text(in: selectRange)!
-//        if (newText.count != 0) {
-//            self.titleTextField.placeholder = "\(textView.text.count)/200"
-//        }
+//CollectionView拖拽代理方法
+extension LS_PostPageViewController: UICollectionViewDragDelegate, UICollectionViewDropDelegate {
+    //Drag
+      //开始拖拽时
+    func collectionView(_ collectionView: UICollectionView, itemsForBeginning session: UIDragSession, at indexPath: IndexPath) -> [UIDragItem] {
+        print("1")
+        let photo = photos[indexPath.item]!
+        let itemProvider = NSItemProvider(object: photo)
+        let dragItem = UIDragItem(itemProvider: itemProvider)
+        //将拖拽Item存入dragItem中，在拖拽完毕后可通过coordinator获取。
+        dragItem.localObject = photo
+        return [dragItem]
     }
-    
-    func textViewDidEndEditing(_ textView: UITextView) {
-//        print(textView.text)
-//        print(textView.text.count)
+    //Drop
+      //拖拽期间
+    func collectionView(_ collectionView: UICollectionView, dropSessionDidUpdate session: UIDropSession, withDestinationIndexPath destinationIndexPath: IndexPath?) -> UICollectionViewDropProposal {
+        print("2")
+        //判断当前CollectionView是否处于正在拖拽状态并且拖拽项仍在该Section中
+        if collectionView.hasActiveDrag {
+            //return建议：用户操作为移动格子。 可以提高拖拽性能
+            return UICollectionViewDropProposal(operation: .move,intent: .insertAtDestinationIndexPath)
+        }
+        return UICollectionViewDropProposal(operation: .forbidden)
         
     }
+      //拖拽完毕
+    func collectionView(_ collectionView: UICollectionView, performDropWith coordinator: UICollectionViewDropCoordinator) {
+        print("3")
+        //四个条件：
+        //1.判断是否为move操作
+        //2.对coordinator解包，获取拖拽项item
+        //3.根据item获取初始位置
+        //4.通过coordinator获取拖拽终点
+        if coordinator.proposal.operation == .move,
+            let item = coordinator.items.first,
+            let source = item.sourceIndexPath,
+            let destination = coordinator.destinationIndexPath{
+            collectionView.performBatchUpdates {
+                photos.remove(at: source.item)
+                photos.insert(item.dragItem.localObject as! UIImage, at: destination.item)
+                collectionView.moveItem(at: source, to: destination)
+            }
+            coordinator.drop(item.dragItem, toItemAt: destination)
+        }
+    }
+}
+extension LS_PostPageViewController: UITextFieldDelegate {
+//    func textFieldDidEndEditing(_ textField: UITextField) {
+//        <#code#>
+//    }
+}
+extension LS_PostPageViewController: UITextViewDelegate {
 
+    func textViewDidChange(_ textView: UITextView) {
+
+        //markedTextRange标记了当前输入框中临时输入文本（中文输入法拼写状态）
+        //markedTextRange为nil时代表当前输入的是英文或中文输入结束状态
+        if (textView.markedTextRange == nil) {
+            //判断文本是否超出字数限制，若超出取字数限制大小子串并发出警告
+            if textView.text.count > kNoteContentLimit {
+                textView.text = String(textView.text.prefix(kNoteContentLimit))
+                self.showAlert(title: "正文字数超限！", subtitle: "")
+            }
+            //修改计数Label内容
+            self.textViewLabel.text = "\(textView.text.count)/\(kNoteContentLimit)"
+        }
+        
+    }
+    
     
 
 }
@@ -312,5 +334,16 @@ extension LS_PostPageViewController {
         playerVC.player?.play()
         self.present(playerVC, animated: true)
         
+    }
+    
+    //TextField输入变化
+    @objc func textFieldDidchange() {
+        if titleTextField.markedTextRange == nil {
+            if titleTextField.text!.count > kNoteTitleLimit {
+                titleTextField.text = String(titleTextField.text!.prefix(kNoteTitleLimit))
+                self.showAlert(title: "标题字数超限！", subtitle: "")
+            }
+            self.textFieldLabel.text = "\(titleTextField.text!.count)/\(kNoteTitleLimit)"
+        }
     }
 }

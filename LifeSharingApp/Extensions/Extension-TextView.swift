@@ -12,6 +12,7 @@ extension UITextView {
     convenience init(frame: CGRect,
                      textColor: UIColor = .label,
                      bgColor: UIColor = .clear,
+                     font: CGFloat = 14,
                      borderColor: CGColor = UIColor.systemGray3.cgColor,
                      borderWidth: CGFloat = 0.3,
                      cornerRadius: CGFloat = 8) {
@@ -19,6 +20,7 @@ extension UITextView {
         self.frame = frame
         self.textColor = textColor
         self.backgroundColor = bgColor
+        self.font = .systemFont(ofSize: font)
         self.layer.borderColor = borderColor
         self.layer.borderWidth = borderWidth
         self.layer.cornerRadius = cornerRadius

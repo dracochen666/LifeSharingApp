@@ -28,6 +28,6 @@ let kPickerCameraZoom: CGFloat  = 5
 
 //MARK: 笔记页面
 //标题字数限制
-let kNoteTitleLimit = 20
+let kNoteTitleLimit = 15
 //正文字数限制
-let kNoteContentLimit = 10
+let kNoteContentLimit = 200
