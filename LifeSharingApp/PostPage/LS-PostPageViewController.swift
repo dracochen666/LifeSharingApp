@@ -39,6 +39,9 @@ class LS_PostPageViewController: UIViewController {
     var photos = [UIImage(named: "image0"), UIImage(named: "image1"), UIImage(named: "image2"), UIImage(named: "image3"), UIImage(named: "image4")]
     var videoURL: URL?
     var isVideo: Bool { videoURL != nil }
+    var currentContentTextCount = 0
+    var isContentTextLimitExceeded: BooleanLiteralType { currentContentTextCount >= kNoteContentLimit }
+    
     lazy var imageResourcesCV: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
@@ -75,15 +78,35 @@ class LS_PostPageViewController: UIViewController {
     }()
     lazy var textViewLabel: UILabel =  UILabel(frame: .zero, text: "\(kNoteContentLimit)", font: 15, textAlignment: .right)
     lazy var textStackView: UIStackView = {
-        let stackView = UIStackView(frame: .zero)
-        let margin = kCustomGlobalMargin
-        stackView.axis = .vertical
-        stackView.distribution = .fill
-        stackView.spacing = margin / 3
-        stackView.backgroundColor = UIColor(named: kThirdLevelColor)
-        stackView.layer.cornerRadius = kGlobalCornerRadius
-        stackView.isLayoutMarginsRelativeArrangement = true
-        stackView.layoutMargins = UIEdgeInsets(top: margin/2, left: margin/2, bottom: margin/2, right: margin/2)
+        let stackView = UIStackView(axis: .vertical, distribution: .fill, spacing: kCustomGlobalMargin/3, bgColor: UIColor(named: kThirdLevelColor)!)
+        return stackView
+    }()
+    //话题选择区
+    lazy var topicView: UIView = {
+        let view = UIView(frame: .zero)
+        view.layer.cornerRadius = kGlobalCornerRadius
+        view.backgroundColor = UIColor(named: kThirdLevelColor)
+        return view
+    }()
+    lazy var iconTextView: IconTextView = {
+        let image = UIImage(systemName: "number")!
+        let view = IconTextView(image: image, text: "话题")
+        return view
+    }()
+    //用户定位区
+    //发布笔记区
+    lazy var saveDraftButton: UIButton = {
+        let button = UIButton(frame: .zero, title: "存草稿", bgColor: .secondarySystemBackground, cornerRadius: 10)
+        
+        return button
+    }()
+    lazy var publishNoteButton: UIButton = {
+        let button = UIButton(frame: .zero, title: "发布笔记", bgColor: .systemYellow, cornerRadius: kGlobalCornerRadius)
+        
+        return button
+    }()
+    lazy var publishNoteStackView: UIStackView = {
+        let stackView = UIStackView(axis: .horizontal, distribution: .fill, spacing: 20, bgColor: .clear, cornerRadius: kGlobalCornerRadius)
         return stackView
     }()
     //存储传入笔记图片数量
@@ -101,52 +124,77 @@ class LS_PostPageViewController: UIViewController {
         self.view.addSubview(scrollView)
         self.scrollView.addSubview(notePublishView)
         notePublishView.addSubview(imageResourcesCV)
+        //输入框区
         notePublishView.addSubview(textStackView)
         textStackView.addArrangedSubview(titleTextField)
         textStackView.addArrangedSubview(textFieldLabel)
         textStackView.addArrangedSubview(contentTextView)
         textStackView.addArrangedSubview(textViewLabel)
-        
-        imageResourcesCV.dragInteractionEnabled = true
+        //话题区
+        notePublishView.addSubview(topicView)
+
+        topicView.addSubview(iconTextView)
+        //定位区
+        //发布笔记区
+        self.view.addSubview(publishNoteStackView)
+        publishNoteStackView.addArrangedSubview(saveDraftButton)
+        publishNoteStackView.addArrangedSubview(publishNoteButton)
         
         //play video
         let playBtn = UIButton(type: .system)
-        playBtn.backgroundColor = .label
-        playBtn.setTitle("PLAY", for: .normal)
+        playBtn.backgroundColor = .purple
+        playBtn.setTitle("weird button", for: .normal)
         playBtn.addTarget(self, action: #selector(playVideo), for: .touchUpInside)
         playBtn.layer.cornerRadius = 10
         notePublishView.addSubview(playBtn)
-        playBtn.centerXAnchor /==/ notePublishView.centerXAnchor
-        playBtn.centerYAnchor /==/ 1.5 * notePublishView.centerYAnchor
+        playBtn.centerXAnchor == 0.2 * notePublishView.centerXAnchor
+        playBtn.centerYAnchor == 1.6 * notePublishView.centerYAnchor
 
         
-        //
+        //MARK: 控件约束
         
-        scrollView.leftAnchor /==/ self.view.leftAnchor
-        scrollView.rightAnchor /==/ self.view.rightAnchor
-        scrollView.topAnchor /==/ self.view.topAnchor + 50
-        scrollView.bottomAnchor /==/ self.view.bottomAnchor
+        scrollView.leftAnchor == self.view.leftAnchor
+        scrollView.rightAnchor == self.view.rightAnchor
+        scrollView.topAnchor == self.view.topAnchor + 50
+        scrollView.bottomAnchor == self.view.bottomAnchor
         
-        notePublishView.centerXAnchor /==/ scrollView.centerXAnchor
-        notePublishView.centerYAnchor /==/ scrollView.centerYAnchor
-        notePublishView.widthAnchor /==/ scrollView.widthAnchor
-        notePublishView.heightAnchor /==/ scrollView.heightAnchor
-        
-        imageResourcesCV.leftAnchor /==/ notePublishView.leftAnchor + kCustomGlobalMargin
-        imageResourcesCV.rightAnchor /==/ notePublishView.rightAnchor - kCustomGlobalMargin
-        imageResourcesCV.topAnchor /==/ notePublishView.topAnchor + kCustomGlobalMargin
-        imageResourcesCV.heightAnchor /==/ 130
+        notePublishView.centerAnchors == scrollView.centerAnchors
+        notePublishView.sizeAnchors == scrollView.sizeAnchors
+        //笔记图片
+        imageResourcesCV.leftAnchor == notePublishView.leftAnchor + kCustomGlobalMargin
+        imageResourcesCV.rightAnchor == notePublishView.rightAnchor - kCustomGlobalMargin
+        imageResourcesCV.topAnchor == notePublishView.topAnchor + kCustomGlobalMargin
+        imageResourcesCV.heightAnchor == 130
 
-
-        
+ 
+        //输入区框约束
         textStackView.leftAnchor == notePublishView.leftAnchor + kCustomGlobalMargin
         textStackView.rightAnchor == notePublishView.rightAnchor - kCustomGlobalMargin
         textStackView.topAnchor == imageResourcesCV.bottomAnchor + kCustomGlobalMargin
         textStackView.heightAnchor == self.view.frame.size.height / 3
 
+        //话题区约束
+        topicView.leftAnchor == notePublishView.leftAnchor + kCustomGlobalMargin
+        topicView.rightAnchor == notePublishView.rightAnchor - kCustomGlobalMargin
+        topicView.topAnchor == textStackView.bottomAnchor + kCustomGlobalMargin
+        topicView.heightAnchor == self.view.frame.size.height / 25
+        
+        iconTextView.leftAnchor == topicView.leftAnchor + kCustomGlobalMargin
+        iconTextView.widthAnchor == 60
+        iconTextView.topAnchor == topicView.topAnchor + kCustomGlobalMargin
+        iconTextView.bottomAnchor == topicView.bottomAnchor - kCustomGlobalMargin
+
+        
+
+        //发布笔记区约束
+        publishNoteStackView.leftAnchor == self.view.safeAreaLayoutGuide.leftAnchor
+        publishNoteStackView.rightAnchor == self.view.safeAreaLayoutGuide.rightAnchor
+        publishNoteStackView.bottomAnchor == self.view.safeAreaLayoutGuide.bottomAnchor
+        publishNoteStackView.heightAnchor == self.view.frame.size.height / 20
 
 
-
+        
+        
     }
     
     
@@ -260,6 +308,7 @@ extension LS_PostPageViewController: UITextViewDelegate {
             textView.text = "输入正文"
             textView.textColor = .placeholderText
         }
+        self.currentContentTextCount = textView.text.count
     }
     func textViewDidChange(_ textView: UITextView) {
 

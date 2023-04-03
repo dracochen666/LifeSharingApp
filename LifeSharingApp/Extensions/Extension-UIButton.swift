@@ -10,10 +10,11 @@ import UIKit
 extension UIButton {
     
     convenience init(frame: CGRect = .zero,
+                     buttonType: ButtonType = .roundedRect,
                      title: String = "按钮",
                      bgColor: UIColor = .systemBlue,
                      cornerRadius: CGFloat) {
-        self.init()
+        self.init(type: buttonType)
         self.frame = frame
         self.setTitle(title, for: .normal)
         self.backgroundColor = bgColor

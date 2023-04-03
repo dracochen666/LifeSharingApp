@@ -31,3 +31,7 @@ let kPickerCameraZoom: CGFloat  = 5
 let kNoteTitleLimit = 15
 //正文字数限制
 let kNoteContentLimit = 10
+
+//MARK: 文字图标大小
+let kIconTextViewWidth: CGFloat = 60
+let kIconTextViewHeight: CGFloat = 30
