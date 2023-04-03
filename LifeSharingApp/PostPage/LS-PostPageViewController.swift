@@ -107,7 +107,7 @@ class LS_PostPageViewController: UIViewController {
         textStackView.addArrangedSubview(contentTextView)
         textStackView.addArrangedSubview(textViewLabel)
         
-        imageResourcesCV.dragInteractionEnabled = false
+        imageResourcesCV.dragInteractionEnabled = true
         
         //play video
         let playBtn = UIButton(type: .system)
