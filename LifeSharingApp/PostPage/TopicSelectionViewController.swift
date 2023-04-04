@@ -10,16 +10,20 @@ import Anchorage
 
 class TopicSelectionViewController: UIViewController {
 
-//    convenience init(){
-//        self.init()
-//    }
+    convenience init(isSearchViewVisable: Bool){
+        self.init()
+        self.isSearchViewVisable = isSearchViewVisable
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
     }
   
-    var pages: [UIView] = []
+    var isSearchViewVisable: Bool? = false
+    //服务端传入(话题分类)tabs
     var tabs: [TabbedItem] = []
+    //根据服务端传入的tabs数量生成pages，每个page中显示该话题分类的具体话题
+    var pages: [UIView] = []
     lazy var searchTextField: UITextField = {
         let searchView = UIView()
         let iv = UIImageView(image: UIImage(systemName: "magnifyingglass"))
@@ -36,6 +40,7 @@ class TopicSelectionViewController: UIViewController {
     }()
 
     func setupUI() {
+        //固定数据用于测试
         let tabItems = [TabbedItem(title: "美食"),
                         TabbedItem(title: "旅游"),
                         TabbedItem(title: "风景"),
@@ -43,7 +48,6 @@ class TopicSelectionViewController: UIViewController {
                         TabbedItem(title: "汽车")]
 
         let view1 = UIView()
-        view1.layer.cornerRadius = kGlobalCornerRadius
         let view2 = UIView()
         let view3 = UIView()
         let view4 = UIView()
@@ -52,16 +56,22 @@ class TopicSelectionViewController: UIViewController {
         viewPager.pagedView.pages = [view1, view2, view3, view4, view5]
         viewPager.tabbedView.tabs = tabItems
         self.view.backgroundColor = UIColor(named: kSecondLevelColor)
-        self.view.addSubview(searchTextField)
-        self.view.addSubview(viewPager)
-        
-        //约束
-        searchTextField.horizontalAnchors == self.view.horizontalAnchors + 20
-        searchTextField.topAnchor == self.view.topAnchor + kCustomGlobalMargin
-        searchTextField.heightAnchor == 40
-        
-        viewPager.horizontalAnchors == self.view.horizontalAnchors + 20
-        viewPager.topAnchor == searchTextField.bottomAnchor + kCustomGlobalMargin
-        viewPager.bottomAnchor == self.view.bottomAnchor
+        if isSearchViewVisable! {
+            self.view.addSubview(searchTextField)
+            self.view.addSubview(viewPager)
+            searchTextField.horizontalAnchors == self.view.horizontalAnchors + 20
+            searchTextField.topAnchor == self.view.topAnchor + kCustomGlobalMargin
+            searchTextField.heightAnchor == 40
+            viewPager.horizontalAnchors == self.view.horizontalAnchors + 20
+            viewPager.topAnchor == searchTextField.bottomAnchor + kCustomGlobalMargin
+            viewPager.bottomAnchor == self.view.bottomAnchor
+        }else{
+            self.view.addSubview(viewPager)
+            viewPager.horizontalAnchors == self.view.horizontalAnchors + 20
+            viewPager.topAnchor == self.view.topAnchor + kCustomGlobalMargin
+            viewPager.bottomAnchor == self.view.bottomAnchor
+        }
+
+
     }
 }

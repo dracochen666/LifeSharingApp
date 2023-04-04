@@ -109,7 +109,6 @@ class LS_PostPageViewController: UIViewController {
     }()
     lazy var publishNoteButton: UIButton = {
         let button = UIButton(frame: .zero, title: "发布笔记", bgColor: .systemYellow, cornerRadius: kGlobalCornerRadius)
-        
         return button
     }()
     lazy var publishNoteStackView: UIStackView = {
@@ -420,7 +419,7 @@ extension LS_PostPageViewController {
     }
     
     @objc func topicSelect() {
-        let topicSelectionVC = TopicSelectionViewController()
+        let topicSelectionVC = TopicSelectionViewController(isSearchViewVisable: true)
         self.present(topicSelectionVC, animated: true)
     }
 }
