@@ -26,4 +26,17 @@ extension UITextField {
         self.isSecureTextEntry = isSecureTextEntry
         }
     
+    convenience init(frame: CGRect, leftView: UIView,
+                     textColor: UIColor = .label,
+                     placeholder: String = "",
+                     bgColor: UIColor = .clear,
+                     font: CGFloat = 16) {
+        self.init(frame: frame, textColor: textColor, bgColor: bgColor, font: font, placeholder: placeholder)
+        
+        self.leftView = leftView
+        self.leftViewMode = .always
+        self.layer.cornerRadius = 20
+        self.borderStyle = .none
+    }
+    
 }
