@@ -22,7 +22,7 @@ class PagedView: UIView, UICollectionViewDelegateFlowLayout , UICollectionViewDa
 //        self.setupUI()
 //    }
 //
-    init(pages: [WaterFallView] = []) {//增加pages变量的初始化方法
+    init(pages: [UIView] = []) {//增加pages变量的初始化方法
         self.pages = pages
         super.init(frame: .zero)
         self.setupUI()
@@ -53,7 +53,7 @@ class PagedView: UIView, UICollectionViewDelegateFlowLayout , UICollectionViewDa
         return collectionView
     }()
     //页面数组pages用于存储页面。根据pages的count和item分别设置collectionview的页数和页面内容。
-    public var pages: [WaterFallView] {
+    public var pages: [UIView] {
         didSet {
             //当赋值后执行collectionView.reloadData()以再次调用代理方法刷新数据
             self.collectionView.reloadData()
@@ -85,7 +85,7 @@ class PagedView: UIView, UICollectionViewDelegateFlowLayout , UICollectionViewDa
     //返回具体显示的Cell
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "PageCollectionViewCell", for: indexPath) as! PageCollectionViewCell
-        cell.view = pages[indexPath.item]
+        cell.view = pages[indexPath.item] as? WaterFallView
         return cell
     }
     //调用时机：用户完成页面滑动后。通知self的代理（调用代理方法didMoveToPage(Index)）

@@ -86,11 +86,18 @@ class LS_PostPageViewController: UIViewController {
         let view = UIView(frame: .zero)
         view.layer.cornerRadius = kGlobalCornerRadius
         view.backgroundColor = UIColor(named: kThirdLevelColor)
+        let tap = UITapGestureRecognizer(target: self, action: #selector(topicSelect))
+        view.addGestureRecognizer(tap)
         return view
     }()
-    lazy var iconTextView: IconTextView = {
+    lazy var topicSelectIconText: IconTextView = {
         let image = UIImage(systemName: "number")!
-        let view = IconTextView(image: image, text: "话题")
+        let view = IconTextView(image: image, text: "话题", direction: .iconText)
+        return view
+    }()
+    lazy var topicGuideIconText: IconTextView = {
+        let image = UIImage(systemName: "chevron.right")!
+        let view = IconTextView(image: image, text: "点击选择", direction: .textIcon)
         return view
     }()
     //用户定位区
@@ -132,8 +139,8 @@ class LS_PostPageViewController: UIViewController {
         textStackView.addArrangedSubview(textViewLabel)
         //话题区
         notePublishView.addSubview(topicView)
-
-        topicView.addSubview(iconTextView)
+        topicView.addSubview(topicSelectIconText)
+        topicView.addSubview(topicGuideIconText)
         //定位区
         //发布笔记区
         self.view.addSubview(publishNoteStackView)
@@ -179,12 +186,15 @@ class LS_PostPageViewController: UIViewController {
         topicView.topAnchor == textStackView.bottomAnchor + kCustomGlobalMargin
         topicView.heightAnchor == self.view.frame.size.height / 25
         
-        iconTextView.leftAnchor == topicView.leftAnchor + kCustomGlobalMargin
-        iconTextView.widthAnchor == 60
-        iconTextView.topAnchor == topicView.topAnchor + kCustomGlobalMargin
-        iconTextView.bottomAnchor == topicView.bottomAnchor - kCustomGlobalMargin
+        topicSelectIconText.leftAnchor == topicView.leftAnchor + kCustomGlobalMargin
+        topicSelectIconText.widthAnchor == 60
+        topicSelectIconText.topAnchor == topicView.topAnchor + kCustomGlobalMargin
+        topicSelectIconText.bottomAnchor == topicView.bottomAnchor - kCustomGlobalMargin
 
-        
+        topicGuideIconText.rightAnchor == topicView.rightAnchor - kCustomGlobalMargin
+        topicGuideIconText.widthAnchor == 100
+        topicGuideIconText.topAnchor == topicView.topAnchor + kCustomGlobalMargin
+        topicGuideIconText.bottomAnchor == topicView.bottomAnchor - kCustomGlobalMargin
 
         //发布笔记区约束
         publishNoteStackView.leftAnchor == self.view.safeAreaLayoutGuide.leftAnchor
@@ -407,5 +417,26 @@ extension LS_PostPageViewController {
             }
             self.textFieldLabel.text = "\(kNoteTitleLimit - titleTextField.text!.count)"
         }
+    }
+    
+    @objc func topicSelect() {
+        let vc = ViewController()
+        let vp = ViewPager(sizeConfiguration: .fillEqually(height: 50))
+//        let tabItems = [TabbedItem(title: "美食"),
+//                        TabbedItem(title: "旅游"),
+//                        TabbedItem(title: "风景"),
+//                        TabbedItem(title: "摄影"),
+//                        TabbedItem(title: "汽车")]
+        let tabItems = [TabbedItem(title: "美食"),
+                        TabbedItem(title: "旅游"),
+                        TabbedItem(title: "风景"),]
+        let view1 = UIView()
+        let view2 = UIView()
+        let view3 = UIView()
+        vp.pagedView.pages = [view1,view2,view3]
+        vp.tabbedView.tabs = tabItems
+        vc.view.addSubview(vp)
+        vp.edgeAnchors == vc.edgeAnchors
+        self.present(vc, animated: true)
     }
 }
