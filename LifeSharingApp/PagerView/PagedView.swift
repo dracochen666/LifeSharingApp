@@ -25,6 +25,7 @@ class PagedView: UIView, UICollectionViewDelegateFlowLayout , UICollectionViewDa
     init(pages: [UIView] = []) {//增加pages变量的初始化方法
         self.pages = pages
         super.init(frame: .zero)
+//        self.backgroundColor = .clear
         self.setupUI()
     }
     
@@ -34,7 +35,7 @@ class PagedView: UIView, UICollectionViewDelegateFlowLayout , UICollectionViewDa
     
     //MARK: 变量区
     weak var delegate: PagedViewDelegate?
-    private lazy var collectionView: UICollectionView = {//使用lazy声明闭包可以避免循环引用以便在闭包内使用self。原因：lazy修饰的变量在self初始化之后才有可能被初始化，这样就不会出现self初始化过程中,自身内部闭包中又调用self本身。
+    lazy var collectionView: UICollectionView = {//使用lazy声明闭包可以避免循环引用以便在闭包内使用self。原因：lazy修饰的变量在self初始化之后才有可能被初始化，这样就不会出现self初始化过程中,自身内部闭包中又调用self本身。
         //初始化collectionview
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
@@ -44,6 +45,8 @@ class PagedView: UIView, UICollectionViewDelegateFlowLayout , UICollectionViewDa
         collectionView.isPagingEnabled = true
         collectionView.bounces = false
         collectionView.translatesAutoresizingMaskIntoConstraints =  false
+        collectionView.contentInsetAdjustmentBehavior = .never
+        collectionView.layer.cornerRadius = kGlobalCornerRadius
 
         collectionView.delegate = self
         collectionView.dataSource = self
@@ -65,9 +68,9 @@ class PagedView: UIView, UICollectionViewDelegateFlowLayout , UICollectionViewDa
     func setupUI(){
         
         self.addSubview(collectionView)
-        collectionView.backgroundColor = .white
+//        collectionView.backgroundColor = .clear
         collectionView.widthAnchor /==/ self.widthAnchor
-        collectionView.heightAnchor /==/ self.heightAnchor
+        collectionView.heightAnchor /==/ self.heightAnchor 
         collectionView.centerXAnchor /==/ self.centerXAnchor
         collectionView.centerYAnchor /==/ self.centerYAnchor
     }
@@ -85,7 +88,7 @@ class PagedView: UIView, UICollectionViewDelegateFlowLayout , UICollectionViewDa
     //返回具体显示的Cell
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "PageCollectionViewCell", for: indexPath) as! PageCollectionViewCell
-        cell.view = pages[indexPath.item] as? WaterFallView
+        cell.view = pages[indexPath.item]
         return cell
     }
     //调用时机：用户完成页面滑动后。通知self的代理（调用代理方法didMoveToPage(Index)）

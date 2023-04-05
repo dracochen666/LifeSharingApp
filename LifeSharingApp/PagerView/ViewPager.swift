@@ -38,23 +38,15 @@ class ViewPager: UIView {
         self.addSubview(tabbedView)
         self.addSubview(pagedView)
         
-        let tabbedViewconstraints = Anchorage.batch(active: false) {
-            tabbedView.leftAnchor /==/ self.leftAnchor
-            tabbedView.rightAnchor /==/ self.rightAnchor
-            tabbedView.topAnchor /==/ self.topAnchor
-            tabbedView.heightAnchor /==/ self.sizeConfiguration.height
-
-        }
-        let pagedViewconstraints = Anchorage.batch(active: false) {
-            pagedView.leftAnchor /==/ self.leftAnchor
-            pagedView.rightAnchor /==/ self.rightAnchor
-            pagedView.bottomAnchor /==/ self.bottomAnchor
-            pagedView.topAnchor /==/ self.tabbedView.bottomAnchor
-
-        }
+        tabbedView.leftAnchor /==/ self.leftAnchor
+        tabbedView.rightAnchor /==/ self.rightAnchor
+        tabbedView.topAnchor /==/ self.topAnchor
+        tabbedView.heightAnchor /==/ self.sizeConfiguration.height
         
-        NSLayoutConstraint.activate(tabbedViewconstraints)
-        NSLayoutConstraint.activate(pagedViewconstraints)
+        pagedView.leftAnchor /==/ self.leftAnchor
+        pagedView.rightAnchor /==/ self.rightAnchor
+        pagedView.bottomAnchor /==/ self.bottomAnchor
+        pagedView.topAnchor /==/ self.tabbedView.bottomAnchor + 10
 
     }
     

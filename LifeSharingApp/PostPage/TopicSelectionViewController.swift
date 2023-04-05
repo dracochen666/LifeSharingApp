@@ -16,6 +16,10 @@ class TopicSelectionViewController: UIViewController {
     }
     override func viewDidLoad() {
         super.viewDidLoad()
+//        let sview = SubTopicsTableView(frame: .zero)
+//        sview.backgroundColor = .blue
+//        self.view.addSubview(sview)
+//        sview.edgeAnchors == self.view.edgeAnchors
         setupUI()
     }
   
@@ -35,7 +39,7 @@ class TopicSelectionViewController: UIViewController {
         return textField
     }()
     lazy var viewPager: ViewPager = {
-        let vp = ViewPager(sizeConfiguration: .fillEqually(height: 60))
+        let vp = ViewPager(sizeConfiguration: .fillEqually(height: 50))
         return vp
     }()
 
@@ -47,27 +51,29 @@ class TopicSelectionViewController: UIViewController {
                         TabbedItem(title: "摄影"),
                         TabbedItem(title: "汽车")]
 
-        let view1 = UIView()
+        let view1 = SubTopicsTableView(frame: .zero)
+//        view1.backgroundColor = .blue
         let view2 = UIView()
         let view3 = UIView()
         let view4 = UIView()
         let view5 = UIView()
         
         viewPager.pagedView.pages = [view1, view2, view3, view4, view5]
+        viewPager.pagedView.collectionView.backgroundColor = .clear
         viewPager.tabbedView.tabs = tabItems
         self.view.backgroundColor = UIColor(named: kSecondLevelColor)
         if isSearchViewVisable! {
             self.view.addSubview(searchTextField)
             self.view.addSubview(viewPager)
             searchTextField.horizontalAnchors == self.view.horizontalAnchors + 20
-            searchTextField.topAnchor == self.view.topAnchor + kCustomGlobalMargin
+            searchTextField.topAnchor == self.view.topAnchor + kCustomGlobalMargin 
             searchTextField.heightAnchor == 40
-            viewPager.horizontalAnchors == self.view.horizontalAnchors + 20
+            viewPager.horizontalAnchors == self.view.horizontalAnchors + 10
             viewPager.topAnchor == searchTextField.bottomAnchor + kCustomGlobalMargin
             viewPager.bottomAnchor == self.view.bottomAnchor
         }else{
             self.view.addSubview(viewPager)
-            viewPager.horizontalAnchors == self.view.horizontalAnchors + 20
+            viewPager.horizontalAnchors == self.view.horizontalAnchors + 10
             viewPager.topAnchor == self.view.topAnchor + kCustomGlobalMargin
             viewPager.bottomAnchor == self.view.bottomAnchor
         }

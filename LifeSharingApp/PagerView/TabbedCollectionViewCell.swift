@@ -18,7 +18,6 @@ class TabbedCollectionViewCell: UICollectionViewCell {
     //MARK: 初始化方法
     override init(frame: CGRect) {
         super.init(frame: frame)
-        self.backgroundColor = .brown
     }
     
     required init?(coder: NSCoder) {
