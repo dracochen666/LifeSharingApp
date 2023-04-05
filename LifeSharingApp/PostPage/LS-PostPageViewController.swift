@@ -64,6 +64,7 @@ class LS_PostPageViewController: UIViewController {
         
         return collectionView
     }()
+    
     //信息输入区
     lazy var titleTextField: UITextField = {
         let textField = UITextField(frame: .zero,placeholder: "输入标题")
@@ -72,15 +73,17 @@ class LS_PostPageViewController: UIViewController {
     }()
     lazy var textFieldLabel = UILabel(frame: .zero, text: "\(kNoteTitleLimit)", font: 15, textAlignment: .right)
     lazy var contentTextView: UITextView = {
-        let textView = UITextView(frame: .zero, bgColor: .clear, borderColor: UIColor.systemGray3.cgColor, borderWidth: 0.3, cornerRadius: 8)
+        let textView = UITextView(frame: .zero, bgColor: .clear, placeholder: kContentTextViewPlaceholder, borderColor: UIColor.systemGray3.cgColor, borderWidth: 0.3, cornerRadius: 8)
         textView.delegate = self
         return textView
     }()
+    var isContentTextViewEmpty: Bool { self.contentTextView.text == kContentTextViewPlaceholder }
     lazy var textViewLabel: UILabel =  UILabel(frame: .zero, text: "\(kNoteContentLimit)", font: 15, textAlignment: .right)
     lazy var textStackView: UIStackView = {
         let stackView = UIStackView(axis: .vertical, distribution: .fill, spacing: kCustomGlobalMargin/3, bgColor: UIColor(named: kThirdLevelColor)!)
         return stackView
     }()
+    
     //话题选择区
     lazy var topicView: UIView = {
         let view = UIView(frame: .zero)
@@ -307,14 +310,14 @@ extension LS_PostPageViewController: UICollectionViewDragDelegate, UICollectionV
 extension LS_PostPageViewController: UITextViewDelegate {
 
     func textViewDidBeginEditing(_ textView: UITextView) {
-        if textView.text == "输入正文" {
+        if textView.text == kContentTextViewPlaceholder {
             textView.text = ""
             textView.textColor = .label
         }
     }
     func textViewDidEndEditing(_ textView: UITextView) {
         if textView.text == "" {
-            textView.text = "输入正文"
+            textView.text = kContentTextViewPlaceholder
             textView.textColor = .placeholderText
         }
         self.currentContentTextCount = textView.text.count
@@ -360,6 +363,18 @@ extension LS_PostPageViewController: ImageBrowserDelegate {
             self.showAlert(title: "提示", subtitle: "无法删除！笔记中至少包含 一张图片。")
         }
 
+    }
+    
+}
+extension LS_PostPageViewController: PassValueFromTopicSelectViewController {
+    func passSubTopic(subTopic: String) {
+        //如果正文输入框为空则清空输入框内的“输入正文”提示
+        if isContentTextViewEmpty {
+            self.contentTextView.text = ""
+            self.contentTextView.textColor = .label
+        }
+        self.contentTextView.text += subTopic
+        self.dismiss(animated: true)
     }
     
 }
@@ -420,6 +435,7 @@ extension LS_PostPageViewController {
     
     @objc func topicSelect() {
         let topicSelectionVC = TopicSelectionViewController(isSearchViewVisable: true)
+        topicSelectionVC.passSubTopicFromVCDelegate = self
         self.present(topicSelectionVC, animated: true)
     }
 }

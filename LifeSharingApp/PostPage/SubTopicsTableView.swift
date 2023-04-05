@@ -8,6 +8,10 @@
 import UIKit
 import Anchorage
 
+protocol PassValueFromSubTopicsTableView: AnyObject {
+    func passSubTopic(subTopic: String)
+}
+
 class SubTopicsTableView: UIView {
 
     override init(frame: CGRect) {
@@ -20,7 +24,8 @@ class SubTopicsTableView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    var subTopics: [String] = ["#意式咖啡", "#制作冰美式", "#如何在家制作蛋糕", "#果汁","#果汁","#意式咖啡", "#制作冰美式", "#如何在家制作蛋糕", "#果汁","#果汁","#意式咖啡", "#制作冰美式", "#如何在家制作蛋糕", "#果汁","#果汁","#意式咖啡", "#制作冰美式", "#如何在家制作蛋糕", "#果汁","#果汁","#意式咖啡", "#制作冰美式", "#如何在家制作蛋糕", "#果汁","#果汁",]
+    var subTopics: [String] = ["#意式咖啡", "#制作冰美式", "#如何在家制作蛋糕", "#果汁","#果汁"]
+    weak var passSubTopicFromTVDelegate : PassValueFromSubTopicsTableView?
     lazy var subTopicTableView: UITableView = {
         let tableView = UITableView(frame: .zero)
         tableView.register(SubTopicsTableViewCell.self, forCellReuseIdentifier: "SubTopicsTableViewCell")
@@ -28,6 +33,9 @@ class SubTopicsTableView: UIView {
         tableView.showsVerticalScrollIndicator = false
         tableView.layer.cornerRadius = 8
         tableView.backgroundColor = UIColor(named: kThirdLevelColor)
+        tableView.separatorStyle = .singleLine
+        tableView.separatorInset = .init(top: 5, left: 5, bottom: 5, right: 5)
+        
         tableView.delegate = self
         tableView.dataSource = self
         return tableView
@@ -60,8 +68,7 @@ extension SubTopicsTableView: UITableViewDataSource {
 }
 extension SubTopicsTableView: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-//        print(tableView.cellForRow(at: indexPath)!)
         print(subTopics[indexPath.row])
-         
+        self.passSubTopicFromTVDelegate?.passSubTopic(subTopic: subTopics[indexPath.row])
     }
 }

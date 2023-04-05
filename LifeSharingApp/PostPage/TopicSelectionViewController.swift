@@ -8,7 +8,12 @@
 import UIKit
 import Anchorage
 
+protocol PassValueFromTopicSelectViewController: AnyObject {
+    func passSubTopic(subTopic: String)
+}
+
 class TopicSelectionViewController: UIViewController {
+    
 
     convenience init(isSearchViewVisable: Bool){
         self.init()
@@ -28,6 +33,7 @@ class TopicSelectionViewController: UIViewController {
     var tabs: [TabbedItem] = []
     //根据服务端传入的tabs数量生成pages，每个page中显示该话题分类的具体话题
     var pages: [UIView] = []
+    weak var passSubTopicFromVCDelegate: PassValueFromTopicSelectViewController?
     lazy var searchTextField: UITextField = {
         let searchView = UIView()
         let iv = UIImageView(image: UIImage(systemName: "magnifyingglass"))
@@ -52,7 +58,7 @@ class TopicSelectionViewController: UIViewController {
                         TabbedItem(title: "汽车")]
 
         let view1 = SubTopicsTableView(frame: .zero)
-//        view1.backgroundColor = .blue
+        view1.passSubTopicFromTVDelegate = self
         let view2 = UIView()
         let view3 = UIView()
         let view4 = UIView()
@@ -61,6 +67,7 @@ class TopicSelectionViewController: UIViewController {
         viewPager.pagedView.pages = [view1, view2, view3, view4, view5]
         viewPager.pagedView.collectionView.backgroundColor = .clear
         viewPager.tabbedView.tabs = tabItems
+        
         self.view.backgroundColor = UIColor(named: kSecondLevelColor)
         if isSearchViewVisable! {
             self.view.addSubview(searchTextField)
@@ -80,4 +87,12 @@ class TopicSelectionViewController: UIViewController {
 
 
     }
+}
+
+extension TopicSelectionViewController: PassValueFromSubTopicsTableView {
+    func passSubTopic(subTopic: String) {
+        self.passSubTopicFromVCDelegate?.passSubTopic(subTopic: subTopic)
+    }
+    
+    
 }
