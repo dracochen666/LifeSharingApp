@@ -21,10 +21,10 @@ class TopicSelectionViewController: UIViewController {
     }
     override func viewDidLoad() {
         super.viewDidLoad()
-//        let sview = SubTopicsTableView(frame: .zero)
-//        sview.backgroundColor = .blue
-//        self.view.addSubview(sview)
-//        sview.edgeAnchors == self.view.edgeAnchors
+
+        let tap = UITapGestureRecognizer(target: self, action: #selector(tapToEndEditing))
+//        tap.cancelsTouchesInView = false
+        self.viewPager.addGestureRecognizer(tap)
         setupUI()
     }
   
@@ -89,10 +89,26 @@ class TopicSelectionViewController: UIViewController {
     }
 }
 
+
+//MARK: 代理方法
+////代理方法
+//extension TopicSelectionViewController: UITextFieldDelegate {
+//
+//}
+
+//自定义代理方法
 extension TopicSelectionViewController: PassValueFromSubTopicsTableView {
     func passSubTopic(subTopic: String) {
         self.passSubTopicFromVCDelegate?.passSubTopic(subTopic: subTopic)
     }
     
     
+}
+
+//MARK: 点击事件
+extension TopicSelectionViewController {
+    @objc func tapToEndEditing() {
+        self.view.endEditing(false)
+        
+    }
 }
