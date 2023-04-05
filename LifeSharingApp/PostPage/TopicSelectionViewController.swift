@@ -23,7 +23,7 @@ class TopicSelectionViewController: UIViewController {
         super.viewDidLoad()
 
         let tap = UITapGestureRecognizer(target: self, action: #selector(tapToEndEditing))
-//        tap.cancelsTouchesInView = false
+        tap.cancelsTouchesInView = false
         self.viewPager.addGestureRecognizer(tap)
         setupUI()
     }
