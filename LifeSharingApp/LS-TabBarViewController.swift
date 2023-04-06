@@ -12,7 +12,7 @@ class LS_TabBarViewController: UITabBarController {
     
     //    let tabBarVC = UITabBarController()
     let frontVC = LS_FrontPageViewController()
-    let memoVC = LS_MemoPageViewController()
+    let memoVC = LS_MemoPageNavigationController(rootViewController: LS_MemoPageViewController())
     let publishVC = LS_PostPageViewController()
     let messageVC = LS_MessagePageViewController()
     let aboutVC = LS_AboutPageViewController()
@@ -74,13 +74,10 @@ extension LS_TabBarViewController: UITabBarControllerDelegate {
             let picker = YPImagePicker(configuration: config)
 //            picker.navigationBar.backgroundColor = UIColor(named: kSecondLevelColor)
 //            picker.navigationBar.setBackgroundImage(UIImage(named: "image1"), for: .defaultPrompt)
-
+            
+//            picker.navigationItem
             present(picker, animated: true, completion: nil)
             picker.didFinishPicking { [unowned picker] items, _ in
-//                if let photo = items.singlePhoto {
-//                    print(photo.fromCamera) // Image source (camera or library)
-//                    print(photo.image) // Final image selected by the user
-//                    print(photo.originalImage) // original image selected by the user, unfiltered
                 for item in items {
                     switch item {
                     case let .photo(p: photo):

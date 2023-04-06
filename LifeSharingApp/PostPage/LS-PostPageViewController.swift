@@ -466,6 +466,11 @@ extension LS_PostPageViewController {
     @objc func saveNote() {
         if isContentTextLimitExceeded {
             self.showAlert(title: "笔记无法发布", subtitle: "正文内容字数超出限制!")
+
+        }else {
+            self.navigationController?.navigationBar.isHidden = true
+            self.navigationController?.interactivePopGestureRecognizer?.isEnabled = false
+            self.navigationController?.pushViewController(LS_TabBarViewController(), animated: true)
         }
     }
 }
