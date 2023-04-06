@@ -45,7 +45,7 @@ class WaterFallView: UIView, UICollectionViewDelegate, UICollectionViewDataSourc
         collectionView.backgroundColor = .systemBackground
 
         collectionView.register(WaterFallCollectionViewCell.self, forCellWithReuseIdentifier: WaterFallCollectionViewCell.identifier)
-        
+        collectionView.register(NoteWaterFallCollectionViewCell.self, forCellWithReuseIdentifier: "NoteWaterFallCollectionViewCell")
         collectionView.delegate = self
         collectionView.dataSource = self
         return collectionView
@@ -72,8 +72,9 @@ class WaterFallView: UIView, UICollectionViewDelegate, UICollectionViewDataSourc
         imageModels.count
     }
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: WaterFallCollectionViewCell.identifier, for: indexPath) as? WaterFallCollectionViewCell else { fatalError() }
+//        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: WaterFallCollectionViewCell.identifier, for: indexPath) as? WaterFallCollectionViewCell else { fatalError() }
 
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "NoteWaterFallCollectionViewCell", for: indexPath) as! NoteWaterFallCollectionViewCell
         let image = UIImage(named: imageModels[indexPath.item].imageName)
         cell.configure(image: image!)
         return cell

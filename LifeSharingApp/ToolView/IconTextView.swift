@@ -15,10 +15,17 @@ class IconTextView: UIView {
         case textIcon
     }
 
-    init(image: UIImage, text: String, bgColor: UIColor = .clear, direction: IconTextDirection = .iconText) {
+    init(image: UIImage,
+         text: String,
+         textColor: UIColor = .label,
+         tintColor: UIColor = .label,
+         bgColor: UIColor = .clear,
+         direction: IconTextDirection = .iconText) {
         super.init(frame: .zero)
         self.imageView.image = image
         self.label.text = text
+        self.label.textColor = textColor
+        self.imageView.tintColor = tintColor
         self.stackView.backgroundColor = bgColor
         self.iconTextDirection = direction
         
