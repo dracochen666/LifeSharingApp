@@ -17,6 +17,9 @@ class LS_PostPageViewController: UIViewController {
         super.viewDidLoad()
         
         view.backgroundColor = .systemPink
+        let image = UIImage.generateImageWithColor(color: UIColor(named: kSecondLevelColor)!, size: CGSize(width: 400, height: 50))
+        
+        self.navigationController?.navigationBar.setBackgroundImage(image, for: .any, barMetrics: .default)
         setupUI()
         let tap = UITapGestureRecognizer(target: self, action: #selector(endEdit))
 //        tap.delaysTouchesEnded = false
@@ -39,7 +42,7 @@ class LS_PostPageViewController: UIViewController {
     var videoURL: URL?
     var isVideo: Bool { videoURL != nil }
     var currentContentTextCount = 0
-    var isContentTextLimitExceeded: BooleanLiteralType { currentContentTextCount >= kNoteContentLimit }
+    var isContentTextLimitExceeded: BooleanLiteralType { currentContentTextCount > kNoteContentLimit }
     
     lazy var imageResourcesCV: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
@@ -119,6 +122,7 @@ class LS_PostPageViewController: UIViewController {
     }()
     lazy var publishNoteButton: UIButton = {
         let button = UIButton(frame: .zero, title: "发布笔记", bgColor: .systemYellow, cornerRadius: kGlobalCornerRadius)
+        button.addTarget(self, action: #selector(saveNote), for: .touchUpInside)
         return button
     }()
     lazy var publishNoteStackView: UIStackView = {
@@ -172,7 +176,7 @@ class LS_PostPageViewController: UIViewController {
         
         scrollView.leftAnchor == self.view.leftAnchor
         scrollView.rightAnchor == self.view.rightAnchor
-        scrollView.topAnchor == self.view.topAnchor + 50
+        scrollView.topAnchor == self.view.topAnchor
         scrollView.bottomAnchor == self.view.bottomAnchor
         
         notePublishView.centerAnchors == scrollView.centerAnchors
@@ -456,5 +460,12 @@ extension LS_PostPageViewController {
         let topicSelectionVC = TopicSelectionViewController(isSearchViewVisable: true)
         topicSelectionVC.passSubTopicFromVCDelegate = self
         self.present(topicSelectionVC, animated: true)
+    }
+    
+    //发布笔记相关
+    @objc func saveNote() {
+        if isContentTextLimitExceeded {
+            self.showAlert(title: "笔记无法发布", subtitle: "正文内容字数超出限制!")
+        }
     }
 }

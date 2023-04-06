@@ -72,6 +72,9 @@ extension LS_TabBarViewController: UITabBarControllerDelegate {
             config.library.preSelectItemOnMultipleSelection = false
             
             let picker = YPImagePicker(configuration: config)
+//            picker.navigationBar.backgroundColor = UIColor(named: kSecondLevelColor)
+//            picker.navigationBar.setBackgroundImage(UIImage(named: "image1"), for: .defaultPrompt)
+
             present(picker, animated: true, completion: nil)
             picker.didFinishPicking { [unowned picker] items, _ in
 //                if let photo = items.singlePhoto {

@@ -14,14 +14,11 @@ class LS_FrontPageViewController:UIViewController, PagedViewDelegate {
     }
     
     let viewPager: ViewPager = {
-        let viewPager = ViewPager(sizeConfiguration: .fillEqually(height: 44,spacing: 0))
+        let viewPager = ViewPager(sizeConfiguration: .fillEqually(height: 44, spacing: 0))
         
         let view1 = WaterFallView()
-//        view1.collectionView.backgroundColor = .white
         let view2 = WaterFallView()
-//        view2.collectionView.backgroundColor = .blue
         let view3 = WaterFallView()
-//        view3.collectionView.backgroundColor = .green
         
         viewPager.pagedView.pages = [view1,view2,view3]
         viewPager.tabbedView.tabs = [
@@ -46,7 +43,7 @@ class LS_FrontPageViewController:UIViewController, PagedViewDelegate {
 
         viewPager.leftAnchor /==/ self.view.safeAreaLayoutGuide.leftAnchor
         viewPager.rightAnchor /==/ self.view.safeAreaLayoutGuide.rightAnchor
-        viewPager.topAnchor /==/ self.view.safeAreaLayoutGuide.topAnchor - 15
+        viewPager.topAnchor /==/ self.view.safeAreaLayoutGuide.topAnchor - 20
         viewPager.bottomAnchor /==/ self.view.safeAreaLayoutGuide.bottomAnchor
 
     }

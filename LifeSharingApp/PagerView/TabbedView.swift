@@ -56,7 +56,8 @@ class TabbedView: UIView {
         collectionView.backgroundColor = .systemBackground
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.bounces = false
-//        collectionView.contentInsetAdjustmentBehavior = .never
+        collectionView.contentInsetAdjustmentBehavior = .never
+        collectionView.backgroundColor = .red
         
         collectionView.delegate = self
         collectionView.dataSource = self

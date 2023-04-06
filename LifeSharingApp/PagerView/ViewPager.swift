@@ -46,7 +46,7 @@ class ViewPager: UIView {
         pagedView.leftAnchor /==/ self.leftAnchor
         pagedView.rightAnchor /==/ self.rightAnchor
         pagedView.bottomAnchor /==/ self.bottomAnchor
-        pagedView.topAnchor /==/ self.tabbedView.bottomAnchor + 10
+        pagedView.topAnchor /==/ self.tabbedView.bottomAnchor + 5
 
     }
     
