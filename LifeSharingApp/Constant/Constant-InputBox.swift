@@ -7,5 +7,5 @@
 
 import UIKit
 
-let kContentTextViewPlaceholder: String = "输入正文!!!"
+let kContentTextViewPlaceholder: String = "输入正文"
 

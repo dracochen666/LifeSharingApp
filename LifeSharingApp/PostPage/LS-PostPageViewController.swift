@@ -30,12 +30,11 @@ class LS_PostPageViewController: UIViewController {
         let scrollView = UIScrollView(frame: .zero)
         scrollView.contentSize = self.view.frame.size
         scrollView.showsVerticalScrollIndicator = false
-        
+        scrollView.backgroundColor = UIColor(named: kSecondLevelColor)
         scrollView.delegate = self
         return scrollView
     }()
     
-    //MARK: 变量区
     var photos = [UIImage(named: "image0"), UIImage(named: "image1"), UIImage(named: "image2"), UIImage(named: "image3"), UIImage(named: "image4")]
     var videoURL: URL?
     var isVideo: Bool { videoURL != nil }
@@ -79,6 +78,14 @@ class LS_PostPageViewController: UIViewController {
     }()
     var isContentTextViewEmpty: Bool { self.contentTextView.text == kContentTextViewPlaceholder }
     lazy var textViewLabel: UILabel =  UILabel(frame: .zero, text: "\(kNoteContentLimit)", font: 15, textAlignment: .right)
+    
+    lazy var topicsTextView: UITextView = {
+        let textView = UITextView(frame: .zero,textColor: .systemBlue, bgColor: .clear, placeholder: "笔记话题: ", borderColor: UIColor.systemGray3.cgColor, borderWidth: 0, cornerRadius: 8)
+        
+        textView.isEditable = false
+        textView.delegate = self
+        return textView
+    }()
     lazy var textStackView: UIStackView = {
         let stackView = UIStackView(axis: .vertical, distribution: .fill, spacing: kCustomGlobalMargin/3, bgColor: UIColor(named: kThirdLevelColor)!)
         return stackView
@@ -115,7 +122,7 @@ class LS_PostPageViewController: UIViewController {
         return button
     }()
     lazy var publishNoteStackView: UIStackView = {
-        let stackView = UIStackView(axis: .horizontal, distribution: .fill, spacing: 20, bgColor: .clear, cornerRadius: kGlobalCornerRadius)
+        let stackView = UIStackView(axis: .horizontal, distribution: .equalSpacing, spacing: 20, bgColor: .clear, cornerRadius: kGlobalCornerRadius)
         return stackView
     }()
     //存储传入笔记图片数量
@@ -139,6 +146,7 @@ class LS_PostPageViewController: UIViewController {
         textStackView.addArrangedSubview(textFieldLabel)
         textStackView.addArrangedSubview(contentTextView)
         textStackView.addArrangedSubview(textViewLabel)
+        textStackView.addArrangedSubview(topicsTextView)
         //话题区
         notePublishView.addSubview(topicView)
         topicView.addSubview(topicSelectIconText)
@@ -177,10 +185,16 @@ class LS_PostPageViewController: UIViewController {
 
  
         //输入区框约束
+        let stackViewProp: CGFloat = 2/5 * self.view.frame.size.height
+        let stackViewNormalHeight: CGFloat = 30
         textStackView.leftAnchor == notePublishView.leftAnchor + kCustomGlobalMargin
         textStackView.rightAnchor == notePublishView.rightAnchor - kCustomGlobalMargin
         textStackView.topAnchor == imageResourcesCV.bottomAnchor + kCustomGlobalMargin
-        textStackView.heightAnchor == self.view.frame.size.height / 3
+        textStackView.heightAnchor == stackViewProp
+        
+        titleTextField.heightAnchor == 30
+        contentTextView.heightAnchor == (stackViewProp - 4 * stackViewNormalHeight) + 5
+        topicsTextView.heightAnchor == 30
 
         //话题区约束
         topicView.leftAnchor == notePublishView.leftAnchor + kCustomGlobalMargin
@@ -203,6 +217,9 @@ class LS_PostPageViewController: UIViewController {
         publishNoteStackView.rightAnchor == self.view.safeAreaLayoutGuide.rightAnchor
         publishNoteStackView.bottomAnchor == self.view.safeAreaLayoutGuide.bottomAnchor
         publishNoteStackView.heightAnchor == self.view.frame.size.height / 20
+        
+        saveDraftButton.widthAnchor == self.view.frame.size.width / 5
+        publishNoteButton.widthAnchor == 7 * self.view.frame.size.width / 10
 
 
         
@@ -368,12 +385,14 @@ extension LS_PostPageViewController: ImageBrowserDelegate {
 }
 extension LS_PostPageViewController: PassValueFromTopicSelectViewController {
     func passSubTopic(subTopic: String) {
-        //如果正文输入框为空则清空输入框内的“输入正文”提示
-        if isContentTextViewEmpty {
-            self.contentTextView.text = ""
-            self.contentTextView.textColor = .label
-        }
-        self.contentTextView.text += subTopic
+//        //如果正文输入框为空则清空输入框内的“输入正文”提示
+//        if isContentTextViewEmpty {
+//            self.contentTextView.text = ""
+//            self.contentTextView.textColor = .label
+//        }
+//        self.contentTextView.text += subTopic
+//        self.dismiss(animated: true)
+        self.topicsTextView.text += subTopic + " "
         self.dismiss(animated: true)
     }
     
