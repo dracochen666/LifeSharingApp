@@ -9,7 +9,7 @@ import UIKit
 import YPImagePicker
 
 class LS_TabBarViewController: UITabBarController {
-    
+
     //    let tabBarVC = UITabBarController()
     let frontVC = LS_FrontPageViewController()
     let memoVC = LS_MemoPageNavigationController(rootViewController: LS_MemoPageViewController())
@@ -78,15 +78,18 @@ extension LS_TabBarViewController: UITabBarControllerDelegate {
 //            picker.navigationItem
             present(picker, animated: true, completion: nil)
             picker.didFinishPicking { [unowned picker] items, _ in
+                let vc = LS_PostPageViewController()
+                var i = 0
                 for item in items {
                     switch item {
                     case let .photo(p: photo):
-                        print("photo")
+                        vc.photos.append(photo.image)
+                        i += 1
                     case let .video(v: video):
                         print("video")
                     }
                 }
-            picker.pushViewController(LS_PostPageViewController(), animated: true)
+            picker.pushViewController(vc, animated: true)
             }
             return false
         }

@@ -32,9 +32,8 @@ class NoteResourceCollectionViewCell: UICollectionViewCell {
     }
     func setupUI() {
         self.addSubview(imageView)
-        self.backgroundColor = .secondarySystemBackground
-        self.layer.cornerRadius = kGlobalCornerRadius
-        self.clipsToBounds = true
+        
+        
         
         imageView.leftAnchor /==/ self.leftAnchor
         imageView.rightAnchor /==/ self.rightAnchor

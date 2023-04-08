@@ -9,7 +9,7 @@ import UIKit
 import Anchorage
 
 protocol PassValueFromTopicSelectViewController: AnyObject {
-    func passSubTopic(subTopic: String)
+    func passSubTopic(topic:String, subTopic: String)
 }
 
 class TopicSelectionViewController: UIViewController {
@@ -30,6 +30,7 @@ class TopicSelectionViewController: UIViewController {
   
     var isSearchViewVisable: Bool? = false
     //服务端传入(话题分类)tabs
+    var topicsData: Topic = Topic(topics: kTopics, subTopics: kSubTopics)
     var tabs: [TabbedItem] = []
     //根据服务端传入的tabs数量生成pages，每个page中显示该话题分类的具体话题
     var pages: [UIView] = []
@@ -51,20 +52,45 @@ class TopicSelectionViewController: UIViewController {
 
     func setupUI() {
         //固定数据用于测试
-        let tabItems = [TabbedItem(title: "美食"),
-                        TabbedItem(title: "旅游"),
-                        TabbedItem(title: "风景"),
-                        TabbedItem(title: "摄影"),
-                        TabbedItem(title: "汽车")]
+        let tabItems: [TabbedItem] = {
+            var items: [TabbedItem] = []
+            for topic in topicsData.topics {
+                items.append(TabbedItem(title: topic))
+            }
+            return items
+        }()
+//        [TabbedItem(title: "美食"),
+//                        TabbedItem(title: "旅游"),
+//                        TabbedItem(title: "风景"),
+//                        TabbedItem(title: "摄影"),
+//                        TabbedItem(title: "汽车")]
 
-        let view1 = SubTopicsTableView(frame: .zero)
-        view1.passSubTopicFromTVDelegate = self
-        let view2 = UIView()
-        let view3 = UIView()
-        let view4 = UIView()
-        let view5 = UIView()
+//        let view1 = SubTopicsTableView(frame: .zero)
+//        view1.passSubTopicFromTVDelegate = self
+//        let view2 = UIView()
+//        let view3 = UIView()
+//        let view4 = UIView()
+//        let view5 = UIView()
+
+        let views: [SubTopicsTableView] = {
+            var views: [SubTopicsTableView] = []
+            let indexs = topicsData.topics.count
+            for index in 0..<indexs {
+                let topic = topicsData.topics[index]
+                let subTopicsIn = topicsData.findSubTopicsInSubTopicsByTopic(topic: topic)
+                let view = SubTopicsTableView(frame: .zero)
+                view.topic = topic
+                if subTopicsIn.count != 0 {//count不为0代表该话题下有子话题
+                    print("存在子话题")
+                    view.subTopics = subTopicsIn
+                }
+                view.passSubTopicFromTVDelegate = self
+                views.append(view)
+            }
+            return views
+        }()
         
-        viewPager.pagedView.pages = [view1, view2, view3, view4, view5]
+        viewPager.pagedView.pages = views
         viewPager.pagedView.collectionView.backgroundColor = .clear
         viewPager.tabbedView.tabs = tabItems
         
@@ -98,10 +124,10 @@ class TopicSelectionViewController: UIViewController {
 
 //自定义代理方法
 extension TopicSelectionViewController: PassValueFromSubTopicsTableView {
-    func passSubTopic(subTopic: String) {
-        self.passSubTopicFromVCDelegate?.passSubTopic(subTopic: subTopic)
+    func passSubTopic(topic: String, subTopic: String) {
+        self.passSubTopicFromVCDelegate?.passSubTopic(topic: topic, subTopic: subTopic)
+
     }
-    
     
 }
 

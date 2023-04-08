@@ -37,12 +37,24 @@ class LS_PostPageViewController: UIViewController {
         scrollView.delegate = self
         return scrollView
     }()
-    
-    var photos = [UIImage(named: "image0"), UIImage(named: "image1"), UIImage(named: "image2"), UIImage(named: "image3"), UIImage(named: "image4")]
+    //笔记信息
+    var photos:[UIImage] = []
     var videoURL: URL?
     var isVideo: Bool { videoURL != nil }
     var currentContentTextCount = 0
     var isContentTextLimitExceeded: BooleanLiteralType { currentContentTextCount > kNoteContentLimit }
+    var countSelectedSubTopics: Int = 0
+//    var selectedTopics: [String] = [] //分类话题
+//    var selectedSubTopicsDict: [String:[String]] = [:] //以字典形式存储分类子话题
+//    var numberOfSelectedSubTopics: Int = 0
+//    var countSelectedSubTopics: Int  {
+//        numberOfSelectedSubTopics = 0
+//        for (_,value) in selectedSubTopicsDict {
+//            numberOfSelectedSubTopics += value.count
+//        }
+//        return numberOfSelectedSubTopics
+//    }
+    
     
     lazy var imageResourcesCV: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
@@ -226,8 +238,6 @@ class LS_PostPageViewController: UIViewController {
         publishNoteButton.widthAnchor == 7 * self.view.frame.size.width / 10
 
 
-        
-        
     }
     
     
@@ -243,7 +253,7 @@ extension LS_PostPageViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "NoteResourceCollectionViewCell", for: indexPath) as! NoteResourceCollectionViewCell
 
-        cell.configure(image: photos[indexPath.row]!)
+        cell.configure(image: photos[indexPath.row])
         return cell
         
     }
@@ -276,7 +286,7 @@ extension LS_PostPageViewController: UICollectionViewDelegate {
 
         }else {
             let vc = ImageBrowserViewController(imageIndex: indexPath.item)
-            vc.setImage(photos[indexPath.item]!)
+            vc.setImage(photos[indexPath.item])
             vc.delegate = self
             let navi = UINavigationController(rootViewController: vc)
             self.present(navi, animated: true)
@@ -289,7 +299,7 @@ extension LS_PostPageViewController: UICollectionViewDragDelegate, UICollectionV
     //Drag
       //开始拖拽时
     func collectionView(_ collectionView: UICollectionView, itemsForBeginning session: UIDragSession, at indexPath: IndexPath) -> [UIDragItem] {
-        let photo = photos[indexPath.item]!
+        let photo = photos[indexPath.item]
         let itemProvider = NSItemProvider(object: photo)
         let dragItem = UIDragItem(itemProvider: itemProvider)
         //将拖拽Item存入dragItem中，在拖拽完毕后可通过coordinator获取。
@@ -388,17 +398,17 @@ extension LS_PostPageViewController: ImageBrowserDelegate {
     
 }
 extension LS_PostPageViewController: PassValueFromTopicSelectViewController {
-    func passSubTopic(subTopic: String) {
-//        //如果正文输入框为空则清空输入框内的“输入正文”提示
-//        if isContentTextViewEmpty {
-//            self.contentTextView.text = ""
-//            self.contentTextView.textColor = .label
-//        }
-//        self.contentTextView.text += subTopic
-//        self.dismiss(animated: true)
-        self.topicsTextView.text += subTopic + " "
+    func passSubTopic(topic: String, subTopic: String) {
+        if countSelectedSubTopics < kSubTopicLimit {
+//            self.selectedSubTopicsDict.append(subTopic)
+            self.topicsTextView.text += subTopic + " "
+            self.countSelectedSubTopics += 1
+        }else {
+            self.showAlert(title: "超出话题数量限制", subtitle: "只能选择\(kSubTopicLimit)个话题")
+        }
         self.dismiss(animated: true)
     }
+    
     
 }
 
@@ -455,7 +465,7 @@ extension LS_PostPageViewController {
             self.textFieldLabel.text = "\(kNoteTitleLimit - titleTextField.text!.count)"
         }
     }
-    
+    //点击选择弹出话题
     @objc func topicSelect() {
         let topicSelectionVC = TopicSelectionViewController(isSearchViewVisable: true)
         topicSelectionVC.passSubTopicFromVCDelegate = self

@@ -9,7 +9,7 @@ import UIKit
 import Anchorage
 
 protocol PassValueFromSubTopicsTableView: AnyObject {
-    func passSubTopic(subTopic: String)
+    func passSubTopic(topic: String, subTopic: String)
 }
 
 class SubTopicsTableView: UIView {
@@ -24,7 +24,9 @@ class SubTopicsTableView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    var subTopics: [String] = ["#意式咖啡", "#制作冰美式", "#如何在家制作蛋糕", "#果汁","#果汁"]
+    var topic: String = ""
+    var subTopics: [String] = []
+//    var topicsTableViewData = Topic(topics: kTopics, subTopics: kSubTopics)
     weak var passSubTopicFromTVDelegate : PassValueFromSubTopicsTableView?
     lazy var subTopicTableView: UITableView = {
         let tableView = UITableView(frame: .zero)
@@ -69,6 +71,6 @@ extension SubTopicsTableView: UITableViewDataSource {
 extension SubTopicsTableView: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         print(subTopics[indexPath.row])
-        self.passSubTopicFromTVDelegate?.passSubTopic(subTopic: subTopics[indexPath.row])
+        self.passSubTopicFromTVDelegate?.passSubTopic(topic: self.topic, subTopic: subTopics[indexPath.row])
     }
 }
