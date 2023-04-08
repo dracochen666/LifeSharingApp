@@ -10,4 +10,7 @@ target 'LifeSharingApp' do
   pod 'CHTCollectionViewWaterfallLayout','~> 0.9.10'
   pod 'YPImagePicker','~> 4.5.0'
   pod 'MBProgressHUD', '~> 1.2.0'
+  pod 'LookinServer', :configurations => ['Debug']
+
+
 end
