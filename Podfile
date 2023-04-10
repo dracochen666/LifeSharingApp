@@ -11,6 +11,6 @@ target 'LifeSharingApp' do
   pod 'YPImagePicker','~> 4.5.0'
   pod 'MBProgressHUD', '~> 1.2.0'
   pod 'LookinServer', :configurations => ['Debug']
-
+  pod 'AMapLocation'
 
 end

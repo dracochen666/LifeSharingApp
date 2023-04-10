@@ -27,7 +27,7 @@ class TopicSelectionViewController: UIViewController {
         self.viewPager.addGestureRecognizer(tap)
         setupUI()
     }
-  
+
     var isSearchViewVisable: Bool? = false
     //服务端传入(话题分类)tabs
     var topicsData: Topic = Topic(topics: kTopics, subTopics: kSubTopics)
@@ -80,8 +80,6 @@ class TopicSelectionViewController: UIViewController {
         viewPager.pagedView.collectionView.backgroundColor = .clear
         viewPager.tabbedView.tabs = tabItems
         viewPager.tabbedView.collectionView.isScrollEnabled = true
-//        viewPager.tabbedView.collectionView.contentInsetAdjustmentBehavior = .automatic
-//        viewPager.tabbedView.collectionView.horizontalAnchors == viewPager.tabbedView.horizontalAnchors
         
         self.view.backgroundColor = UIColor(named: kSecondLevelColor)
         if isSearchViewVisable! {

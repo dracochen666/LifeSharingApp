@@ -11,10 +11,13 @@ import CoreData
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
-
-
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
+        
+        //配置高德地图APIKey
+        AMapServices.shared().enableHTTPS = true
+        AMapServices.shared().apiKey = "7c7131efdde700061f5197e028e66ef8"
+
         return true
     }
 

@@ -21,6 +21,7 @@ class LS_PostPageViewController: UIViewController {
         
         self.navigationController?.navigationBar.setBackgroundImage(image, for: .any, barMetrics: .default)
         setupUI()
+        config()
         let tap = UITapGestureRecognizer(target: self, action: #selector(endEdit))
 //        tap.delaysTouchesEnded = false
         tap.cancelsTouchesInView = false
@@ -29,6 +30,9 @@ class LS_PostPageViewController: UIViewController {
     }
     
     //MARK: 变量区
+    //定位权限管理
+    let locationManager = CLLocationManager()
+
     lazy var scrollView: UIScrollView = {
         let scrollView = UIScrollView(frame: .zero)
         scrollView.contentSize = self.view.frame.size
@@ -44,17 +48,6 @@ class LS_PostPageViewController: UIViewController {
     var currentContentTextCount = 0
     var isContentTextLimitExceeded: BooleanLiteralType { currentContentTextCount > kNoteContentLimit }
     var countSelectedSubTopics: Int = 0
-//    var selectedTopics: [String] = [] //分类话题
-//    var selectedSubTopicsDict: [String:[String]] = [:] //以字典形式存储分类子话题
-//    var numberOfSelectedSubTopics: Int = 0
-//    var countSelectedSubTopics: Int  {
-//        numberOfSelectedSubTopics = 0
-//        for (_,value) in selectedSubTopicsDict {
-//            numberOfSelectedSubTopics += value.count
-//        }
-//        return numberOfSelectedSubTopics
-//    }
-    
     
     lazy var imageResourcesCV: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
@@ -268,6 +261,29 @@ class LS_PostPageViewController: UIViewController {
         publishNoteButton.widthAnchor == 7 * self.view.frame.size.width / 10
 
 
+    }
+    //权限相关配置
+    func config() {
+        //MARK: 请求定位权限
+        locationManager.requestWhenInUseAuthorization()
+        AMapLocationManager.updatePrivacyShow(.didShow, privacyInfo: .didContain)
+        AMapLocationManager.updatePrivacyAgree(.didAgree)
+        
+    }
+
+}
+
+//MARK: 代理
+extension UserPositionViewController: UITableViewDataSource {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        10
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = UITableViewCell(frame: .zero)
+        cell.separatorInset = .init(top: 0, left: kCustomGlobalMargin, bottom: 0, right: kCustomGlobalMargin)
+        cell.backgroundColor = .clear
+        return cell
     }
     
     
@@ -503,7 +519,9 @@ extension LS_PostPageViewController {
     }
     //点击进行用户定位
     @objc func positionSelect() {
-        
+        let userPositionVC = UserPositionViewController()
+        self.modalPresentationStyle = .overFullScreen
+        self.present(userPositionVC, animated: true)
     }
     //发布笔记相关
     @objc func saveNote() {
