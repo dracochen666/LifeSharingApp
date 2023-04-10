@@ -19,7 +19,8 @@ class UserPositionViewController: UIViewController {
         
     }
     private let locationManager = AMapLocationManager()
-
+    
+    var positions = [["不显示位置", ""]]
     lazy var positionSearchBar: UISearchBar = {
         let searchBar = UISearchBar(frame: .zero)
         searchBar.searchBarStyle = .minimal
@@ -31,6 +32,9 @@ class UserPositionViewController: UIViewController {
         let tableView = UITableView(frame: .zero)
         tableView.layer.cornerRadius = kGlobalCornerRadius
         tableView.backgroundColor = UIColor(named: kThirdLevelColor)
+        tableView.register(UserPositionTableViewCell.self, forCellReuseIdentifier: "UserPositionTableViewCell")
+        
+        tableView.delegate = self
         tableView.dataSource = self
         return tableView
     }()
@@ -62,6 +66,7 @@ class UserPositionViewController: UIViewController {
         
         locationManager.reGeocodeTimeout = 2
         
+        //网络请求，耗时任务,异步执行
         locationManager.requestLocation(withReGeocode: true, completionBlock: { [weak self] (location: CLLocation?, reGeocode: AMapLocationReGeocode?, error: Error?) in
                     
             if let error = error {
@@ -86,24 +91,48 @@ class UserPositionViewController: UIViewController {
                     //没有错误：location有返回值，regeocode是否有返回值取决于是否进行逆地理操作，进行annotation的添加
                 }
             }
-            
-//            if let location = location {
-//                print("location:", location)
-//            }
+            //对weak修饰的self进行解包
+            guard let poiVC = self else { return }
             
             if let reGeocode = reGeocode {
                 print("reGeocode:", reGeocode)
-//  reGeocode: AMapLocationReGeocode:{formattedAddress:北京市朝阳区北四环中路靠近学四公寓; country:中国;province:北京市; city:北京市; district:朝阳区; citycode:010; adcode:110105; street:北四环中路; number:33号院; POIName:学四公寓; AOIName:学四公寓;}
                 guard let formattedAddress = reGeocode.formattedAddress, !formattedAddress.isEmpty else {return}
                 //判断是否为直辖市，若为直辖市则省级名称为空
                 let province = reGeocode.province == reGeocode.city ? "" : reGeocode.province!
+                let currentLocation = [reGeocode.poiName!,"\(province)\(reGeocode.city!)\(reGeocode.district!)\(reGeocode.street ?? "")\(reGeocode.number ?? "")"]
+                poiVC.positions.append(currentLocation)
                 print("当前地点：\(province)\(reGeocode.city!)\(reGeocode.street ?? "")\(reGeocode.number ?? "")")
             }
+            //因为这个请求是异步执行的耗时任务，在tableview初始化后可能请求仍未返回数据，所以需要在请求返回数据后对tableview的视图进行刷新。
+            poiVC.positionTableView.reloadData()
         })
     }
+    
+}
+
+//MARK: 代理
+extension UserPositionViewController: UITableViewDataSource {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        positions.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "UserPositionTableViewCell") as! UserPositionTableViewCell
+        cell.poiLabel.text = positions[indexPath.row][0]
+        cell.addressLabel.text = positions[indexPath.row][1]
+
+        cell.separatorInset = .init(top: 0, left: kCustomGlobalMargin, bottom: 0, right: kCustomGlobalMargin)
+        cell.backgroundColor = .clear
+        return cell
+    }
+    
+    
+}
+extension UserPositionViewController: UITableViewDelegate {
     
 }
 
 extension UserPositionViewController: AMapLocationManagerDelegate {
     
 }
+

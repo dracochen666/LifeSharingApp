@@ -273,21 +273,7 @@ class LS_PostPageViewController: UIViewController {
 
 }
 
-//MARK: 代理
-extension UserPositionViewController: UITableViewDataSource {
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        10
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = UITableViewCell(frame: .zero)
-        cell.separatorInset = .init(top: 0, left: kCustomGlobalMargin, bottom: 0, right: kCustomGlobalMargin)
-        cell.backgroundColor = .clear
-        return cell
-    }
-    
-    
-}
+
 
 
 //MARK: 代理方法
