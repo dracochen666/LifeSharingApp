@@ -59,18 +59,6 @@ class TopicSelectionViewController: UIViewController {
             }
             return items
         }()
-//        [TabbedItem(title: "美食"),
-//                        TabbedItem(title: "旅游"),
-//                        TabbedItem(title: "风景"),
-//                        TabbedItem(title: "摄影"),
-//                        TabbedItem(title: "汽车")]
-
-//        let view1 = SubTopicsTableView(frame: .zero)
-//        view1.passSubTopicFromTVDelegate = self
-//        let view2 = UIView()
-//        let view3 = UIView()
-//        let view4 = UIView()
-//        let view5 = UIView()
 
         let views: [SubTopicsTableView] = {
             var views: [SubTopicsTableView] = []
@@ -80,19 +68,20 @@ class TopicSelectionViewController: UIViewController {
                 let subTopicsIn = topicsData.findSubTopicsInSubTopicsByTopic(topic: topic)
                 let view = SubTopicsTableView(frame: .zero)
                 view.topic = topic
-                if subTopicsIn.count != 0 {//count不为0代表该话题下有子话题
-                    print("存在子话题")
-                    view.subTopics = subTopicsIn
-                }
+
+                view.subTopics = subTopicsIn
+                print(subTopicsIn)
                 view.passSubTopicFromTVDelegate = self
                 views.append(view)
             }
             return views
         }()
-        
         viewPager.pagedView.pages = views
         viewPager.pagedView.collectionView.backgroundColor = .clear
         viewPager.tabbedView.tabs = tabItems
+        viewPager.tabbedView.collectionView.isScrollEnabled = true
+//        viewPager.tabbedView.collectionView.contentInsetAdjustmentBehavior = .automatic
+//        viewPager.tabbedView.collectionView.horizontalAnchors == viewPager.tabbedView.horizontalAnchors
         
         self.view.backgroundColor = UIColor(named: kSecondLevelColor)
         if isSearchViewVisable! {
@@ -135,6 +124,5 @@ extension TopicSelectionViewController: PassValueFromSubTopicsTableView {
 extension TopicSelectionViewController {
     @objc func tapToEndEditing() {
         self.view.endEditing(false)
-        
     }
 }

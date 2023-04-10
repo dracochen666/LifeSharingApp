@@ -16,6 +16,7 @@ class Topic {
     
     var topics: [String] = []
     var subTopics: [String:[String]] = [:]
+//    var sub: [[String]]
     
     //添加子话题
     func addSubTopic(topic: String, subTopic: String) {

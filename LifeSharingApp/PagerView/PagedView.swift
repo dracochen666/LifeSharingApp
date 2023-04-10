@@ -88,6 +88,9 @@ class PagedView: UIView, UICollectionViewDelegateFlowLayout , UICollectionViewDa
     //返回具体显示的Cell
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "PageCollectionViewCell", for: indexPath) as! PageCollectionViewCell
+//        cell.view = UIView(frame: .zero)
+//        if pages[indexPath.item]
+//        let cell = PageCollectionViewCell(frame: .zero)
         cell.view = pages[indexPath.item]
         return cell
     }

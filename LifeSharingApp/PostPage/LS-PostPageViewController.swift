@@ -108,9 +108,7 @@ class LS_PostPageViewController: UIViewController {
     
     //话题选择区
     lazy var topicView: UIView = {
-        let view = UIView(frame: .zero)
-        view.layer.cornerRadius = kGlobalCornerRadius
-        view.backgroundColor = UIColor(named: kThirdLevelColor)
+        let view = UIView(frame: .zero, bgColor: UIColor(named: kThirdLevelColor)!, cornerRadius: kGlobalCornerRadius)
         let tap = UITapGestureRecognizer(target: self, action: #selector(topicSelect))
         view.addGestureRecognizer(tap)
         return view
@@ -126,6 +124,22 @@ class LS_PostPageViewController: UIViewController {
         return view
     }()
     //用户定位区
+    lazy var positionView: UIView = {
+        let view = UIView(frame: .zero, bgColor: UIColor(named: kThirdLevelColor)!, cornerRadius: kGlobalCornerRadius)
+        let tap = UITapGestureRecognizer(target: self, action: #selector(positionSelect))
+        view.addGestureRecognizer(tap)
+        return view
+    }()
+    lazy var positionSelectIconText: IconTextView = {
+        let image = UIImage(systemName: "location")!
+        let view = IconTextView(image: image, text: "定位", direction: .iconText)
+        return view
+    }()
+    lazy var positionGuideIconText: IconTextView = {
+        let image = UIImage(systemName: "chevron.right")!
+        let view = IconTextView(image: image, text: "   ", direction: .textIcon)
+        return view
+    }()
     //发布笔记区
     lazy var saveDraftButton: UIButton = {
         let button = UIButton(frame: .zero, title: "存草稿", bgColor: .secondarySystemBackground, cornerRadius: 10)
@@ -168,6 +182,9 @@ class LS_PostPageViewController: UIViewController {
         topicView.addSubview(topicSelectIconText)
         topicView.addSubview(topicGuideIconText)
         //定位区
+        notePublishView.addSubview(positionView)
+        positionView.addSubview(positionSelectIconText)
+        positionView.addSubview(positionGuideIconText)
         //发布笔记区
         self.view.addSubview(publishNoteStackView)
         publishNoteStackView.addArrangedSubview(saveDraftButton)
@@ -220,14 +237,27 @@ class LS_PostPageViewController: UIViewController {
         
         topicSelectIconText.leftAnchor == topicView.leftAnchor + kCustomGlobalMargin
         topicSelectIconText.widthAnchor == 60
-        topicSelectIconText.topAnchor == topicView.topAnchor + kCustomGlobalMargin
-        topicSelectIconText.bottomAnchor == topicView.bottomAnchor - kCustomGlobalMargin
+        topicSelectIconText.verticalAnchors == topicView.verticalAnchors + kCustomGlobalMargin
 
         topicGuideIconText.rightAnchor == topicView.rightAnchor - kCustomGlobalMargin
         topicGuideIconText.widthAnchor == 100
-        topicGuideIconText.topAnchor == topicView.topAnchor + kCustomGlobalMargin
-        topicGuideIconText.bottomAnchor == topicView.bottomAnchor - kCustomGlobalMargin
+        topicGuideIconText.verticalAnchors == topicView.verticalAnchors + kCustomGlobalMargin
 
+        //定位区约束
+        positionView.horizontalAnchors == notePublishView.horizontalAnchors + kCustomGlobalMargin
+        positionView.topAnchor == topicView.bottomAnchor + kCustomGlobalMargin
+        positionView.heightAnchor == self.view.frame.size.height / 25
+        
+        positionSelectIconText.leftAnchor == positionView.leftAnchor + kCustomGlobalMargin
+        positionSelectIconText.widthAnchor == 60
+        positionSelectIconText.verticalAnchors == positionView.verticalAnchors + kCustomGlobalMargin
+        
+        positionGuideIconText.rightAnchor == positionView.rightAnchor - kCustomGlobalMargin
+        positionGuideIconText.widthAnchor == 60
+        positionGuideIconText.verticalAnchors == positionView.verticalAnchors + kCustomGlobalMargin
+        
+        
+        
         //发布笔记区约束
         publishNoteStackView.leftAnchor == self.view.safeAreaLayoutGuide.leftAnchor
         publishNoteStackView.rightAnchor == self.view.safeAreaLayoutGuide.rightAnchor
@@ -471,7 +501,10 @@ extension LS_PostPageViewController {
         topicSelectionVC.passSubTopicFromVCDelegate = self
         self.present(topicSelectionVC, animated: true)
     }
-    
+    //点击进行用户定位
+    @objc func positionSelect() {
+        
+    }
     //发布笔记相关
     @objc func saveNote() {
         if isContentTextLimitExceeded {

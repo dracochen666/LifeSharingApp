@@ -46,7 +46,7 @@ class TabbedView: UIView {
     //MARK: 变量区
     weak var delegate: TabbedViewDelegate?
     var sizeConfiguration: SizeConfiguration
-    private lazy var collectionView: UICollectionView = {//显示TabItem
+    public lazy var collectionView: UICollectionView = {//显示TabItem
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
 //        layout.estimatedItemSize = .zero
