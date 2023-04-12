@@ -10,7 +10,7 @@ import Foundation
 
 extension UIViewController {
     
-    //提示
+    //提示框
     func showAlert(title: String,
                    subtitle: String) {
         let hud = MBProgressHUD.showAdded(to: view, animated: true)
@@ -18,5 +18,9 @@ extension UIViewController {
         hud.label.text = title
         hud.detailsLabel.text = subtitle
         hud.hide(animated: true, afterDelay: 2)
+    }
+    
+    func hideAlert() {
+        MBProgressHUD.hide(for: self.view, animated: true)
     }
 }

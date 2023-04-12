@@ -23,7 +23,6 @@ class LS_PostPageViewController: UIViewController {
         setupUI()
         config()
         let tap = UITapGestureRecognizer(target: self, action: #selector(endEdit))
-//        tap.delaysTouchesEnded = false
         tap.cancelsTouchesInView = false
         self.notePublishView.addGestureRecognizer(tap)
 
@@ -48,6 +47,7 @@ class LS_PostPageViewController: UIViewController {
     var currentContentTextCount = 0
     var isContentTextLimitExceeded: BooleanLiteralType { currentContentTextCount > kNoteContentLimit }
     var countSelectedSubTopics: Int = 0
+    var userPosition: String = ""
     
     lazy var imageResourcesCV: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
@@ -128,6 +128,12 @@ class LS_PostPageViewController: UIViewController {
         let view = IconTextView(image: image, text: "定位", direction: .iconText)
         return view
     }()
+    lazy var positionLabel: UILabel = {
+        let label = UILabel(frame: .zero, text: "", textColor: .label, font:  14)
+        label.textAlignment = .left
+        label.isHidden = true
+        return label
+    }()
     lazy var positionGuideIconText: IconTextView = {
         let image = UIImage(systemName: "chevron.right")!
         let view = IconTextView(image: image, text: "   ", direction: .textIcon)
@@ -177,6 +183,7 @@ class LS_PostPageViewController: UIViewController {
         //定位区
         notePublishView.addSubview(positionView)
         positionView.addSubview(positionSelectIconText)
+        positionView.addSubview(positionLabel)
         positionView.addSubview(positionGuideIconText)
         //发布笔记区
         self.view.addSubview(publishNoteStackView)
@@ -243,7 +250,11 @@ class LS_PostPageViewController: UIViewController {
         
         positionSelectIconText.leftAnchor == positionView.leftAnchor + kCustomGlobalMargin
         positionSelectIconText.widthAnchor == 60
-        positionSelectIconText.verticalAnchors == positionView.verticalAnchors + kCustomGlobalMargin
+        positionSelectIconText.verticalAnchors == positionView.verticalAnchors +  kCustomGlobalMargin
+        
+        positionLabel.leftAnchor == positionView.leftAnchor + 2 * kCustomGlobalMargin
+        positionLabel.widthAnchor == 200
+        positionLabel.verticalAnchors == positionView.verticalAnchors + kCustomGlobalMargin
         
         positionGuideIconText.rightAnchor == positionView.rightAnchor - kCustomGlobalMargin
         positionGuideIconText.widthAnchor == 60
@@ -429,14 +440,34 @@ extension LS_PostPageViewController: ImageBrowserDelegate {
     }
     
 }
+//话题选择页面代理方法
 extension LS_PostPageViewController: PassValueFromTopicSelectViewController {
     func passSubTopic(topic: String, subTopic: String) {
         if countSelectedSubTopics < kSubTopicLimit {
-//            self.selectedSubTopicsDict.append(subTopic)
             self.topicsTextView.text += subTopic + " "
             self.countSelectedSubTopics += 1
         }else {
             self.showAlert(title: "超出话题数量限制", subtitle: "只能选择\(kSubTopicLimit)个话题")
+        }
+        self.dismiss(animated: true)
+    }
+    
+    
+}
+//定位获取页面代理方法
+extension LS_PostPageViewController: PassLocationFromUserPositionVC {
+    func passLocation(location: String, isDisplayPosition: Bool) {
+        self.positionSelectIconText.isHidden = true
+        self.positionLabel.isHidden = false
+        if !isDisplayPosition {
+            self.userPosition = ""
+            self.positionLabel.text = location
+            self.positionLabel.textColor = .systemRed
+        }else {
+            self.userPosition = location
+            self.positionLabel.text = location
+            self.positionLabel.textColor = .systemBlue
+
         }
         self.dismiss(animated: true)
     }
@@ -506,6 +537,7 @@ extension LS_PostPageViewController {
     //点击进行用户定位
     @objc func positionSelect() {
         let userPositionVC = UserPositionViewController()
+        userPositionVC.passPositionDelegate = self
         self.modalPresentationStyle = .overFullScreen
         self.present(userPositionVC, animated: true)
     }
