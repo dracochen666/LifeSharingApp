@@ -50,7 +50,6 @@ class ViewPager: UIView {
 
     }
     
-    
 }
 
 extension ViewPager: TabbedViewDelegate, PagedViewDelegate {
