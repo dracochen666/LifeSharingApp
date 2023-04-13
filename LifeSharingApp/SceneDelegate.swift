@@ -23,16 +23,22 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 //        let home = LS_TabBarViewController()
 //        self.window?.rootViewController = home
 
-//        let home1 = LS_LoginViewController()
-//        let naviVC = UINavigationController(rootViewController: home1)
-//        naviVC.isNavigationBarHidden = true
-//        self.window?.rootViewController = naviVC
+        let home1 = LS_LoginViewController()
+        let naviVC = UINavigationController(rootViewController: home1)
+        naviVC.isNavigationBarHidden = true
+        self.window?.rootViewController = naviVC
 
 
-        let home = LS_PostPageViewController()
-        self.window?.rootViewController = home
+//        let home = LS_PostPageViewController()
+//        self.window?.rootViewController = home
         
 //        let home = LS_MemoPageViewController()
+//        self.window?.rootViewController = home
+        
+//        let home = ChatViewController()
+//        self.window?.rootViewController = home
+        
+//        let home = NoteDetailViewController()
 //        self.window?.rootViewController = home
         
         window?.makeKeyAndVisible()

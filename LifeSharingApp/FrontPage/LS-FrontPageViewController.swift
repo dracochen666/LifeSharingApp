@@ -8,16 +8,21 @@
 import UIKit
 import Anchorage
 
+protocol ShowDetail: AnyObject {
+    func showDetail()
+}
 class LS_FrontPageViewController:UIViewController, PagedViewDelegate {
     func didMoveToPage(Index: Int) {
         print(Index)
     }
     
-    let viewPager: ViewPager = {
+    var showDelegate: ShowDetail?
+    lazy var viewPager: ViewPager = {
         let viewPager = ViewPager(sizeConfiguration: .fillEqually(height: 44, spacing: 0))
         
         let view1 = WaterFallView()
         let view2 = WaterFallView()
+        view2.showNoteDetailDelegate = self
         let view3 = WaterFallView()
         
         viewPager.pagedView.pages = [view1,view2,view3]
@@ -51,4 +56,12 @@ class LS_FrontPageViewController:UIViewController, PagedViewDelegate {
 
     
 
+}
+
+extension LS_FrontPageViewController: ShowNoteDetailDelegate {
+    func showDetail() {
+        self.showDelegate?.showDetail()
+    }
+    
+    
 }

@@ -11,7 +11,11 @@ import YPImagePicker
 class LS_TabBarViewController: UITabBarController {
 
     //    let tabBarVC = UITabBarController()
-    let frontVC = LS_FrontPageViewController()
+    lazy var frontVC: LS_FrontPageViewController = {
+       let vc = LS_FrontPageViewController()
+        vc.showDelegate = self
+        return vc
+    }()
     let memoVC = LS_MemoPageNavigationController(rootViewController: LS_MemoPageViewController())
     let publishVC = LS_PostPageViewController()
     let messageVC = LS_MessagePageViewController()
@@ -97,4 +101,11 @@ extension LS_TabBarViewController: UITabBarControllerDelegate {
     }
 }
     
-
+extension LS_TabBarViewController: ShowDetail {
+    func showDetail() {
+        print("hello")
+        self.navigationController?.pushViewController(NoteDetailViewController(), animated: true)
+    }
+    
+    
+}

@@ -15,6 +15,11 @@ struct imageModel {
     var imageHeight: CGFloat
 }
 
+protocol ShowNoteDetailDelegate: AnyObject {
+    
+    func showDetail()
+}
+
 class WaterFallView: UIView, UICollectionViewDelegate, UICollectionViewDataSource, CHTCollectionViewDelegateWaterfallLayout{
     
     private var imageModels = [imageModel]()
@@ -34,6 +39,7 @@ class WaterFallView: UIView, UICollectionViewDelegate, UICollectionViewDataSourc
     }
     
     //MARK: 变量区
+    var showNoteDetailDelegate: ShowNoteDetailDelegate?
     lazy var collectionView: UICollectionView = {
         let layout = CHTCollectionViewWaterfallLayout()
 //        let layout = UICollectionViewFlowLayout()
@@ -79,7 +85,9 @@ class WaterFallView: UIView, UICollectionViewDelegate, UICollectionViewDataSourc
         cell.configure(image: image!)
         return cell
     }
-    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        self.showNoteDetailDelegate?.showDetail()
+    }
     //CHT
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let rand = imageModels[indexPath.item].imageHeight

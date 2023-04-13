@@ -74,7 +74,9 @@ class WaterFallViewController: UIViewController,UICollectionViewDelegate, UIColl
         cell.configure(image: UIImage(named: imageModels[indexPath.item].imageName)!)
         return cell
     }
-    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        self.navigationController?.pushViewController(NoteDetailViewController(), animated: true)
+    }
     //CHT
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let rand = imageModels[indexPath.item].imageHeight
