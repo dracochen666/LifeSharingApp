@@ -19,12 +19,30 @@ class UserPositionViewController: UIViewController {
         super.viewDidLoad()
 
         setupUI()
+        //获取当前定位信息
         getLocation()
-        
+        //获取周边POI
+        getSurroundingPOI()
+        aroundSearch?.delegate = self
     }
-    let locationManager = AMapLocationManager()
+    //用于获取定位数据
+    lazy var locationManager = AMapLocationManager()
+    //用于获取周边数据
+        //检索器
+    lazy var aroundSearch = AMapSearchAPI()
+        //检索条件
+    lazy var aroundRequest: AMapPOIAroundSearchRequest = {
+        let request = AMapPOIAroundSearchRequest()
+        request.location = AMapGeoPoint.location(withLatitude: latitude, longitude: longitude)
+        return request
+    }()
     
     var positions = [["不显示位置", ""]]
+    //经纬度 在定位回调函数中获取，用于检索周边数据
+    var latitude = 0.0
+    var longitude = 0.0
+    
+    
     weak var passPositionDelegate: PassLocationFromUserPositionVC?
     lazy var positionSearchBar: UISearchBar = {
         let searchBar = UISearchBar(frame: .zero)
@@ -68,6 +86,9 @@ class UserPositionViewController: UIViewController {
     
     }
     
+    func getSurroundingPOI() {
+    }
+    
     func showLoadingAnimation(title: String = "1") {
         let hud = MBProgressHUD.showAdded(to: self.view, animated: true)
         hud.label.text = title
@@ -107,9 +128,10 @@ extension UserPositionViewController: UITableViewDelegate {
         let location = positions[indexPath.row][0]
         self.passPositionDelegate?.passLocation(location: location, isDisplayPosition: true)
     }
-}
-
-extension UserPositionViewController: AMapLocationManagerDelegate {
     
 }
+
+
+
+
 

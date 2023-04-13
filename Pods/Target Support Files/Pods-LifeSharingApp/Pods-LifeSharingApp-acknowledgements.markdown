@@ -11,6 +11,11 @@ Copyright © 2014 AutoNavi. All Rights Reserved.
 Copyright © 2014 AutoNavi. All Rights Reserved.
 
 
+## AMapSearch
+
+Copyright © 2014 AutoNavi. All Rights Reserved.
+
+
 ## Anchorage
 
 The MIT License (MIT)

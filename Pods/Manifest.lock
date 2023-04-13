@@ -2,6 +2,8 @@ PODS:
   - AMapFoundation (1.8.2)
   - AMapLocation (2.9.0):
     - AMapFoundation (>= 1.7.0)
+  - AMapSearch (9.5.0):
+    - AMapFoundation (>= 1.8.0)
   - Anchorage (4.5.0)
   - CHTCollectionViewWaterfallLayout (0.9.10):
     - CHTCollectionViewWaterfallLayout/Swift (= 0.9.10)
@@ -18,6 +20,7 @@ PODS:
 
 DEPENDENCIES:
   - AMapLocation
+  - AMapSearch
   - Anchorage (~> 4.5.0)
   - CHTCollectionViewWaterfallLayout (~> 0.9.10)
   - LookinServer
@@ -28,6 +31,7 @@ SPEC REPOS:
   trunk:
     - AMapFoundation
     - AMapLocation
+    - AMapSearch
     - Anchorage
     - CHTCollectionViewWaterfallLayout
     - LookinServer
@@ -39,6 +43,7 @@ SPEC REPOS:
 SPEC CHECKSUMS:
   AMapFoundation: 9885c48fc3a78fdfb84a0299a2293e56ea3c9fec
   AMapLocation: f5eb11e11c62f0f599f80b578eec8a1f70deb985
+  AMapSearch: e0c81206b8ac1d27ef349095a96ea6398e3a0da3
   Anchorage: 1961bc81c84aeed54ad7ffc697c50cd9de748ba6
   CHTCollectionViewWaterfallLayout: b989a459788d7657ac010e03bc0f7eedca95a420
   LookinServer: 2893f2bae53cbf3fd49bbe1a8ea1745582ef1317
@@ -47,6 +52,6 @@ SPEC CHECKSUMS:
   SteviaLayout: c2ecdcff57d44e38fd2f65e54ad52aeae28ca0c4
   YPImagePicker: 6f410f475bd22fa8cd430495b54d4b2f15865c2d
 
-PODFILE CHECKSUM: a9984fa744586bedee75fdfdfa6658bbdffb5999
+PODFILE CHECKSUM: 0f9acc99f2925d86b92dd28b352808c6339aa090
 
 COCOAPODS: 1.11.3

@@ -12,5 +12,6 @@ target 'LifeSharingApp' do
   pod 'MBProgressHUD', '~> 1.2.0'
   pod 'LookinServer', :configurations => ['Debug']
   pod 'AMapLocation'
+  pod 'AMapSearch'
 
 end

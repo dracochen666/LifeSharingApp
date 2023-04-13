@@ -39,12 +39,22 @@ extension UserPositionViewController {
             //对weak修饰的self进行解包
             guard let poiVC = self else { return }
             
+            if let location = location {
+                poiVC.latitude = location.coordinate.latitude
+                poiVC.longitude = location.coordinate.longitude
+                
+                //通过检索器与检索条件获取周边POI
+                poiVC.aroundSearch?.aMapPOIAroundSearch(poiVC.aroundRequest)
+            }
+            
             if let reGeocode = reGeocode {
                 print("reGeocode:", reGeocode)
                 guard let formattedAddress = reGeocode.formattedAddress, !formattedAddress.isEmpty else {return}
                 //判断是否为直辖市，若为直辖市则省级名称为空
                 let province = reGeocode.province == reGeocode.city ? "" : reGeocode.province!
-                let currentLocation = [reGeocode.poiName!,"\(province)\(reGeocode.city!)\(reGeocode.district!)\(reGeocode.street ?? "")\(reGeocode.number ?? "")"]
+                let currentLocation = [
+                    reGeocode.poiName ?? "未知地点",
+                    "\(province)\(reGeocode.city ?? "")\(reGeocode.district!)\(reGeocode.street ?? "")\(reGeocode.number ?? "")"]
                 poiVC.positions.append(currentLocation)
                 print("当前地点：\(province)\(reGeocode.city!)\(reGeocode.street ?? "")\(reGeocode.number ?? "")")
             }
@@ -53,3 +63,24 @@ extension UserPositionViewController {
         })
     }
 }
+
+extension UserPositionViewController: AMapLocationManagerDelegate {
+
+}
+
+extension UserPositionViewController: AMapSearchDelegate {
+    func onPOISearchDone(_ request: AMapPOISearchBaseRequest!, response: AMapPOISearchResponse!) {
+        if response.count == 0 {
+                return
+        }
+        for index in 0..<response.count  {
+            self.positions.append([response.pois[index].name, response.pois[index].address])
+        }
+        self.positionTableView.reloadData()
+        
+    }
+    
+    
+}
+
+

@@ -26,7 +26,7 @@ class SubTopicsTableViewCell: UITableViewCell {
     }
     
     lazy var subTopicLabel: UILabel = {
-        let label = UILabel(frame: .zero, text: "", textColor: .label, bgColor: .clear, font: 30, textAlignment: .left)
+        let label = UILabel(frame: .zero, text: "", textColor: .label, bgColor: .clear, font: 24, textAlignment: .left)
         return label
     }()
     
