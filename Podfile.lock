@@ -1,4 +1,5 @@
 PODS:
+  - Alamofire (5.6.4)
   - AMapFoundation (1.8.2)
   - AMapLocation (2.9.0):
     - AMapFoundation (>= 1.7.0)
@@ -19,6 +20,7 @@ PODS:
     - SteviaLayout (~> 4.7.3)
 
 DEPENDENCIES:
+  - Alamofire (~> 5.0)
   - AMapLocation
   - AMapSearch
   - Anchorage (~> 4.5.0)
@@ -29,6 +31,7 @@ DEPENDENCIES:
 
 SPEC REPOS:
   trunk:
+    - Alamofire
     - AMapFoundation
     - AMapLocation
     - AMapSearch
@@ -41,6 +44,7 @@ SPEC REPOS:
     - YPImagePicker
 
 SPEC CHECKSUMS:
+  Alamofire: 4e95d97098eacb88856099c4fc79b526a299e48c
   AMapFoundation: 9885c48fc3a78fdfb84a0299a2293e56ea3c9fec
   AMapLocation: f5eb11e11c62f0f599f80b578eec8a1f70deb985
   AMapSearch: e0c81206b8ac1d27ef349095a96ea6398e3a0da3
@@ -52,6 +56,6 @@ SPEC CHECKSUMS:
   SteviaLayout: c2ecdcff57d44e38fd2f65e54ad52aeae28ca0c4
   YPImagePicker: 6f410f475bd22fa8cd430495b54d4b2f15865c2d
 
-PODFILE CHECKSUM: 0f9acc99f2925d86b92dd28b352808c6339aa090
+PODFILE CHECKSUM: bd9299e0ddfb4ad7e5bfc13e148195e3d4ee5f55
 
 COCOAPODS: 1.11.3

@@ -28,7 +28,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         naviVC.isNavigationBarHidden = true
         self.window?.rootViewController = naviVC
 
-
+//
 //        let home = LS_PostPageViewController()
 //        self.window?.rootViewController = home
         

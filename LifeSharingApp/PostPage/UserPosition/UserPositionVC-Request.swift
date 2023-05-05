@@ -70,8 +70,9 @@ extension UserPositionViewController: AMapLocationManagerDelegate {
 
 extension UserPositionViewController: AMapSearchDelegate {
     func onPOISearchDone(_ request: AMapPOISearchBaseRequest!, response: AMapPOISearchResponse!) {
+        positions = [["不显示位置", ""]]
         if response.count == 0 {
-                return
+            return
         }
         for index in 0..<response.count  {
             self.positions.append([response.pois[index].name, response.pois[index].address])
@@ -79,6 +80,8 @@ extension UserPositionViewController: AMapSearchDelegate {
         self.positionTableView.reloadData()
         
     }
+    
+    
     
     
 }

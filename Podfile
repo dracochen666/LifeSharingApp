@@ -13,5 +13,5 @@ target 'LifeSharingApp' do
   pod 'LookinServer', :configurations => ['Debug']
   pod 'AMapLocation'
   pod 'AMapSearch'
-
+  pod 'Alamofire', '~> 5.0'
 end

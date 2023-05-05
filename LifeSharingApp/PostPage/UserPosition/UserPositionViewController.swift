@@ -36,12 +36,16 @@ class UserPositionViewController: UIViewController {
         request.location = AMapGeoPoint.location(withLatitude: latitude, longitude: longitude)
         return request
     }()
-    
-    var positions = [["不显示位置", ""]]
+    lazy var keywordsRequest: AMapPOIKeywordsSearchRequest = {
+        let request = AMapPOIKeywordsSearchRequest()
+        request.keywords = keywords
+        return request
+    }()
+    var positions = [["", ""]]
     //经纬度 在定位回调函数中获取，用于检索周边数据
     var latitude = 0.0
     var longitude = 0.0
-    
+    var keywords: String = ""
     
     weak var passPositionDelegate: PassLocationFromUserPositionVC?
     lazy var positionSearchBar: UISearchBar = {
@@ -49,6 +53,7 @@ class UserPositionViewController: UIViewController {
         searchBar.searchBarStyle = .minimal
         searchBar.layer.cornerRadius = 20
         searchBar.placeholder = "搜索位置"
+        searchBar.delegate = self
         return searchBar
     }()
     lazy var positionTableView: UITableView = {
@@ -89,7 +94,7 @@ class UserPositionViewController: UIViewController {
     func getSurroundingPOI() {
     }
     
-    func showLoadingAnimation(title: String = "1") {
+    func showLoadingAnimation(title: String = "") {
         let hud = MBProgressHUD.showAdded(to: self.view, animated: true)
         hud.label.text = title
     }
@@ -131,6 +136,30 @@ extension UserPositionViewController: UITableViewDelegate {
     
 }
 
+//SearchBar代理
+extension UserPositionViewController: UISearchBarDelegate {
+    
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        print(searchText)
+        if searchText.isEmpty {
+            print(1)
+            aroundSearch?.aMapPOIAroundSearch(aroundRequest)
+            return
+        }
+    }
+    
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        guard let searchText = searchBar.text else { return }
+//        positions = [["不显示位置", ""]]
+        keywords = searchText
+        positions.removeAll()
+        showLoadingAnimation()
+        print(keywords)
+        keywordsRequest.keywords = keywords
+        aroundSearch?.aMapPOIKeywordsSearch(keywordsRequest)
+        hideLoadingAnimation()
+    }
+}
 
 
 

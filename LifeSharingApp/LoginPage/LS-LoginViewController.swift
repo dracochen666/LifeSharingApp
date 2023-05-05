@@ -7,6 +7,7 @@
 
 import UIKit
 import Anchorage
+import Alamofire
 
 class LS_LoginViewController: UIViewController {
     
@@ -14,6 +15,7 @@ class LS_LoginViewController: UIViewController {
         super.viewDidLoad()
 
         self.setupUI()
+        self.getAllUser()
     }
     
     //MARK: 变量区
@@ -29,6 +31,8 @@ class LS_LoginViewController: UIViewController {
     let passwordTextField = UITextField(frame: .zero, placeholder: "输入密码", borderStyle: .roundedRect, isSecureTextEntry: true)
     let loginButton = UIButton(frame: .zero, title: "登录", bgColor: .systemBlue, cornerRadius: 10)
     let registerButton = UIButton(frame: .zero, title: "注册", bgColor: .systemBlue, cornerRadius: 10)
+    
+//    var loginURL: URL = kLoginURL
     
     //MARK: 自定义方法
     func setupUI() {
@@ -84,6 +88,13 @@ class LS_LoginViewController: UIViewController {
         imageView.centerXAnchor /==/ self.view.centerXAnchor
         imageView.centerYAnchor /==/ self.view.centerYAnchor + 200
 //        print("yes")
+    }
+    
+    func getAllUser() {
+        AF.request("http://192.168.31.9:9090/User/getAllUser", method: .get).response { response in
+//            debugPrint(response)
+            print(response)
+        }
     }
     
     @objc func tabToLogin() {
