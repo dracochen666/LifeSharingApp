@@ -7,7 +7,7 @@
 
 import UIKit
 
-class Topic {
+class Topic: Codable {
     
     init(topics: [String], subTopics: [String:[String]]) {
         self.topics = topics

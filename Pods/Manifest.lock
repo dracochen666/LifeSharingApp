@@ -9,12 +9,14 @@ PODS:
   - CHTCollectionViewWaterfallLayout (0.9.10):
     - CHTCollectionViewWaterfallLayout/Swift (= 0.9.10)
   - CHTCollectionViewWaterfallLayout/Swift (0.9.10)
+  - DateToolsSwift (5.0.0)
   - LookinServer (1.1.5):
     - LookinServer/Core (= 1.1.5)
   - LookinServer/Core (1.1.5)
   - MBProgressHUD (1.2.0)
   - PryntTrimmerView (4.0.2)
   - SteviaLayout (4.7.3)
+  - SwiftyJSON (4.3.0)
   - YPImagePicker (4.5.0):
     - PryntTrimmerView (~> 4.0.2)
     - SteviaLayout (~> 4.7.3)
@@ -25,8 +27,10 @@ DEPENDENCIES:
   - AMapSearch
   - Anchorage (~> 4.5.0)
   - CHTCollectionViewWaterfallLayout (~> 0.9.10)
+  - DateToolsSwift
   - LookinServer
   - MBProgressHUD (~> 1.2.0)
+  - SwiftyJSON (~> 4.0)
   - YPImagePicker (~> 4.5.0)
 
 SPEC REPOS:
@@ -37,10 +41,12 @@ SPEC REPOS:
     - AMapSearch
     - Anchorage
     - CHTCollectionViewWaterfallLayout
+    - DateToolsSwift
     - LookinServer
     - MBProgressHUD
     - PryntTrimmerView
     - SteviaLayout
+    - SwiftyJSON
     - YPImagePicker
 
 SPEC CHECKSUMS:
@@ -50,12 +56,14 @@ SPEC CHECKSUMS:
   AMapSearch: e0c81206b8ac1d27ef349095a96ea6398e3a0da3
   Anchorage: 1961bc81c84aeed54ad7ffc697c50cd9de748ba6
   CHTCollectionViewWaterfallLayout: b989a459788d7657ac010e03bc0f7eedca95a420
+  DateToolsSwift: 4207ada6ad615d8dc076323d27037c94916dbfa6
   LookinServer: 2893f2bae53cbf3fd49bbe1a8ea1745582ef1317
   MBProgressHUD: 3ee5efcc380f6a79a7cc9b363dd669c5e1ae7406
   PryntTrimmerView: 6a43cc90df5d99addeabd33d4ba09b1365322130
   SteviaLayout: c2ecdcff57d44e38fd2f65e54ad52aeae28ca0c4
+  SwiftyJSON: 6faa0040f8b59dead0ee07436cbf76b73c08fd08
   YPImagePicker: 6f410f475bd22fa8cd430495b54d4b2f15865c2d
 
-PODFILE CHECKSUM: bd9299e0ddfb4ad7e5bfc13e148195e3d4ee5f55
+PODFILE CHECKSUM: 00cedfc8d1e50df2c7d15d1e88a29be871ab9cb1
 
 COCOAPODS: 1.11.3

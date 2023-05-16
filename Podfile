@@ -14,4 +14,6 @@ target 'LifeSharingApp' do
   pod 'AMapLocation'
   pod 'AMapSearch'
   pod 'Alamofire', '~> 5.0'
+  pod 'DateToolsSwift'
+  pod 'SwiftyJSON', '~> 4.0'
 end

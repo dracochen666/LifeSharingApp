@@ -9,6 +9,9 @@ import UIKit
 
 extension UITextField {
     
+    var unwrappedText: String { text ?? "" }
+    var exactText: String { unwrappedText.isBlank ? "" : unwrappedText }
+    
     convenience init(frame: CGRect,
                      textColor: UIColor = .label,
                      bgColor: UIColor = .clear,
@@ -38,5 +41,6 @@ extension UITextField {
         self.layer.cornerRadius = 20
         self.borderStyle = .none
     }
+    
     
 }

@@ -11,10 +11,15 @@ enum NoteType {
     case photoNote
     case videoNote
 }
-class Note {
+class Note: Codable {
+    
+    var notePhotos: Data?
+    var noteCoverPhoto: Data?
     var noteTitle: String = ""
     var noteContent: String = ""
-    var noteType: NoteType = .photoNote
-    var notePhotoURL: [String] = []
-    var noteVideoURL: String = ""
+    var subtopics: String = ""
+    var topics: String = ""
+    var poiName: String = ""
+    var createTime: Date?
+
 }

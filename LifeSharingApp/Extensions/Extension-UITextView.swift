@@ -9,6 +9,9 @@ import UIKit
 
 extension UITextView {
     
+    var unwrappedText: String { text ?? "" }
+    var exactText: String { unwrappedText.isBlank ? "" : unwrappedText }
+    
     convenience init(frame: CGRect,
                      textColor: UIColor = .placeholderText,
                      bgColor: UIColor = .clear,

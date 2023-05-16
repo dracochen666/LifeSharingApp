@@ -20,16 +20,15 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard let windowScene = (scene as? UIWindowScene) else { return }
         window = UIWindow(frame: UIScreen.main.bounds)
         
-//        let home = LS_TabBarViewController()
-//        self.window?.rootViewController = home
+        let home = LS_TabBarViewController()
+        self.window?.rootViewController = home
 
-        let home1 = LS_LoginViewController()
-        let naviVC = UINavigationController(rootViewController: home1)
-        naviVC.isNavigationBarHidden = true
-        self.window?.rootViewController = naviVC
+//        let home1 = LS_LoginViewController()
+//        let naviVC = UINavigationController(rootViewController: home1)
+//        naviVC.isNavigationBarHidden = true
+//        self.window?.rootViewController = naviVC
 
-//
-//        let home = LS_PostPageViewController()
+//        let home = NoteEditViewController()
 //        self.window?.rootViewController = home
         
 //        let home = LS_MemoPageViewController()
@@ -41,6 +40,11 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 //        let home = NoteDetailViewController()
 //        self.window?.rootViewController = home
         
+//        let home = NoteWaterFallViewController()
+//        self.window?.rootViewController = home
+        
+//        let home = UserProfileViewController()
+//        self.window?.rootViewController = home
         window?.makeKeyAndVisible()
         window?.windowScene = windowScene
     }

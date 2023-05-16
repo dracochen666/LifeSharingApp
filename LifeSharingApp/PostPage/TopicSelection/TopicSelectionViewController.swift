@@ -7,6 +7,7 @@
 
 import UIKit
 import Anchorage
+import Alamofire
 
 protocol PassValueFromTopicSelectViewController: AnyObject {
     func passSubTopic(topic:String, subTopic: String)
@@ -30,7 +31,7 @@ class TopicSelectionViewController: UIViewController {
 
     var isSearchViewVisable: Bool? = false
     //服务端传入(话题分类)tabs
-    var topicsData: Topic = Topic(topics: kTopics, subTopics: kSubTopics)
+    var topicsData: Topic = Topic(topics: kTopicsExample, subTopics: kSubTopicsExample)
     var tabs: [TabbedItem] = []
     //根据服务端传入的tabs数量生成pages，每个page中显示该话题分类的具体话题
     var pages: [UIView] = []
@@ -50,6 +51,10 @@ class TopicSelectionViewController: UIViewController {
         return vp
     }()
 
+//    func getTopicRequest() -> Topic {
+//
+//    }
+    
     func setupUI() {
         //固定数据用于测试
         let tabItems: [TabbedItem] = {

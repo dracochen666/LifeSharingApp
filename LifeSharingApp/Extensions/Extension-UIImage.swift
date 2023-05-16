@@ -17,4 +17,23 @@ extension UIImage {
         UIGraphicsEndImageContext()
         return image!
     }
+    
+    convenience init?(data: Data?) {//可失败便利构造器，传入可选型Data，返回UIimage
+        if let unwrappedData = data {
+            self.init(data: unwrappedData)
+        }else {
+            return nil
+        }
+    }
+    
+    enum JPEGQuality: CGFloat {
+        case low =  0.25
+        case medium = 0.5
+        case high = 0.75
+        case highest = 1
+    }
+    
+    func JPEGDataWithQuality(_ quality: JPEGQuality) -> Data? {
+       return jpegData(compressionQuality: quality.rawValue)
+    }
 }

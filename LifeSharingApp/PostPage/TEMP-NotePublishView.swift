@@ -137,7 +137,7 @@ extension LS_PostPage_NotePublishView {
                     print(photo.image) // Final image selected by the user
                     print(photo.originalImage) // original image selected by the user, unfiltered
                 }
-                picker.pushViewController(LS_PostPageViewController(), animated: true)
+                picker.pushViewController(NoteEditViewController(), animated: true)
                 
             }
             

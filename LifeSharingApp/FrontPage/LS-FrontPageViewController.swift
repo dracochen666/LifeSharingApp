@@ -20,10 +20,10 @@ class LS_FrontPageViewController:UIViewController, PagedViewDelegate {
     lazy var viewPager: ViewPager = {
         let viewPager = ViewPager(sizeConfiguration: .fillEqually(height: 44, spacing: 0))
         
-        let view1 = WaterFallView()
-        let view2 = WaterFallView()
+        let view1 = NoteWaterFallView()
+        let view2 = NoteWaterFallView()
         view2.showNoteDetailDelegate = self
-        let view3 = WaterFallView()
+        let view3 = NoteWaterFallView()
         
         viewPager.pagedView.pages = [view1,view2,view3]
         viewPager.tabbedView.tabs = [
@@ -62,6 +62,4 @@ extension LS_FrontPageViewController: ShowNoteDetailDelegate {
     func showDetail() {
         self.showDelegate?.showDetail()
     }
-    
-    
 }

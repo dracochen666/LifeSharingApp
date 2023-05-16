@@ -7,10 +7,10 @@
 
 import UIKit
 
-class User {
+class User: Codable {
     
     var userId: String?
     var userName: String?
     var password: String?
-    
+    var token: String?
 }

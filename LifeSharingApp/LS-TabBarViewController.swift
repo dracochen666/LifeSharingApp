@@ -7,6 +7,17 @@
 
 import UIKit
 import YPImagePicker
+import Alamofire
+import SwiftyJSON
+
+//创建全局tabBarViewcontroller引用
+var tabBarViewController = UIViewController()
+var defaults = UserDefaults.standard
+let headers: HTTPHeaders = [
+    "token": "\(defaults.value(forKey: LoginInfo().token)!)"
+]
+
+
 
 class LS_TabBarViewController: UITabBarController {
 
@@ -19,10 +30,13 @@ class LS_TabBarViewController: UITabBarController {
     let memoVC = LS_MemoPageNavigationController(rootViewController: LS_MemoPageViewController())
     let publishVC = LS_PostPageViewController()
     let messageVC = LS_MessagePageViewController()
+
     let aboutVC = LS_AboutPageViewController()
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        tabBarViewController = self
         
         decorateBarItems()
         tabBar.backgroundColor = kTabBarBgColor
@@ -57,10 +71,14 @@ class LS_TabBarViewController: UITabBarController {
 extension LS_TabBarViewController: UITabBarControllerDelegate {
     
     func tabBarController(_ tabBarController: UITabBarController, shouldSelect viewController: UIViewController) -> Bool {
+        print("当前登录用户token:",defaults.value(forKey: LoginInfo().token))
+
         if viewController is LS_PostPageViewController {
+            if !(UserLoginStatus.isLogin()) {
+                self.showAlert(title: "请先登录", subtitle: "")
+                return false
+            }
             
-            //待做 用户登录判断，若未登录则不允许发布
- 
             //图片视频选择逻辑：
             //1.只能选择多个图片或单个视频，图片视频不能混选
             //2.选择图片后，在笔记编辑页面可删除或追加图片
@@ -76,13 +94,17 @@ extension LS_TabBarViewController: UITabBarControllerDelegate {
             config.library.preSelectItemOnMultipleSelection = false
             
             let picker = YPImagePicker(configuration: config)
-//            picker.navigationBar.backgroundColor = UIColor(named: kSecondLevelColor)
-//            picker.navigationBar.setBackgroundImage(UIImage(named: "image1"), for: .defaultPrompt)
-            
-//            picker.navigationItem
+
             present(picker, animated: true, completion: nil)
-            picker.didFinishPicking { [unowned picker] items, _ in
-                let vc = LS_PostPageViewController()
+            picker.didFinishPicking { [unowned picker] items, cancelled in
+                if cancelled {
+                    print("cancelled")
+                    tabBarController.selectedIndex = 0
+                    picker.dismiss(animated: true)
+                    return
+                }
+                
+                let vc = NoteEditViewController()
                 var i = 0
                 for item in items {
                     switch item {
@@ -93,11 +115,16 @@ extension LS_TabBarViewController: UITabBarControllerDelegate {
                         print("video")
                     }
                 }
-            picker.pushViewController(vc, animated: true)
+                picker.pushViewController(vc, animated: true)
             }
-            return false
         }
-            return true
+        if viewController is LS_MessagePageViewController {
+            if !UserLoginStatus.isLogin() {
+                self.showAlert(title: "请登录", subtitle: "")
+                return false
+            }
+        }
+        return true
     }
 }
     

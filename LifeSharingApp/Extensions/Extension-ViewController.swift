@@ -12,15 +12,50 @@ extension UIViewController {
     
     //提示框
     func showAlert(title: String,
-                   subtitle: String) {
-        let hud = MBProgressHUD.showAdded(to: view, animated: true)
+                   subtitle: String, isCurrentView: Bool = true) {
+        var showView = view!
+        if !isCurrentView {
+            showView = UIApplication.shared.windows.last!
+        }
+        let hud = MBProgressHUD.showAdded(to: showView, animated: true)
         hud.mode = .text
         hud.label.text = title
-        hud.detailsLabel.text = subtitle
-        hud.hide(animated: true, afterDelay: 2)
+        if !subtitle.isEmpty { hud.detailsLabel.text = subtitle }
+        hud.hide(animated: true, afterDelay: 1)
     }
     
     func hideAlert() {
         MBProgressHUD.hide(for: self.view, animated: true)
+    }
+    
+    func showLoadingAni(title: String = "") {
+        let hud = MBProgressHUD.showAdded(to: self.view, animated: true)
+        hud.label.text = title
+    }
+    func hideLoadingAni() {
+        DispatchQueue.main.async {
+            MBProgressHUD.hide(for: self.view, animated: true)
+        }
+    }
+    
+    func addSubViewController(subVC: UIViewController) {
+        addChild(subVC)
+        subVC.view.frame = self.view.bounds
+        view.addSubview(subVC.view)
+        didMove(toParent: self)
+    }
+    
+    func removeSubViewController(subVC: UIViewController) {
+        willMove(toParent: nil)
+        subVC.view.removeFromSuperview()
+        subVC.removeFromParent()
+    }
+    
+    func removeAllSubViewController() {
+        if !children.isEmpty {
+            for vc in children {
+                removeSubViewController(subVC: vc)
+            }
+        }
     }
 }
