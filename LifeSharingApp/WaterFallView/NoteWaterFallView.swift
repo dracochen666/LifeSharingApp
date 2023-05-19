@@ -23,21 +23,36 @@ protocol ShowNoteDetailDelegate: AnyObject {
 class NoteWaterFallView: UIView, UICollectionViewDelegate, UICollectionViewDataSource, CHTCollectionViewDelegateWaterfallLayout{
     
     private var imageModels = [imageModel]()
-    var notes: [Note] = []
+    var notes: [Note] = [] 
     var drafts: [DraftNote] = []
     var isDraftNote: Bool = false
     
+
+    @objc func refreshView() {
+//        tabBarViewController.hideLoadingAni()
+        self.collectionView.reloadData()
+    }
     override init(frame: CGRect) {
         super.init(frame: frame)
-        let images = Array(0...11).map { "image\($0)"}
-        imageModels = images.compactMap {
-            let randNum = CGFloat.random(in: 200...300)
-            return imageModel.init(imageName: $0, imageHeight: randNum)
-        }
+//        let images = Array(0...11).map { "image\($0)"}
+//        imageModels = images.compactMap {
+//            let randNum = CGFloat.random(in: 200...300)
+//            return imageModel.init(imageName: $0, imageHeight: randNum)
+//        }
+//        let group = DispatchGroup()
+//        group.enter()
         
         self.setupUI()
+//        tabBarViewController.showLoadingAni()
+        self.getNotes()
+//        tabBarViewController.hideLoadingAni()
+
+//        self.notes = self.getNotes()
+//        group.leave()
         getDraftNotes()
+
     }
+    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -89,9 +104,25 @@ class NoteWaterFallView: UIView, UICollectionViewDelegate, UICollectionViewDataS
             return cell
         }else {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "NoteWaterFallCollectionViewCell", for: indexPath) as! NoteWaterFallCollectionViewCell
-            let image = UIImage(named: imageModels[indexPath.item].imageName)
-            cell.configure(image: image!)
-
+//            print(notes.count)
+            cell.note = notes[indexPath.item]
+//            let photosDataArr = try? JSONDecoder().decode([Data].self, from: photosData)
+//            //                var photos: [UIImage] = []
+//            //                for data in photosDataArr! {
+//            //                    photos.append(((UIImage(data: data) ?? UIImage(systemName: "x.circle.fill"))!))
+//            //                }
+//            let photos = photosDataArr?.map({ data in
+//                UIImage(data: data) ?? UIImage(systemName: "x.circle.fill")!
+//            })
+            
+            print(notes[indexPath.item].noteCoverPhoto)
+            let image = UIImage(data: notes[indexPath.item].noteCoverPhoto)
+            if let image = image {
+                cell.configure(image: image)
+            }else {
+                cell.configure(image: UIImage(systemName: "xmark.icloud")!)
+            }
+            
             return cell
         }
         

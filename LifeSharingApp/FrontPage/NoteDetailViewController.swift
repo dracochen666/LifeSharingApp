@@ -11,7 +11,7 @@ class NoteDetailViewController: UIViewController, UICollectionViewDelegate {
     
     // MARK:
     
-    var note: Note!
+    var note: Note?
     var imageUrls: [String] = ["image0","image1","image2","image3","image4","image5","image6","image7"]
     var currentIndex: Int = 0
         

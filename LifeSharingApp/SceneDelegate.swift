@@ -20,7 +20,10 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard let windowScene = (scene as? UIWindowScene) else { return }
         window = UIWindow(frame: UIScreen.main.bounds)
         
-        let home = LS_TabBarViewController()
+        
+        let rootVC = LS_TabBarViewController()
+        let home = LS_TabBarNavigationController(rootViewController: rootVC)
+        home.setNavigationBarHidden(true, animated: true)
         self.window?.rootViewController = home
 
 //        let home1 = LS_LoginViewController()

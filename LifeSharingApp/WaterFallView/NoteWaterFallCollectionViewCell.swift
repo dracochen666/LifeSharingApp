@@ -27,6 +27,26 @@ class NoteWaterFallCollectionViewCell: UICollectionViewCell {
         imageView.clipsToBounds =  true
         return imageView
     }()
+    var note: Note? {
+        didSet {
+            guard let note = note else { return }
+//            let image = UIImage(systemName: "exclamationmark.icloud.fill")
+//            let defaultImageData = image?.JPEGDataWithQuality(.medium)
+            titleLabel.text = note.noteTitle.isEmpty ? "无标题" : note.noteTitle
+//            dateLabel.text = note.createTime?.formattedDate
+            idLabel.text = "用户ID: \(note.noteOwner!)"
+//            print(note.noteCoverPhoto!)
+            iconTextView.label.text = "\(note.noteLikedNumber!)"
+            if let coverPhotoData = note.noteCoverPhoto {
+                imageView.image = UIImage(data: note.noteCoverPhoto)
+            }else {
+                imageView.image =  UIImage(systemName: "exclamationmark.icloud.fill")
+            }
+
+            
+            
+        }
+    }
     lazy var titleLabel: UILabel = {
         let label = UILabel(frame: .zero, text: "旅游风景照片", textColor: .label, bgColor: .clear, font: 14, textAlignment: .left)
         
@@ -39,7 +59,7 @@ class NoteWaterFallCollectionViewCell: UICollectionViewCell {
     }()
     lazy var iconTextView: IconTextView = {
         let image = UIImage(systemName: "heart")!
-        let view = IconTextView(image: image, text: "999+",textColor: .systemGray, tintColor: .systemGray, bgColor: .clear, direction: .iconText)
+        let view = IconTextView(image: image, text: "",textColor: .systemGray, tintColor: .systemGray, bgColor: .clear, direction: .iconText)
         
         return view
     }()
@@ -56,7 +76,7 @@ class NoteWaterFallCollectionViewCell: UICollectionViewCell {
         self.clipsToBounds = true
         self.addSubview(noteStackView)
         noteInfoStackView.addArrangedSubview(idLabel)
-//        noteInfoStackView.addArrangedSubview(iconTextView)
+        noteInfoStackView.addArrangedSubview(iconTextView)
         
         noteStackView.addArrangedSubview(imageView)
         noteStackView.addArrangedSubview(titleLabel)

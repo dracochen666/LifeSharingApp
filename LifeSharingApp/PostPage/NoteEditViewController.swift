@@ -10,6 +10,8 @@ import Anchorage
 import YPImagePicker
 import MBProgressHUD
 import AVKit
+import Alamofire
+import SwiftyJSON
 
 class NoteEditViewController: UIViewController {
 
@@ -511,13 +513,13 @@ extension NoteEditViewController: PassLocationFromUserPositionVC {
         self.positionLabel.isHidden = false
         if !isDisplayPosition {
             self.userPosition = ""
-            self.note.poiName = "不显示位置" //note
+            self.note.notePositions = "不显示位置" //note
             self.positionLabel.text = location
             self.positionLabel.textColor = .systemRed
         }else {
             self.userPosition = location
             self.positionLabel.text = location
-            self.note.poiName = location //note
+            self.note.notePositions = location //note
             self.positionLabel.textColor = .systemBlue
 
         }
@@ -597,18 +599,60 @@ extension NoteEditViewController {
     @objc func saveNote() {
         if isContentTextLimitExceeded {
             self.showAlert(title: "笔记无法发布", subtitle: "正文内容字数超出限制!")
-
+            
         }else {
-            self.navigationController?.navigationBar.isHidden = true
-            self.navigationController?.interactivePopGestureRecognizer?.isEnabled = false
-            self.navigationController?.pushViewController(LS_TabBarViewController(), animated: true)
+//            var note = Note()
+            var photosData: [Data] = []
+            for photo in self.photos {
+                if let photoData = photo.pngData() {
+                    photosData.append(photoData)
+                }
+            }
+            note.noteCoverPhoto = photos[0].JPEGDataWithQuality(.medium)
+            let coverPhotoStr = Base64Util.getStrFromImage(photos[0])
+            note.noteCoverPhoto = try? JSONEncoder().encode(coverPhotoStr)
+            
+            print(photos[0].JPEGDataWithQuality(.medium))
+            print(try? JSONEncoder().encode(coverPhotoStr))
+            note.notePhotos = try? JSONEncoder().encode(photosData)
+            note.noteTitle = titleTextField.exactText
+            note.noteContent = contentTextView.exactText
+            note.topics = self.topics
+            note.subtopics = self.subtopics
+            note.notePositions = self.userPosition
+            note.createTime = Date()
+//            print(note)
+            self.showLoadingAni()
+            let group = DispatchGroup()
+            group.enter()
+            AF.request(kUrlSaveNoteResult,
+                       method: .post,
+                       parameters: note,
+                       encoder: JSONParameterEncoder.default).responseDecodable(of: Result.self) { response in
+                if let data = response.data{
+//                    finishedCallback(data)
+                    let result = try? JSON(data: data)
+//                    print(result!["data"]["noteId"])
+                    self.note.noteId  = result!["data"]["noteId"].rawValue as! Int
+                    print("noteid1:", self.note.noteId)
+                    group.leave()
+                }
+            }
+
+            group.notify(queue: .main) {
+                print(self.note.noteId)
+                self.hideLoadingAni()
+                self.navigationController?.navigationBar.isHidden = true
+                self.navigationController?.interactivePopGestureRecognizer?.isEnabled = false
+                self.navigationController?.pushViewController(LS_TabBarViewController(), animated: true)
+
+            }
+
         }
     }
+    
     //存草稿
     @objc func saveDraftNote() {
-//        let appDelegate = UIApplication.shared.delegate as! AppDelegate
-//        let context = appDelegate.persistentContainer.viewContext
-//        let draftNote = DraftNote(context: context)
         
         if let draftNote = draftNote {
             updateDraftNote(draftNote) //编辑旧草稿状态 直接更改draftNote
@@ -618,7 +662,13 @@ extension NoteEditViewController {
         updateDraftFinished?()
         self.showAlert(title: "保存草稿成功", subtitle: "")
     }
-    
+    func uploadCoverPhoto(noteId: String, data: Data) {
+//        let data = Data("data".utf8)
+        
+        AF.upload(data, to: kUrlUploadCoverPhoto2).responseDecodable(of: Result.self) { response in
+            debugPrint(response)
+        }
+    }
     func createDraftNote() {
         let draftNote = DraftNote(context: context)
         draftNote.noteTitle = titleTextField.exactText

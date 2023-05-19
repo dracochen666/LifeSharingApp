@@ -16,3 +16,20 @@ let kUrlGetAllUser = "\(kIP)/User/getAllUser"
 let kUrlLogin = "\(kIP)/User/login"
 
 let kUrlGetCurrentUser = "\(kIP)/User/getCurrentUser"
+
+//笔记相关
+
+let kUrlSaveNote = "\(kIP)/Note/saveNote"
+
+let kUrlSaveNoteResult = "\(kIP)/Note/saveNoteResult"
+
+let kUrlUploadCoverPhoto = "\(kIP)/Note/uploadCoverPhoto"
+
+let kUrlUploadCoverPhoto2 = "\(kIP)/Note/uploadCoverPhoto2"
+
+let kUrlGetAllNotes = "\(kIP)/Note/getAllNotes"
+
+let kUrlNotePages = "\(kIP)/Note/page"
+
+
+

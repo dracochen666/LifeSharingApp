@@ -130,23 +130,29 @@ class LS_LoginViewController: UIViewController {
     }
     @objc func tabToLogin() {
         print("login")
-        self.showLoadingAni()
-        var user = User()
+//        self.showLoadingAni()
+        let user = User()
         user.userName = userNameTextField.text
         user.password = passwordTextField.text
+        let group = DispatchGroup()
+        
+        group.enter()
+        self.showLoadingAni()
         self.loginRequest(user: user) { result in
             let result = try? JSON(data: result as! Data)
             if result!["code"] == "200" {
                 self.showAlert(title: "登陆成功!", subtitle: "")
-//                print("登录后：本地存储token：\(result!["data"]["userName"])", defaults.value(forKey: LoginInfo().token))
                 defaults.set("\(result!["data"]["token"])", forKey: LoginInfo().token)
                 
                 print("登录后：本地存储token：\(result!["data"]["userName"])", defaults.value(forKey: LoginInfo().token))
-
-                let userProfileVC = UserProfileViewController()
-                aboutPageViewController.removeAllSubViewController()
-                aboutPageViewController.addSubViewController(subVC: userProfileVC)
-
+                group.leave()
+                self.hideLoadingAni()
+                group.notify(queue: .main) {
+                    let userProfileVC = UserProfileViewController()
+                    aboutPageViewController.removeAllSubViewController()
+                    aboutPageViewController.addSubViewController(subVC: userProfileVC)
+                }
+                
             }else {
                 self.showAlert(title: "登录失败!", subtitle: "")
             }
@@ -155,7 +161,7 @@ class LS_LoginViewController: UIViewController {
 //        let vc = LS_TabBarViewController()
 //        self.navigationController?.pushViewController(vc, animated: true)
 //        self.hideAlert()
-        self.hideLoadingAni()
+//        self.hideLoadingAni()
     }
     
     @objc func tabToResgister() {

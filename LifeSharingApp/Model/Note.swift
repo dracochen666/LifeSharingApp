@@ -13,13 +13,20 @@ enum NoteType {
 }
 class Note: Codable {
     
+    var noteId: Int?
     var notePhotos: Data?
     var noteCoverPhoto: Data?
     var noteTitle: String = ""
     var noteContent: String = ""
     var subtopics: String = ""
     var topics: String = ""
-    var poiName: String = ""
+    var notePositions: String = ""
+    var noteComments: String = ""
     var createTime: Date?
+    
+    var noteOwner: Int?
+    var noteLikedNumber: Int?
+    var noteCollectedNumber: Int?
+
 
 }

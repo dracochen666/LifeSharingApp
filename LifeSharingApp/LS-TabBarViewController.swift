@@ -23,10 +23,16 @@ class LS_TabBarViewController: UITabBarController {
 
     //    let tabBarVC = UITabBarController()
     lazy var frontVC: LS_FrontPageViewController = {
-       let vc = LS_FrontPageViewController()
+        let vc = LS_FrontPageViewController()
         vc.showDelegate = self
         return vc
     }()
+//    let frontVC = LS_FrontPageViewController()
+//    lazy var frontNC: LS_FrontPageNavigationController = {
+//        frontVC.showDelegate = self
+//       let nc =  LS_FrontPageNavigationController(rootViewController: frontVC)
+//        return nc
+//    }()
     let memoVC = LS_MemoPageNavigationController(rootViewController: LS_MemoPageViewController())
     let publishVC = LS_PostPageViewController()
     let messageVC = LS_MessagePageViewController()
@@ -36,6 +42,7 @@ class LS_TabBarViewController: UITabBarController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+//        self.navigationController?.navigationBar.isHidden = true
         tabBarViewController = self
         
         decorateBarItems()
@@ -49,6 +56,8 @@ class LS_TabBarViewController: UITabBarController {
     func decorateBarItems(){
         frontVC.tabBarItem.title = "首页"
         frontVC.tabBarItem.setTitleTextAttributes([NSAttributedString.Key.font: UIFont.systemFont(ofSize: 14)], for: .normal)
+//        frontNC.tabBarItem.title = "首页"
+//        frontNC.tabBarItem.setTitleTextAttributes([NSAttributedString.Key.font: UIFont.systemFont(ofSize: 14)], for: .normal)
         frontVC.tabBarItem.titlePositionAdjustment = .init(horizontal: 0, vertical: -16)
         memoVC.tabBarItem.title = "备忘录"
         memoVC.tabBarItem.setTitleTextAttributes([NSAttributedString.Key.font: UIFont.systemFont(ofSize: 14)], for: .normal)
@@ -131,6 +140,7 @@ extension LS_TabBarViewController: UITabBarControllerDelegate {
 extension LS_TabBarViewController: ShowDetail {
     func showDetail() {
         print("hello")
+        
         self.navigationController?.pushViewController(NoteDetailViewController(), animated: true)
     }
     
