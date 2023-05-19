@@ -15,6 +15,7 @@ class Note: Codable {
     
     var noteId: Int?
     var notePhotos: Data?
+    var noteCoverPhotoStr: String?
     var noteCoverPhoto: Data?
     var noteTitle: String = ""
     var noteContent: String = ""

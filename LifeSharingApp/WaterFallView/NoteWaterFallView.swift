@@ -168,16 +168,20 @@ class NoteWaterFallView: UIView, UICollectionViewDelegate, UICollectionViewDataS
             let image = UIImage(data: drafts[indexPath.item].noteCoverPhoto)
             let prop =  Float(image?.size.width ?? 3) / Float(image?.size.height ?? 2)
             let noteHeight = CGFloat(viewWidth / prop)
-            print("宽:",CGFloat(viewWidth))
-            print("高:",noteHeight)
-            print("比例:",prop)
+//            print("宽:",CGFloat(viewWidth))
+//            print("高:",noteHeight)
+//            print("比例:",prop)
             let rand = CGFloat.random(in: 0...50)
             return prop > 2 ? CGSize(width: CGFloat(viewWidth), height: noteHeight) :  CGSize(width: CGFloat(viewWidth), height: noteHeight + rand)
 //            return  CGSize(width: CGFloat(viewWidth), height: noteHeight + rand)
         }else {
+
+            let viewWidth = Float(self.frame.size.width/2)
             let image = UIImage(data: notes[indexPath.item].noteCoverPhoto)
-            let rand = (image?.size.height ?? 200) + 40
-            return CGSize(width: self.frame.size.width/2, height: rand)
+            let prop =  Float(image?.size.width ?? 3) / Float(image?.size.height ?? 2)
+            let noteHeight = CGFloat(viewWidth / prop)
+            let rand = CGFloat.random(in: 20...50)
+            return prop > 2 ? CGSize(width: CGFloat(viewWidth), height: noteHeight) :  CGSize(width: CGFloat(viewWidth), height: noteHeight + rand)
         }
 
 //        let rand = CGFloat.random(in: 200...300)

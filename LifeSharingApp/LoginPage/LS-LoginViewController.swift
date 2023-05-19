@@ -141,27 +141,34 @@ class LS_LoginViewController: UIViewController {
         self.loginRequest(user: user) { result in
             let result = try? JSON(data: result as! Data)
             if result!["code"] == "200" {
-                self.showAlert(title: "登陆成功!", subtitle: "")
+                let userId = String(result!["data"]["userId"].int ?? -2)
                 defaults.set("\(result!["data"]["token"])", forKey: LoginInfo().token)
+                defaults.set("\(userId)", forKey: AccountInfo().userId)
+                defaults.set("\(result!["data"]["userName"])", forKey: AccountInfo().userName)
+                defaults.set("\(result!["data"]["password"])", forKey: AccountInfo().password)
+
+//                print(user.userId)
+                print("登录成功:")
+                print("本地存储信息LoginInfo", defaults.value(forKey: LoginInfo().token)!)
+                print("本地存储信息AcountInfo", defaults.value(forKey: AccountInfo().userId)!)
+                print("本地存储信息AcountInfo", defaults.value(forKey: AccountInfo().userName)!)
+                print("本地存储信息AcountInfo", defaults.value(forKey: AccountInfo().password)!)
+                      
                 
-                print("登录后：本地存储token：\(result!["data"]["userName"])", defaults.value(forKey: LoginInfo().token))
-                group.leave()
                 self.hideLoadingAni()
+                group.leave()
                 group.notify(queue: .main) {
                     let userProfileVC = UserProfileViewController()
                     aboutPageViewController.removeAllSubViewController()
                     aboutPageViewController.addSubViewController(subVC: userProfileVC)
+                    aboutPageViewController.showAlert(title: "登陆成功！", subtitle: "")
                 }
                 
             }else {
                 self.showAlert(title: "登录失败!", subtitle: "")
             }
         }
-//        self.loadingAnimation()
-//        let vc = LS_TabBarViewController()
-//        self.navigationController?.pushViewController(vc, animated: true)
-//        self.hideAlert()
-//        self.hideLoadingAni()
+
     }
     
     @objc func tabToResgister() {

@@ -604,16 +604,17 @@ extension NoteEditViewController {
 //            var note = Note()
             var photosData: [Data] = []
             for photo in self.photos {
-                if let photoData = photo.pngData() {
+                if let photoData = photo.JPEGDataWithQuality(.medium) {
                     photosData.append(photoData)
                 }
             }
-            note.noteCoverPhoto = photos[0].JPEGDataWithQuality(.medium)
-            let coverPhotoStr = Base64Util.getStrFromImage(photos[0])
-            note.noteCoverPhoto = try? JSONEncoder().encode(coverPhotoStr)
-            
-            print(photos[0].JPEGDataWithQuality(.medium))
-            print(try? JSONEncoder().encode(coverPhotoStr))
+//            note.noteCoverPhoto = photos[0].JPEGDataWithQuality(.medium)
+//            let coverPhotoStr = Base64Util.getStrFromImage(photos[0])
+            note.noteCoverPhoto = try? JSONEncoder().encode(photos[0].JPEGDataWithQuality(.low))
+//
+//            print(photos[0].JPEGDataWithQuality(.medium))
+//            print(try? JSONEncoder().encode(coverPhotoStr))
+//            note.noteCoverPhotoStr = Base64Util.getStrFromImage(photos[0])
             note.notePhotos = try? JSONEncoder().encode(photosData)
             note.noteTitle = titleTextField.exactText
             note.noteContent = contentTextView.exactText
@@ -621,6 +622,7 @@ extension NoteEditViewController {
             note.subtopics = self.subtopics
             note.notePositions = self.userPosition
             note.createTime = Date()
+            note.noteOwner = Int(defaults.string(forKey: AccountInfo().userId) ?? "-2")
 //            print(note)
             self.showLoadingAni()
             let group = DispatchGroup()
@@ -632,16 +634,18 @@ extension NoteEditViewController {
                 if let data = response.data{
 //                    finishedCallback(data)
                     let result = try? JSON(data: data)
-//                    print(result!["data"]["noteId"])
+                    guard let id = result!["data"]["noteId"].int else {
+                        tabBarViewController.showAlert(title: "保存失败！", subtitle: "")
+                        return
+                    }
                     self.note.noteId  = result!["data"]["noteId"].rawValue as! Int
-                    print("noteid1:", self.note.noteId)
                     group.leave()
                 }
             }
 
             group.notify(queue: .main) {
-                print(self.note.noteId)
                 self.hideLoadingAni()
+                tabBarViewController.showAlert(title: "保存成功！", subtitle: "")
                 self.navigationController?.navigationBar.isHidden = true
                 self.navigationController?.interactivePopGestureRecognizer?.isEnabled = false
                 self.navigationController?.pushViewController(LS_TabBarViewController(), animated: true)

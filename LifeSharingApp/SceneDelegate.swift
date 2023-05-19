@@ -48,6 +48,10 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
 //        let home = UserProfileViewController()
 //        self.window?.rootViewController = home
+//        
+//        let home = afTestViewController()
+//        self.window?.rootViewController = home
+        
         window?.makeKeyAndVisible()
         window?.windowScene = windowScene
     }

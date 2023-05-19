@@ -23,7 +23,7 @@ class NoteWaterFallCollectionViewCell: UICollectionViewCell {
     private lazy var imageView: UIImageView = {
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.contentMode = .scaleAspectFill
+        imageView.contentMode = .scaleToFill
         imageView.clipsToBounds =  true
         return imageView
     }()
@@ -64,7 +64,7 @@ class NoteWaterFallCollectionViewCell: UICollectionViewCell {
         return view
     }()
     lazy var noteInfoStackView: UIStackView = {
-        let stackView = UIStackView(axis: .horizontal, distribution: .fill, spacing: 0, bgColor: .clear, isLayoutMargin: false, cornerRadius: kGlobalCornerRadius)
+        let stackView = UIStackView(axis: .horizontal, distribution: .equalSpacing, spacing: 0, bgColor: .clear, isLayoutMargin: false, cornerRadius: kGlobalCornerRadius)
         return stackView
     }()
     lazy var noteStackView: UIStackView = {

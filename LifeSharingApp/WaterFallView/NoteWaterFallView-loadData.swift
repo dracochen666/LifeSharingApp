@@ -28,7 +28,7 @@ extension NoteWaterFallView {
             return data
     }
 
-    func getNotes(_ pageNum: Int = 1, _ pageSize: Int = 4, _ getLargeData: Bool = false) -> [Note]{
+    func getNotes(_ pageNum: Int = 1, _ pageSize: Int = 10, _ getLargeData: Bool = false) -> [Note]{
         var group = DispatchGroup()
         tabBarViewController.showLoadingAni()
         group.enter()
@@ -68,10 +68,29 @@ extension NoteWaterFallView {
 //                    let data = noteRecord["noteCoverPhoto"].stringValue.data(using: .utf8, allowLossyConversion: false)
 //                    print("data",data)
 //                    let coverPhotoStr = try? JSONDecoder().decode(String.self, from: noteRecord["noteCoverPhoto"].rawData())
-                    note.noteCoverPhoto = Base64Util.convertStrToImage(noteRecord["noteCoverPhoto"].stringValue)?.JPEGDataWithQuality(.medium)
+//                    note.noteCoverPhoto = Base64Util.convertStrToImage(noteRecord["noteCoverPhoto"].stringValue)?.JPEGDataWithQuality(.medium)
+//                    if let imageBase64 = noteRecord["noteCoverPhoto"].string {
+//                        let imageArray = NSData(base64Encoded: imageBase64, options: [])
+////                        print(imageArray)
+//                        note.noteCoverPhoto = Data(referencing: imageArray!)
+//                    } else {
+//                        print("missing `file` entry")
+//                    }
+//                    note.noteCoverPhoto = noteRecord["noteCoverPhoto"].stringValue.data(using: .ascii)
+//                    let result = try? JSON(data: data )
+//                    let noteRecord = result!["records"].arrayValue[2]
 
+                    let decoder = JSONDecoder()
+                    if let imageBase64 = noteRecord["noteCoverPhoto"].string {
+                        print("file")
+                        let imageNSData = NSData(base64Encoded: imageBase64)
+                        let imageData = Data(referencing: imageNSData!)
+                        let coverPhotoData = try? decoder.decode(Data.self, from: imageData)
+                        note.noteCoverPhoto = coverPhotoData
+//                        self.imageView.image = UIImage(data: photosDataArr![0])
+                    }
                     if getLargeData {
-                        note.notePhotos = noteRecord["notePhotos"].stringValue.data(using: .utf8)
+                        note.notePhotos = noteRecord["notePhotos"].stringValue.data(using: .ascii)
                     }
 
 //                    print(note.noteCoverPhoto)
@@ -85,12 +104,13 @@ extension NoteWaterFallView {
         }
         group.leave()
         group.notify(queue: .main) {
-            tabBarViewController.hideLoadingAni()
             self.collectionView.reloadData()
             tabBarViewController.hideLoadingAni()
+
         }
         DispatchQueue.main.async {
-//            let imageV = UIImageView(image: UIImage(systemName: "bolt.horizontal.icloud.fill"))
+//            let imageV = UIImageView(image: UIImage(data: notes[3].noteCoverPhoto))
+//
 //            self.addSubview(imageV)
 //            imageV.tintColor = .green
 //            imageV.horizontalAnchors == self.horizontalAnchors - 100
