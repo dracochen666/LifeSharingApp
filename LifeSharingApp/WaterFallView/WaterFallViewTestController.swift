@@ -10,7 +10,7 @@ import Anchorage
 
 class WaterFallViewTestController: UIViewController {
 
-    let waterFall = NoteWaterFallView(frame: .zero)
+    let waterFall = NoteWaterFallView(requestType: .getAll)
     
     override func viewDidLoad() {
         super.viewDidLoad()

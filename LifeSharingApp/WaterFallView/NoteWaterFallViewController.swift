@@ -16,7 +16,7 @@ class NoteWaterFallViewController: UIViewController {
         setupUI()
     }
     
-    var noteWaterFallView: NoteWaterFallView = NoteWaterFallView()
+    var noteWaterFallView: NoteWaterFallView = NoteWaterFallView(requestType: .getAll)
     var labelBar: UILabel = {
         let label = UILabel(frame: .zero, text: "本地草稿", textColor: .label, bgColor: UIColor(named: kSecondLevelColor)!, font: 24, textAlignment: .center)
         label.layer.cornerRadius = 8

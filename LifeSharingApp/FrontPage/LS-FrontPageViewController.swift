@@ -21,8 +21,9 @@ class LS_FrontPageViewController:UIViewController, PagedViewDelegate {
         let viewPager = ViewPager(sizeConfiguration: .fillEqually(height: 44, spacing: 0))
         
         let view1 = UIView()
-        let view2 = NoteWaterFallView()
+        let view2 = NoteWaterFallView(requestType: .getAll)
         view2.showNoteDetailDelegate = self
+        view2.isGetAll = true
         let view3 = UIView()
         
         viewPager.pagedView.pages = [view1,view2,view3]
