@@ -718,6 +718,7 @@ extension NoteEditViewController {
         draft.topics = self.topics
         draft.subtopics = self.subtopics
         draft.poiName = self.userPosition
+//        let date = Date()
         draft.createTime = Date()
         appDelegate.saveContext()
         self.dismiss(animated: true)

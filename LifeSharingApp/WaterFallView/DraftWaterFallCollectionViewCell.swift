@@ -30,7 +30,7 @@ class DraftWaterFallCollectionViewCell : UICollectionViewCell {
             
         }
     }
-    private lazy var imageView: UIImageView = {
+    lazy var imageView: UIImageView = {
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.contentMode = .scaleToFill

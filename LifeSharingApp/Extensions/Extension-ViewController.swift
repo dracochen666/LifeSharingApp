@@ -33,9 +33,20 @@ extension UIViewController {
         hud.label.text = title
     }
     func hideLoadingAni() {
-        DispatchQueue.main.async {
-            MBProgressHUD.hide(for: self.view, animated: true)
+
+        MBProgressHUD.hide(for: self.view, animated: true)
+
+    }
+    func showLoadingAniCustom(title: String = "", isCurrentView: Bool = true) {
+        var showView = view!
+        if !isCurrentView {
+            showView = UIApplication.shared.windows.last!
         }
+        let hud = MBProgressHUD.showAdded(to: showView, animated: true)
+        hud.hide(animated: true, afterDelay: 1)
+    }
+    func hideLoadingAniCustom() {
+        MBProgressHUD.hide(for: self.view, animated: true)
     }
     
     func addSubViewController(subVC: UIViewController) {

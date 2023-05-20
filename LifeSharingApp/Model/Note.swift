@@ -24,6 +24,7 @@ class Note: Codable {
     var notePositions: String = ""
     var noteComments: String = ""
     var createTime: Date?
+    var createTimeStr: String?
     
     var noteOwner: Int?
     var noteLikedNumber: Int?

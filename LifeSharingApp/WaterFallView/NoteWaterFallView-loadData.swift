@@ -27,32 +27,53 @@ extension NoteWaterFallView {
             let data = jsonString.data(using: String.Encoding.utf8, allowLossyConversion: false)
             return data
     }
-
-    func getNotes(_ pageNum: Int = 1, _ pageSize: Int = 10, _ getLargeData: Bool = false) -> [Note]{
-        var group = DispatchGroup()
-        tabBarViewController.showLoadingAni()
-        group.enter()
+    
+    enum RequestType {
+        case getDraft
+        case getAll
+        case getPublished
+        case getLiked
+    }
+    
+    func getNotes(userId: Int,_ getLargeData: Bool = false, requestType: RequestType){
+        let pageNum = 1
+        let pageSize = 30
+//        let group = DispatchGroup()
+//        tabBarViewController.showLoadingAni()
+//        group.enter()
+        print(userId)
         var notes: [Note] = []
-        
-        AF.request(kUrlNotePages+"?pageNum=\(pageNum)&pageSize=\(pageSize)",
+        var requestUrl = ""
+        switch requestType {
+        case .getDraft:
+            return
+        case .getAll:
+//            print("getAll")
+            requestUrl = kUrlNotePages+"?pageNum=\(pageNum)&pageSize=\(pageSize)"
+        case .getPublished:
+            print("getPublished")
+            requestUrl = kUrlGetNotePublished+"?userId=\(userId)"
+        case .getLiked:
+            requestUrl = kUrlNotePages+"?pageNum=\(pageNum)&pageSize=\(pageSize)"
+//            print("getLiked")
+        }
+        print("查询前Url：\(requestUrl)")
+        AF.request(requestUrl,
                    method: .get,
-                   headers: headers).responseDecodable(of: [Note].self) { response in
-
-            print(response.data)
-            if let data = response.data {
-                
-//                let decoder = JSONDecoder()
-//                let dataArr = try? decoder.decode([Note].self, from: data)
-//                for note in dataArr! {
-//                    self.notes.append(note)
-//                    print(note)
-//                }
-//                self.notes = data
-//                print(data)
-                let result = try? JSON(data: data )
-                for noteRecord in result!["records"].arrayValue {
-//                    print("noteRecord",noteRecord)
+                   headers: headers).response { response in
+            print("查询时Url：\(requestUrl)")
+            print("正在查询..")
+            if let data = response.data, let result = try? JSON(data: data ){
+                print("noteRecord",result["records"])
+                var resultArr = result["records"].arrayValue
+                if self.isGetPublished {
+                    resultArr = result.arrayValue
+                }
+//                self.isGetAll ? result["records"].arrayValue : result.arrayValue
+                for noteRecord in resultArr {
+//                    print("noteRecord",result["records"])
                     let note = Note()
+                    note.noteId = noteRecord["noteId"].intValue
                     note.noteTitle = noteRecord["noteTitle"].stringValue
                     note.noteContent = noteRecord["noteContent"].stringValue
                     note.topics = noteRecord["noteTopics"].stringValue
@@ -64,61 +85,46 @@ extension NoteWaterFallView {
                     note.noteLikedNumber = noteRecord["noteLikedNumber"].intValue
                     note.noteCollectedNumber = noteRecord["noteCollectedNumber"].intValue
 
-//                    print(noteRecord["noteCoverPhoto"].stringValue)
-//                    let data = noteRecord["noteCoverPhoto"].stringValue.data(using: .utf8, allowLossyConversion: false)
-//                    print("data",data)
-//                    let coverPhotoStr = try? JSONDecoder().decode(String.self, from: noteRecord["noteCoverPhoto"].rawData())
-//                    note.noteCoverPhoto = Base64Util.convertStrToImage(noteRecord["noteCoverPhoto"].stringValue)?.JPEGDataWithQuality(.medium)
-//                    if let imageBase64 = noteRecord["noteCoverPhoto"].string {
-//                        let imageArray = NSData(base64Encoded: imageBase64, options: [])
-////                        print(imageArray)
-//                        note.noteCoverPhoto = Data(referencing: imageArray!)
-//                    } else {
-//                        print("missing `file` entry")
-//                    }
-//                    note.noteCoverPhoto = noteRecord["noteCoverPhoto"].stringValue.data(using: .ascii)
-//                    let result = try? JSON(data: data )
-//                    let noteRecord = result!["records"].arrayValue[2]
-
                     let decoder = JSONDecoder()
                     if let imageBase64 = noteRecord["noteCoverPhoto"].string {
-                        print("file")
+//                        print("file")
                         let imageNSData = NSData(base64Encoded: imageBase64)
                         let imageData = Data(referencing: imageNSData!)
                         let coverPhotoData = try? decoder.decode(Data.self, from: imageData)
                         note.noteCoverPhoto = coverPhotoData
-//                        self.imageView.image = UIImage(data: photosDataArr![0])
                     }
                     if getLargeData {
-                        note.notePhotos = noteRecord["notePhotos"].stringValue.data(using: .ascii)
+                        if let imageBase64 = noteRecord["notePhotos"].string {
+//                            print("file")
+                            let imageBase64 = NSData(base64Encoded: imageBase64)
+                            let imageData = Data(referencing: imageBase64!)
+                            let photosDataArr = try? decoder.decode(Data.self, from: imageData)
+                            note.notePhotos = photosDataArr
+                        }
                     }
 
-//                    print(note.noteCoverPhoto)
                     self.notes.append(note)
                     notes.append(note)
 
                 }
-                print(self.notes)
+                
                 self.collectionView.reloadData()
+//                tabBarViewController.hideLoadingAni()
+                
             }
         }
-        group.leave()
-        group.notify(queue: .main) {
-            self.collectionView.reloadData()
-            tabBarViewController.hideLoadingAni()
-
-        }
-        DispatchQueue.main.async {
-//            let imageV = UIImageView(image: UIImage(data: notes[3].noteCoverPhoto))
+//        group.leave()
+//        group.notify(queue: .main) {
+//            self.collectionView.reloadData()
+//            tabBarViewController.hideLoadingAni()
 //
-//            self.addSubview(imageV)
-//            imageV.tintColor = .green
-//            imageV.horizontalAnchors == self.horizontalAnchors - 100
-//            imageV.verticalAnchors == self.verticalAnchors - 100
-            self.collectionView.reloadData()
-            tabBarViewController.hideLoadingAni()
-        }
+//        }
+//        DispatchQueue.main.async {
+//
+//            self.collectionView.reloadData()
+//            tabBarViewController.hideLoadingAni()
+//        }
 
-        return notes
+//        return notes
     }
 }

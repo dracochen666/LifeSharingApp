@@ -8,7 +8,8 @@
 import Foundation
 
 //let kLoginURL: URL = URL(from: "http://localhost:9090/User/login")
-let kIP = "http://192.168.31.9:9090"
+//homeIP: 192.168.31.9 BistuIP: 169.254.105.37
+let kIP = "http://169.254.237.157:9090"
 
 //用户相关
 let kUrlGetAllUser = "\(kIP)/User/getAllUser"
@@ -31,5 +32,7 @@ let kUrlGetAllNotes = "\(kIP)/Note/getAllNotes"
 
 let kUrlNotePages = "\(kIP)/Note/page"
 
+let kUrlGetNoteById = "\(kIP)/Note/getNoteById"
 
+let kUrlGetNotePublished = "\(kIP)/Note/getUserPublishedNote"
 

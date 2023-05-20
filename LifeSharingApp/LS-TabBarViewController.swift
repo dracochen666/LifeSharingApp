@@ -27,12 +27,6 @@ class LS_TabBarViewController: UITabBarController {
         vc.showDelegate = self
         return vc
     }()
-//    let frontVC = LS_FrontPageViewController()
-//    lazy var frontNC: LS_FrontPageNavigationController = {
-//        frontVC.showDelegate = self
-//       let nc =  LS_FrontPageNavigationController(rootViewController: frontVC)
-//        return nc
-//    }()
     let memoVC = LS_MemoPageNavigationController(rootViewController: LS_MemoPageViewController())
     let publishVC = LS_PostPageViewController()
     let messageVC = LS_MessagePageViewController()

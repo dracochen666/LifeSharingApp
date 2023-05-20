@@ -9,12 +9,34 @@ import UIKit
 
 class NoteDetailViewController: UIViewController, UICollectionViewDelegate {
     
-    // MARK:
-    
-    var note: Note?
-    var imageUrls: [String] = ["image0","image1","image2","image3","image4","image5","image6","image7"]
-    var currentIndex: Int = 0
+    override func viewDidLoad() {
+        super.viewDidLoad()
         
+        let swipeRight = UISwipeGestureRecognizer(target: self, action: #selector(handleSwipe))
+        swipeRight.direction = .right
+        self.view.addGestureRecognizer(swipeRight)
+        self.setupUI()
+        self.note = getNoteById(noteId!)
+        
+    }
+    
+    // MARK:
+    var noteId: Int?
+
+    var note: Note?
+//    {
+//        didSet {
+//            titleLabel.text = note?.noteTitle
+//            bodyLabel.text = note?.noteContent
+//            let formatter = DateFormatter()
+//            formatter.dateFormat = "yyyy-MM-dd"
+//            dateLabel.text = formatter.string(for: note?.createTime)
+//        }
+//    }
+//    var imageUrls: [String] = ["image0","image1","image2","image3","image4","image5","image6","image7"]
+    var currentIndex: Int = 0
+    var showNoteDetailFinished: (()->())?
+
     lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
@@ -73,12 +95,15 @@ class NoteDetailViewController: UIViewController, UICollectionViewDelegate {
     }()
     
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
+ 
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         
-        let swipeRight = UISwipeGestureRecognizer(target: self, action: #selector(handleSwipe))
-        swipeRight.direction = .right
-        self.view.addGestureRecognizer(swipeRight)
+
+    }
+
+    func setupUI() {
         view.backgroundColor = UIColor(named: kSecondLevelColor)
         
         view.addSubview(collectionView)
@@ -118,24 +143,18 @@ class NoteDetailViewController: UIViewController, UICollectionViewDelegate {
             commentButton.heightAnchor.constraint(equalToConstant: 30),
         ])
         
-//        imageUrls = note.imageUrls
         
-        titleLabel.text = "风景"
-        bodyLabel.text = "壮丽的山脉屹立在远处，山川纵横，云雾缭绕。茂密的森林覆盖在山脚下，青翠欲滴。清澈的溪流在山间穿梭，发出优美的流水声。这里是一处令人心旷神怡的山景。壮丽的山脉屹立在远处，山川纵横，云雾缭绕。茂密的森林覆盖在山脚下，青翠欲滴。清澈的溪流在山间穿梭，发出优美的流水声。这里是一处令人心旷神怡的山景。壮丽的山脉屹立在远处，山川纵横，云雾缭绕。茂密的森林覆盖在山脚下，青翠欲滴。清澈的溪流在山间穿梭，发出优美的流水声。这里是一处令人心旷神怡的山景。壮丽的山脉屹立在远处，山川纵横，云雾缭绕。茂密的森林覆盖在山脚下，青翠欲滴。清澈的溪流在山间穿梭，发出优美的流水声。这里是一处令人心旷神怡的山景。"
-        dateLabel.text = "编辑于: 2023/4/13"
+        titleLabel.text = ""
+        bodyLabel.text = ""
+        dateLabel.text = "编辑于: "
     }
-
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        
-
-    }
-
+    
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         let x = scrollView.contentOffset.x
         let w = scrollView.bounds.size.width
         currentIndex = Int(x / w)
     }
+
 
     // MARK: Actions
 
@@ -146,6 +165,50 @@ class NoteDetailViewController: UIViewController, UICollectionViewDelegate {
         
     }
 
+}
+
+
+
+extension NoteDetailViewController: UICollectionViewDataSource {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        let decoder = JSONDecoder()
+        if let photosData = note?.notePhotos {
+            let imageDataArr = try? decoder.decode([Data].self, from: photosData)
+            return imageDataArr?.count ?? 0
+        }else {
+            return 0
+        }
+        
+    }
+
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ImageCell", for: indexPath) as! ImageCollectionViewCell
+        let decoder = JSONDecoder()
+        if let photosData = note?.notePhotos {
+            let imageDataArr = try? decoder.decode([Data].self, from: (note?.notePhotos)!)
+            print("1111")
+            let image = UIImage(data: imageDataArr![indexPath.item])
+            cell.imageView.image = image
+            return cell
+            
+        }else {
+            cell.imageView.image = UIImage(systemName: "exclamationmark.icloud.fill")
+            return cell
+            
+        }
+        
+        
+    }
+    
+}
+
+
+
+extension NoteDetailViewController {
+    @objc func handleSwipe() {
+        self.navigationController?.popViewController(animated: true)
+    }
 }
 
 class ImageCollectionViewCell: UICollectionViewCell {
@@ -172,25 +235,5 @@ class ImageCollectionViewCell: UICollectionViewCell {
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-    }
-}
-
-extension NoteDetailViewController: UICollectionViewDataSource {
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return imageUrls.count
-    }
-
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ImageCell", for: indexPath) as! ImageCollectionViewCell
-        cell.imageView.image = UIImage(named: imageUrls[indexPath.row])
-        print("1111")
-        return cell
-    }
-    
-}
-
-extension NoteDetailViewController {
-    @objc func handleSwipe() {
-        self.navigationController?.popViewController(animated: true)
     }
 }
