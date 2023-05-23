@@ -64,7 +64,7 @@ extension NoteWaterFallView {
             print("查询时Url：\(requestUrl)")
             print("正在查询..")
             if let data = response.data, let result = try? JSON(data: data ){
-                print("noteRecord",result["records"])
+//                print("noteRecord",result["records"])
                 var resultArr = result["records"].arrayValue
                 if self.isGetPublished {
                     resultArr = result.arrayValue
@@ -83,7 +83,7 @@ extension NoteWaterFallView {
                     note.noteComments = noteRecord["noteComments"].stringValue
                     note.noteOwner = noteRecord["noteOwner"].intValue
                     note.noteLikedNumber = noteRecord["noteLikedNumber"].intValue
-                    note.noteCollectedNumber = noteRecord["noteCollectedNumber"].intValue
+                    
 
                     let decoder = JSONDecoder()
                     if let imageBase64 = noteRecord["noteCoverPhoto"].string {

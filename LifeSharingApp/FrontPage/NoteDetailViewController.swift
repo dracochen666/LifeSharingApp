@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Anchorage
 
 class NoteDetailViewController: UIViewController, UICollectionViewDelegate {
     
@@ -24,18 +25,10 @@ class NoteDetailViewController: UIViewController, UICollectionViewDelegate {
     var noteId: Int?
 
     var note: Note?
-//    {
-//        didSet {
-//            titleLabel.text = note?.noteTitle
-//            bodyLabel.text = note?.noteContent
-//            let formatter = DateFormatter()
-//            formatter.dateFormat = "yyyy-MM-dd"
-//            dateLabel.text = formatter.string(for: note?.createTime)
-//        }
-//    }
-//    var imageUrls: [String] = ["image0","image1","image2","image3","image4","image5","image6","image7"]
+
+    var noteComments: [NoteComment] = kComments
+    
     var currentIndex: Int = 0
-    var showNoteDetailFinished: (()->())?
 
     lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
@@ -78,11 +71,24 @@ class NoteDetailViewController: UIViewController, UICollectionViewDelegate {
         return label
     }()
     
+    let userIdLabel: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.font = UIFont.boldSystemFont(ofSize: 18)
+        label.numberOfLines = 0
+        label.clipsToBounds = true
+        label.layer.cornerRadius = 8
+        
+        label.backgroundColor = UIColor(named: kThirdLevelColor)
+        return label
+    }()
+    
     let likeButton: UIButton = {
         let button = UIButton(type: .system)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setImage(UIImage(systemName: "heart"), for: .normal)
         button.tintColor = .gray
+        button.addTarget(self, action: #selector(likeButtonTapped), for: .touchUpInside)
         return button
     }()
     
@@ -91,10 +97,28 @@ class NoteDetailViewController: UIViewController, UICollectionViewDelegate {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setImage(UIImage(systemName: "message"), for: .normal)
         button.tintColor = .gray
+        button.addTarget(self, action: #selector(commentButtonTapped), for: .touchUpInside)
         return button
     }()
     
-    
+    lazy var commentTableView: UITableView = {
+        let tableView = UITableView(frame: .zero)
+        tableView.backgroundColor = .clear
+        tableView.register(CommentTableViewCell.self, forCellReuseIdentifier: "CommentTableViewCell")
+//        tableView.alwaysBounceVertical = true
+//        tableView.alwaysBounceHorizontal = false
+        tableView.bounces = false
+        tableView.separatorStyle = .none
+        tableView.layer.cornerRadius = 8
+        tableView.automaticallyAdjustsScrollIndicatorInsets = false
+        tableView.contentInset = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
+        tableView.clipsToBounds = true
+        tableView.showsHorizontalScrollIndicator = false
+        tableView.isHidden = false
+        tableView.dataSource = self
+        tableView.delegate = self
+        return tableView
+    }()
  
 
     override func viewWillAppear(_ animated: Bool) {
@@ -110,8 +134,11 @@ class NoteDetailViewController: UIViewController, UICollectionViewDelegate {
         view.addSubview(titleLabel)
         view.addSubview(bodyLabel)
         view.addSubview(dateLabel)
+        view.addSubview(userIdLabel)
         view.addSubview(likeButton)
         view.addSubview(commentButton)
+        
+        view.addSubview(commentTableView)
         
         
         
@@ -132,16 +159,29 @@ class NoteDetailViewController: UIViewController, UICollectionViewDelegate {
             dateLabel.topAnchor.constraint(equalTo: bodyLabel.bottomAnchor, constant: 16),
             dateLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
             
-            likeButton.topAnchor.constraint(equalTo: dateLabel.bottomAnchor, constant: 16),
+            userIdLabel.topAnchor.constraint(equalTo: dateLabel.bottomAnchor, constant: 16),
+            userIdLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+            
+            likeButton.topAnchor.constraint(equalTo: userIdLabel.bottomAnchor, constant: 16),
             likeButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
             likeButton.widthAnchor.constraint(equalToConstant: 30),
             likeButton.heightAnchor.constraint(equalToConstant: 30),
             
-            commentButton.topAnchor.constraint(equalTo: dateLabel.bottomAnchor, constant: 16),
+            commentButton.topAnchor.constraint(equalTo: userIdLabel.bottomAnchor, constant: 16),
             commentButton.leadingAnchor.constraint(equalTo: likeButton.trailingAnchor, constant: 16),
             commentButton.widthAnchor.constraint(equalToConstant: 30),
             commentButton.heightAnchor.constraint(equalToConstant: 30),
+            
+//            commentTableView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -16),
+//            commentTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+//            commentTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+//            commentTableView.heightAnchor.constraint(equalToConstant: 200),
+
         ])
+        
+        commentTableView.bottomAnchor == view.safeAreaLayoutGuide.bottomAnchor
+        commentTableView.horizontalAnchors == view.horizontalAnchors + 16
+        commentTableView.heightAnchor == 300
         
         
         titleLabel.text = ""
@@ -156,14 +196,7 @@ class NoteDetailViewController: UIViewController, UICollectionViewDelegate {
     }
 
 
-    // MARK: Actions
-
-    @objc func likeButtonTapped(_ sender: UIButton) {
-    }
-
-    @objc func commentButtonTapped(_ sender: UIButton) {
-        
-    }
+    
 
 }
 
@@ -203,13 +236,47 @@ extension NoteDetailViewController: UICollectionViewDataSource {
     
 }
 
+extension NoteDetailViewController: UITableViewDelegate {
+    
+}
 
+extension NoteDetailViewController: UITableViewDataSource {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        noteComments.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "CommentTableViewCell", for: indexPath) as! CommentTableViewCell
+        let commentFrom = noteComments[indexPath.item].fromUserId.description
+        let commentContent = noteComments[indexPath.item].comment
+        cell.commentFromLabel.text = "来自ID" + commentFrom + ": "
+        cell.commentLabel.text = commentContent
+        
+        return cell
+    }
+    
+    
+}
 
 extension NoteDetailViewController {
     @objc func handleSwipe() {
         self.navigationController?.popViewController(animated: true)
     }
+    
+    @objc func likeButtonTapped(_ sender: UIButton) {
+        print("like")
+    }
+
+    @objc func commentButtonTapped(_ sender: UIButton) {
+        print(commentTableView.isHidden)
+        print("comment")
+        commentTableView.isHidden = commentTableView.isHidden ? false : true
+        if !commentTableView.isHidden {
+            commentTableView.reloadData()
+        }
+    }
 }
+
 
 class ImageCollectionViewCell: UICollectionViewCell {
     let imageView: UIImageView = {
@@ -237,3 +304,4 @@ class ImageCollectionViewCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
 }
+

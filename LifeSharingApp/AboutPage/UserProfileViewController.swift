@@ -21,12 +21,14 @@ class UserProfileViewController: UIViewController {
         btn.addTarget(self, action: #selector(displayDrafts), for: .touchUpInside)
         return btn
     }()
+    
     lazy var avatarImageView: UIImageView = {
         let image = UIImage(systemName: "person.circle.fill")!
         let imageView = UIImageView(image: image)
         imageView.contentMode = .scaleAspectFill
         return imageView
     }()
+    
     lazy var userIdLabel: UILabel = {
         let label = UILabel(frame: .zero, text: "", textColor: .label, bgColor: .clear, font: 14, textAlignment: .left)
         label.text = "用户ID: \(defaults.string(forKey: AccountInfo().userId) ?? "无")"
@@ -52,6 +54,11 @@ class UserProfileViewController: UIViewController {
     }()
 
     lazy var logoutBtn: UIButton = {
+        let btn = UIButton(frame: .zero,title: "点击注销", bgColor: .systemBackground, cornerRadius: 8)
+        btn.addTarget(self, action: #selector(logout), for: .touchUpInside)
+        return btn
+    }()
+    lazy var changeUserInfoBtn: UIButton = {
         let btn = UIButton(frame: .zero,title: "点击注销", bgColor: .systemBackground, cornerRadius: 8)
         btn.addTarget(self, action: #selector(logout), for: .touchUpInside)
         return btn

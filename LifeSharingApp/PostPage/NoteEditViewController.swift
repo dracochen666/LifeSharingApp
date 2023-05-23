@@ -648,8 +648,8 @@ extension NoteEditViewController {
                 tabBarViewController.showAlert(title: "保存成功！", subtitle: "")
                 self.navigationController?.navigationBar.isHidden = true
                 self.navigationController?.interactivePopGestureRecognizer?.isEnabled = false
-                self.navigationController?.pushViewController(LS_TabBarViewController(), animated: true)
-
+                self.navigationController?.pushViewController(tabBarViewController, animated: true)
+                self.dismiss(animated: true)
             }
 
         }

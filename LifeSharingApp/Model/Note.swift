@@ -28,7 +28,6 @@ class Note: Codable {
     
     var noteOwner: Int?
     var noteLikedNumber: Int?
-    var noteCollectedNumber: Int?
 
 
 }

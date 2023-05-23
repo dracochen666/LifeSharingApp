@@ -20,7 +20,7 @@ class LS_LoginViewController: UIViewController {
         loginVC = self
         self.setupUI()
         self.getAllUser()
-
+        
     }
     
     //MARK: 变量区
@@ -31,7 +31,7 @@ class LS_LoginViewController: UIViewController {
         
         return label
     }()
-
+    
     let userNameTextField = UITextField.init(frame: .zero, placeholder: "输入用户名")
     let passwordTextField = UITextField(frame: .zero, placeholder: "输入密码", borderStyle: .roundedRect, isSecureTextEntry: true)
     let loginButton = UIButton(frame: .zero, title: "登录", bgColor: .systemBlue, cornerRadius: 10)
@@ -60,12 +60,12 @@ class LS_LoginViewController: UIViewController {
             loginStackView.widthAnchor /==/ 2 * view.widthAnchor / 3
             loginStackView.heightAnchor /==/ view.heightAnchor / 4
             
-
+            
             loginLabel.centerXAnchor /==/ view.centerXAnchor
             loginLabel.bottomAnchor /==/ loginStackView.topAnchor - 20
-                        
+            
         }
-
+        
         loginButton.addTarget(self, action: #selector(tabToLogin), for: .touchUpInside)
         registerButton.addTarget(self, action: #selector(tabToResgister), for: .touchUpInside)
     }
@@ -89,19 +89,19 @@ class LS_LoginViewController: UIViewController {
         
         imageView.centerXAnchor /==/ self.view.centerXAnchor
         imageView.centerYAnchor /==/ self.view.centerYAnchor + 200
-//        print("yes")
+        //        print("yes")
     }
     
     func getAllUser() {
         AF.request(kUrlGetAllUser, method: .get).responseString { response in
-//            print("Response String: \(response.value)")
+            //            print("Response String: \(response.value)")
         }
     }
     
     func getAllUserJSON() {
         AF.request(kUrlGetAllUser, method: .get).response { response in
             //            debugPrint(response)
-//            print(response.value)
+            //            print(response.value)
             let encoder = JSONEncoder()
             let decoder = JSONDecoder()
             if let result = response.value {
@@ -114,7 +114,7 @@ class LS_LoginViewController: UIViewController {
                 }
             }
             
-//            let str = String(data: data, encoding: .utf8)
+            //            let str = String(data: data, encoding: .utf8)
         }
     }
     
@@ -130,7 +130,16 @@ class LS_LoginViewController: UIViewController {
     }
     @objc func tabToLogin() {
         print("login")
-//        self.showLoadingAni()
+        //        self.showLoadingAni()
+        if userNameTextField.text!.isEmpty || passwordTextField.text!.isEmpty {
+            self.showAlert(title: "用户名或密码为空", subtitle: "")
+            return
+        }
+        guard let _ = userNameTextField.text, let _ = passwordTextField.text else {
+            self.showAlert(title: "用户名或密码为空", subtitle: "")
+            return
+        }
+        
         let user = User()
         user.userName = userNameTextField.text
         user.password = passwordTextField.text
@@ -162,17 +171,23 @@ class LS_LoginViewController: UIViewController {
                     aboutPageViewController.removeAllSubViewController()
                     aboutPageViewController.addSubViewController(subVC: userProfileVC)
                     aboutPageViewController.showAlert(title: "登陆成功！", subtitle: "")
+                    self.hideLoadingAni()
                 }
                 
+            }else if result!["code"] == "600"{
+                self.hideLoadingAni()
+                self.showAlert(title: "用户名或密码错误!", subtitle: "")
             }else {
+                self.hideLoadingAni()
                 self.showAlert(title: "登录失败!", subtitle: "")
+
             }
         }
 
     }
     
     @objc func tabToResgister() {
-        self.getAllUserJSON()
+//        self.getAllUserJSON()
         print("register")
     }
 }

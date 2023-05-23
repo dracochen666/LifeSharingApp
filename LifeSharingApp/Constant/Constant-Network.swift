@@ -9,7 +9,7 @@ import Foundation
 
 //let kLoginURL: URL = URL(from: "http://localhost:9090/User/login")
 //homeIP: 192.168.31.9 BistuIP: 169.254.105.37
-let kIP = "http://169.254.237.157:9090"
+let kIP = "http://169.254.46.99:9090"
 
 //用户相关
 let kUrlGetAllUser = "\(kIP)/User/getAllUser"

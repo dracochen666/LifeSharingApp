@@ -36,7 +36,7 @@ extension NoteDetailViewController {
                 note.noteComments = result!["noteComments"].stringValue
                 note.noteOwner = result!["noteOwner"].intValue
                 note.noteLikedNumber = result!["noteLikedNumber"].intValue
-                note.noteCollectedNumber = result!["noteCollectedNumber"].intValue
+                
                 let decoder = JSONDecoder()
                 
                 if let imageBase64 = result!["notePhotos"].string {
@@ -60,10 +60,9 @@ extension NoteDetailViewController {
                 self.collectionView.reloadData()
                 self.titleLabel.text = note.noteTitle
                 self.bodyLabel.text = note.noteContent
-//                self.dateLabel.text = note.createTime
-//                let formatter = DateFormatter()
-//                formatter.dateFormat = "yyyy-MM-ddHH:mm:ss"
+
                 self.dateLabel.text = note.createTimeStr
+                self.userIdLabel.text = "用户ID：" + (note.noteOwner?.description ?? "未知ID")
 //                self.view.layoutIfNeeded()
                 tabBarViewController.hideLoadingAni()
             }
