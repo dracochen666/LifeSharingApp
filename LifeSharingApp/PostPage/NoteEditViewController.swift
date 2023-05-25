@@ -207,9 +207,9 @@ class NoteEditViewController: UIViewController {
         playBtn.setTitle("weird button", for: .normal)
         playBtn.addTarget(self, action: #selector(playVideo), for: .touchUpInside)
         playBtn.layer.cornerRadius = 10
-        notePublishView.addSubview(playBtn)
-        playBtn.centerXAnchor == 0.2 * notePublishView.centerXAnchor
-        playBtn.centerYAnchor == 1.6 * notePublishView.centerYAnchor
+//        notePublishView.addSubview(playBtn)
+//        playBtn.centerXAnchor == 0.2 * notePublishView.centerXAnchor
+//        playBtn.centerYAnchor == 1.6 * notePublishView.centerYAnchor
 
         
         //MARK: 控件约束

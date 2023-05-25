@@ -98,6 +98,8 @@ class NoteWaterFallView: UIView, UICollectionViewDelegate, UICollectionViewDataS
         if isDraftNote {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "DraftWaterFallCollectionViewCell", for: indexPath) as! DraftWaterFallCollectionViewCell
             cell.draftNote = drafts[indexPath.item]
+//            print(drafts[indexPath.item].createTime)
+//            cell.draftNote?.createTime = Date()
 //            cell.removeConstraint(cell.imageView.constraints)
             if cell.imageView.constraints.count != 0 {
                 cell.imageView.removeConstraint(cell.imageView.constraints[0])

@@ -62,7 +62,6 @@ class LS_TabBarViewController: UITabBarController {
         messageVC.tabBarItem.title = "消息"
         messageVC.tabBarItem.setTitleTextAttributes([NSAttributedString.Key.font: UIFont.systemFont(ofSize: 14)], for: .normal)
         messageVC.tabBarItem.titlePositionAdjustment = .init(horizontal: 0, vertical: -16)
-        messageVC.tabBarItem.badgeValue = "12"
         aboutVC.tabBarItem.title = "我"
         aboutVC.tabBarItem.setTitleTextAttributes([NSAttributedString.Key.font: UIFont.systemFont(ofSize: 14)], for: .normal)
         aboutVC.tabBarItem.titlePositionAdjustment = .init(horizontal: 0, vertical: -16)

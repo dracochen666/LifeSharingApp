@@ -10,7 +10,6 @@ import Anchorage
 
 protocol TabbedViewDelegate: AnyObject {
     func didMoveToTab(at Index: Int)
-    
 }
 
 class TabbedView: UIView {

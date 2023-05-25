@@ -25,7 +25,8 @@ class UserProfileViewController: UIViewController {
     lazy var avatarImageView: UIImageView = {
         let image = UIImage(systemName: "person.circle.fill")!
         let imageView = UIImageView(image: image)
-        imageView.contentMode = .scaleAspectFill
+        imageView.contentMode = .scaleAspectFit
+        imageView.clipsToBounds = true
         return imageView
     }()
     
@@ -40,7 +41,7 @@ class UserProfileViewController: UIViewController {
         return label
     }()
     lazy var userInfoStackView: UIStackView = {
-        let stackView = UIStackView(axis: .vertical, distribution: .fill, spacing: 0, bgColor: .clear, cornerRadius: 8)
+        let stackView = UIStackView(axis: .vertical, distribution: .fill, spacing: 0, bgColor: .white, cornerRadius: 8)
         stackView.translatesAutoresizingMaskIntoConstraints = false
         return stackView
     }()
@@ -53,12 +54,18 @@ class UserProfileViewController: UIViewController {
         return scrollView
     }()
 
-    lazy var logoutBtn: UIButton = {
-        let btn = UIButton(frame: .zero,title: "点击注销", bgColor: .systemBackground, cornerRadius: 8)
+    
+    lazy var changeUserInfoBtn: UIButton = {
+        let btn = UIButton(frame: .zero,title: "修改用户信息", bgColor: .systemBackground, cornerRadius: 8)
         btn.addTarget(self, action: #selector(logout), for: .touchUpInside)
         return btn
     }()
-    lazy var changeUserInfoBtn: UIButton = {
+    lazy var changeUserPasswordBtn: UIButton = {
+        let btn = UIButton(frame: .zero,title: "修改用户密码", bgColor: .systemBackground, cornerRadius: 8)
+        btn.addTarget(self, action: #selector(logout), for: .touchUpInside)
+        return btn
+    }()
+    lazy var logoutBtn: UIButton = {
         let btn = UIButton(frame: .zero,title: "点击注销", bgColor: .systemBackground, cornerRadius: 8)
         btn.addTarget(self, action: #selector(logout), for: .touchUpInside)
         return btn
@@ -78,7 +85,7 @@ class UserProfileViewController: UIViewController {
         let view3 = NoteWaterFallView(requestType: .getLiked)
         view3.isGetLiked = true
         view3.collectionView.bounces = false
-//
+
         viewPager.pagedView.pages = [view1,view2,view3]
         viewPager.tabbedView.tabs = [
             TabbedItem(title: "本地草稿"),
@@ -97,7 +104,10 @@ class UserProfileViewController: UIViewController {
         userInfoStackView.addArrangedSubview(avatarImageView)
         userInfoStackView.addArrangedSubview(userIdLabel)
         userInfoStackView.addArrangedSubview(userNameLabel)
+        userInfoStackView.addArrangedSubview(changeUserInfoBtn)
+        userInfoStackView.addArrangedSubview(changeUserPasswordBtn)
         userInfoStackView.addArrangedSubview(logoutBtn)
+        
         view.addSubview(userInfoStackView)
         scrollView.addSubview(viewPager)
 //
@@ -106,7 +116,8 @@ class UserProfileViewController: UIViewController {
         scrollView.topAnchor == view.topAnchor + 200
         scrollView.bottomAnchor == view.bottomAnchor - 90
 
-        userInfoStackView.topAnchor == view.topAnchor
+        userInfoStackView.topAnchor == view.safeAreaLayoutGuide.topAnchor
+        userInfoStackView.horizontalAnchors == view.safeAreaLayoutGuide.horizontalAnchors
         userInfoStackView.centerXAnchor == view.centerXAnchor
 //        userInfoStackView.leftAnchor == scrollView.leftAnchor
 //        userInfoStackView.rightAnchor == scrollView.rightAnchor

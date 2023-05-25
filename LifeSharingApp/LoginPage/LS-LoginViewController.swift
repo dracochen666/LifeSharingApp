@@ -35,39 +35,50 @@ class LS_LoginViewController: UIViewController {
     let userNameTextField = UITextField.init(frame: .zero, placeholder: "输入用户名")
     let passwordTextField = UITextField(frame: .zero, placeholder: "输入密码", borderStyle: .roundedRect, isSecureTextEntry: true)
     let loginButton = UIButton(frame: .zero, title: "登录", bgColor: .systemBlue, cornerRadius: 10)
-    let registerButton = UIButton(frame: .zero, title: "注册", bgColor: .systemBlue, cornerRadius: 10)
+    let goToRegisterButton = UIButton(frame: .zero, title: "注册", bgColor: .systemBlue, cornerRadius: 10)
     
-    lazy var loginStackView: UIStackView = {
+    lazy var loginInfoStackView: UIStackView = {
         let loginStackView = UIStackView(axis: .vertical, distribution: .equalSpacing, spacing: 20, bgColor: UIColor(named: kThirdLevelColor)!, isLayoutMargin: true, layoutMargins: UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8), cornerRadius: 8)
         return loginStackView
+    }()
+    
+    lazy var loginBtnStackView: UIStackView = {
+        let StackView = UIStackView(axis: .vertical, distribution: .equalSpacing, spacing: 20, bgColor: .clear, isLayoutMargin: true, layoutMargins: UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8), cornerRadius: 8)
+        return StackView
     }()
     
     //MARK: 自定义方法
     func setupUI() {
         self.view.backgroundColor = UIColor(named: kSecondLevelColor)
         
-        self.view.addSubview(loginStackView)
+        self.view.addSubview(loginInfoStackView)
         self.view.addSubview(loginLabel)
-        loginStackView.addArrangedSubview(userNameTextField)
-        loginStackView.addArrangedSubview(passwordTextField)
-        loginStackView.addArrangedSubview(loginButton)
-        loginStackView.addArrangedSubview(registerButton)
+        self.view.addSubview(loginBtnStackView)
+        loginInfoStackView.addArrangedSubview(userNameTextField)
+        loginInfoStackView.addArrangedSubview(passwordTextField)
+        
+        loginBtnStackView.addArrangedSubview(loginButton)
+        loginBtnStackView.addArrangedSubview(goToRegisterButton)
         
         let _ = Anchorage.batch(active: true) {
             
-            loginStackView.centerXAnchor /==/ view.centerXAnchor
-            loginStackView.centerYAnchor /==/ 2 * view.centerYAnchor / 3
-            loginStackView.widthAnchor /==/ 2 * view.widthAnchor / 3
-            loginStackView.heightAnchor /==/ view.heightAnchor / 4
+            loginInfoStackView.centerXAnchor /==/ view.centerXAnchor
+            loginInfoStackView.centerYAnchor /==/ 2 * view.centerYAnchor / 3
+            loginInfoStackView.widthAnchor /==/ 2 * view.widthAnchor / 3
+            loginInfoStackView.heightAnchor /==/ view.heightAnchor / 9
             
             
             loginLabel.centerXAnchor /==/ view.centerXAnchor
-            loginLabel.bottomAnchor /==/ loginStackView.topAnchor - 20
+            loginLabel.bottomAnchor /==/ loginInfoStackView.topAnchor - 20
             
-        }
+            loginBtnStackView.topAnchor == loginInfoStackView.bottomAnchor + kCustomGlobalMargin
+            loginBtnStackView.leftAnchor == view.leftAnchor + 70
+            loginBtnStackView.rightAnchor == view.rightAnchor - 70
+            loginBtnStackView.heightAnchor /==/ 100
+                    }
         
-        loginButton.addTarget(self, action: #selector(tabToLogin), for: .touchUpInside)
-        registerButton.addTarget(self, action: #selector(tabToResgister), for: .touchUpInside)
+        loginButton.addTarget(self, action: #selector(tapToLogin), for: .touchUpInside)
+        goToRegisterButton.addTarget(self, action: #selector(goToResgister), for: .touchUpInside)
     }
     func loadingAnimation() {
         // 创建一个UIImageView
@@ -128,14 +139,9 @@ class LS_LoginViewController: UIViewController {
             }
         }
     }
-    @objc func tabToLogin() {
+    @objc func tapToLogin() {
         print("login")
-        //        self.showLoadingAni()
         if userNameTextField.text!.isEmpty || passwordTextField.text!.isEmpty {
-            self.showAlert(title: "用户名或密码为空", subtitle: "")
-            return
-        }
-        guard let _ = userNameTextField.text, let _ = passwordTextField.text else {
             self.showAlert(title: "用户名或密码为空", subtitle: "")
             return
         }
@@ -156,7 +162,6 @@ class LS_LoginViewController: UIViewController {
                 defaults.set("\(result!["data"]["userName"])", forKey: AccountInfo().userName)
                 defaults.set("\(result!["data"]["password"])", forKey: AccountInfo().password)
 
-//                print(user.userId)
                 print("登录成功:")
                 print("本地存储信息LoginInfo", defaults.value(forKey: LoginInfo().token)!)
                 print("本地存储信息AcountInfo", defaults.value(forKey: AccountInfo().userId)!)
@@ -186,9 +191,12 @@ class LS_LoginViewController: UIViewController {
 
     }
     
-    @objc func tabToResgister() {
+    @objc func goToResgister() {
 //        self.getAllUserJSON()
         print("register")
+        let registerVC = RegisterViewController()
+        aboutPageViewController.removeAllSubViewController()
+        aboutPageViewController.addSubViewController(subVC: registerVC)
     }
 }
 

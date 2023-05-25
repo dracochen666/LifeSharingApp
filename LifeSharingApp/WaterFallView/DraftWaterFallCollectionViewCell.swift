@@ -24,7 +24,12 @@ class DraftWaterFallCollectionViewCell : UICollectionViewCell {
             guard let draftNote = draftNote else { return }
             
             titleLabel.text = draftNote.noteTitle!.isEmpty ? "无标题" : draftNote.noteTitle
-            dateLabel.text = draftNote.createTime?.formattedDate
+            if #available(iOS 15.0, *) {
+                dateLabel.text = draftNote.createTime?.formatted()
+            } else {
+                dateLabel.text = draftNote.createTime?.description
+                
+            }
             imageView.image = UIImage(data: draftNote.noteCoverPhoto)
             
             
