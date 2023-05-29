@@ -495,8 +495,8 @@ extension NoteEditViewController: PassValueFromTopicSelectViewController {
     func passSubTopic(topic: String, subTopic: String) {
         if countSelectedSubTopics < kSubTopicLimit {
             self.topicsTextView.text += subTopic + " "
-            self.note.topics += topic + " " //note
-            self.note.subtopics += subTopic + " " //note
+            self.topics = topic
+            self.subtopics = subTopic
             self.countSelectedSubTopics += 1
         }else {
             self.showAlert(title: "超出话题数量限制", subtitle: "只能选择\(kSubTopicLimit)个话题")
@@ -618,8 +618,8 @@ extension NoteEditViewController {
             note.notePhotos = try? JSONEncoder().encode(photosData)
             note.noteTitle = titleTextField.exactText
             note.noteContent = contentTextView.exactText
-            note.topics = self.topics
-            note.subtopics = self.subtopics
+            note.noteTopics = self.topics
+            note.noteSubTopics = self.subtopics
             note.notePositions = self.userPosition
             note.createTime = Date()
             note.noteOwner = Int(defaults.string(forKey: AccountInfo().userId) ?? "-2")
@@ -718,7 +718,6 @@ extension NoteEditViewController {
         draft.topics = self.topics
         draft.subtopics = self.subtopics
         draft.poiName = self.userPosition
-//        let date = Date()
         draft.createTime = Date()
         appDelegate.saveContext()
         self.dismiss(animated: true)

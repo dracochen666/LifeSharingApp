@@ -29,6 +29,7 @@ class NoteWaterFallView: UIView, UICollectionViewDelegate, UICollectionViewDataS
     var isGetAll: Bool = false
     var isGetPublished: Bool = false
     var isGetLiked: Bool = false
+    var topicSelection: String?
 
     @objc func refreshView() {
 //        tabBarViewController.hideLoadingAni()
@@ -38,16 +39,8 @@ class NoteWaterFallView: UIView, UICollectionViewDelegate, UICollectionViewDataS
         super.init(frame: .zero)
         let userID = defaults.integer(forKey: AccountInfo().userId)
         self.setupUI()
-        getNotes(userId: userID, requestType: requestType)
+        getNotes(userID, requestType: requestType)
 
-//        switch requestType {
-//        case .getPublished:
-//            getNotes(userId: userID, requestType: requestType)
-//        case .getLiked:
-//            getNotes(userId: userID, requestType: requestType)
-//        case .getAll:
-//            getNotes(userId: userID, requestType: requestType)
-//        }
 
         getDraftNotes()
     }
@@ -98,9 +91,7 @@ class NoteWaterFallView: UIView, UICollectionViewDelegate, UICollectionViewDataS
         if isDraftNote {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "DraftWaterFallCollectionViewCell", for: indexPath) as! DraftWaterFallCollectionViewCell
             cell.draftNote = drafts[indexPath.item]
-//            print(drafts[indexPath.item].createTime)
-//            cell.draftNote?.createTime = Date()
-//            cell.removeConstraint(cell.imageView.constraints)
+
             if cell.imageView.constraints.count != 0 {
                 cell.imageView.removeConstraint(cell.imageView.constraints[0])
             }
@@ -110,15 +101,10 @@ class NoteWaterFallView: UIView, UICollectionViewDelegate, UICollectionViewDataS
         }else {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "NoteWaterFallCollectionViewCell", for: indexPath) as! NoteWaterFallCollectionViewCell
 //            print(notes.count)
+            if cell.imageView.constraints.count != 0 {
+                cell.imageView.removeConstraint(cell.imageView.constraints[0])
+            }
             cell.note = notes[indexPath.item]
-//            let photosDataArr = try? JSONDecoder().decode([Data].self, from: photosData)
-//            //                var photos: [UIImage] = []
-//            //                for data in photosDataArr! {
-//            //                    photos.append(((UIImage(data: data) ?? UIImage(systemName: "x.circle.fill"))!))
-//            //                }
-//            let photos = photosDataArr?.map({ data in
-//                UIImage(data: data) ?? UIImage(systemName: "x.circle.fill")!
-//            })
             
             let image = UIImage(data: notes[indexPath.item].noteCoverPhoto)
             if let image = image {

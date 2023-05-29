@@ -19,8 +19,8 @@ class Note: Codable {
     var noteCoverPhoto: Data?
     var noteTitle: String = ""
     var noteContent: String = ""
-    var subtopics: String = ""
-    var topics: String = ""
+    var noteSubTopics: String = ""
+    var noteTopics: String = ""
     var notePositions: String = ""
     var noteComments: String = ""
     var createTime: Date?

@@ -33,7 +33,7 @@ class CommentTableViewCell: UITableViewCell {
         self.addSubview(commentLabel)
         
         commentFromLabel.leftAnchor == self.leftAnchor
-        commentFromLabel.widthAnchor == 120
+        commentFromLabel.widthAnchor == 80
         commentFromLabel.verticalAnchors == self.verticalAnchors
         
         commentLabel.leftAnchor == commentFromLabel.rightAnchor

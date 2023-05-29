@@ -13,6 +13,7 @@ import SwiftyJSON
 
 extension NoteWaterFallView {
     
+//    var topicSelection: String?
     func getDraftNotes() {
         let fetchRequest = DraftNote.fetchRequest() as! NSFetchRequest<DraftNote>
         //设置分页 每次刷新增加5
@@ -33,14 +34,13 @@ extension NoteWaterFallView {
         case getAll
         case getPublished
         case getLiked
+        case getTopicRelated
     }
     
-    func getNotes(userId: Int,_ getLargeData: Bool = false, requestType: RequestType){
+    func getNotes(_ userId: Int,_ getLargeData: Bool = false,_ topic: String = "", requestType: RequestType){
         let pageNum = 1
         let pageSize = 30
-//        let group = DispatchGroup()
-//        tabBarViewController.showLoadingAni()
-//        group.enter()
+
         print(userId)
         var notes: [Note] = []
         var requestUrl = ""
@@ -48,14 +48,16 @@ extension NoteWaterFallView {
         case .getDraft:
             return
         case .getAll:
-//            print("getAll")
             requestUrl = kUrlNotePages+"?pageNum=\(pageNum)&pageSize=\(pageSize)"
         case .getPublished:
             print("getPublished")
             requestUrl = kUrlGetNotePublished+"?userId=\(userId)"
         case .getLiked:
-            requestUrl = kUrlNotePages+"?pageNum=\(pageNum)&pageSize=\(pageSize)"
-//            print("getLiked")
+            requestUrl = kUrlGetLikedNoteByUserId+"?userId=\(userId)"
+        case .getTopicRelated:
+            let url = kUrlGetNoteTopicRelated+"?pageNum=\(pageNum)&pageSize=\(pageSize)&topics=\(topic)"
+            //因为参数包含的中文字符不在url字符集内，需要对中文参数进行百分号编码
+            requestUrl = url.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!
         }
         print("查询前Url：\(requestUrl)")
         AF.request(requestUrl,
@@ -63,21 +65,30 @@ extension NoteWaterFallView {
                    headers: headers).response { response in
             print("查询时Url：\(requestUrl)")
             print("正在查询..")
-            if let data = response.data, let result = try? JSON(data: data ){
-//                print("noteRecord",result["records"])
+
+            
+            if let data = response.data, let result = try? JSON(data: data){
+                
                 var resultArr = result["records"].arrayValue
-                if self.isGetPublished {
+                if self.isGetPublished || self.isGetLiked{
                     resultArr = result.arrayValue
+                    print("getPublished: ")
+                    print(response)
+
                 }
-//                self.isGetAll ? result["records"].arrayValue : result.arrayValue
+                
+                if requestType == RequestType.getTopicRelated {
+                    print("112312")
+                }
+                
                 for noteRecord in resultArr {
-//                    print("noteRecord",result["records"])
+
                     let note = Note()
                     note.noteId = noteRecord["noteId"].intValue
                     note.noteTitle = noteRecord["noteTitle"].stringValue
                     note.noteContent = noteRecord["noteContent"].stringValue
-                    note.topics = noteRecord["noteTopics"].stringValue
-                    note.subtopics = noteRecord["noteSubtopics"].stringValue
+                    note.noteTopics = noteRecord["noteTopics"].stringValue
+                    note.noteSubTopics = noteRecord["noteSubtopics"].stringValue
                     note.notePositions = noteRecord["notePositions"].stringValue
                     note.createTime = DateFormatter().date(from: noteRecord["create_time"].stringValue)
                     note.noteComments = noteRecord["noteComments"].stringValue
@@ -87,7 +98,6 @@ extension NoteWaterFallView {
 
                     let decoder = JSONDecoder()
                     if let imageBase64 = noteRecord["noteCoverPhoto"].string {
-//                        print("file")
                         let imageNSData = NSData(base64Encoded: imageBase64)
                         let imageData = Data(referencing: imageNSData!)
                         let coverPhotoData = try? decoder.decode(Data.self, from: imageData)
@@ -95,7 +105,6 @@ extension NoteWaterFallView {
                     }
                     if getLargeData {
                         if let imageBase64 = noteRecord["notePhotos"].string {
-//                            print("file")
                             let imageBase64 = NSData(base64Encoded: imageBase64)
                             let imageData = Data(referencing: imageBase64!)
                             let photosDataArr = try? decoder.decode(Data.self, from: imageData)
@@ -122,7 +131,7 @@ extension NoteWaterFallView {
 //        DispatchQueue.main.async {
 //
 //            self.collectionView.reloadData()
-//            tabBarViewController.hideLoadingAni()
+////            tabBarViewController.hideLoadingAni()
 //        }
 
 //        return notes

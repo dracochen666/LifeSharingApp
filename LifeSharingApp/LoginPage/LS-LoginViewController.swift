@@ -111,8 +111,7 @@ class LS_LoginViewController: UIViewController {
     
     func getAllUserJSON() {
         AF.request(kUrlGetAllUser, method: .get).response { response in
-            //            debugPrint(response)
-            //            print(response.value)
+
             let encoder = JSONEncoder()
             let decoder = JSONDecoder()
             if let result = response.value {

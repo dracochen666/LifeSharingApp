@@ -123,7 +123,7 @@ extension TabbedView: UICollectionViewDataSource {
         return cell
     }
 }
-//need review
+
 extension TabbedView: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         switch sizeConfiguration {

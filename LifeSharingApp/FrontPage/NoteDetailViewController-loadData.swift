@@ -24,14 +24,11 @@ extension NoteDetailViewController {
             if let data = response.data {
                 let result = try? JSON(data: data )
                 note.noteTitle = result!["noteTitle"].stringValue
-                print(result!["noteTitle"].stringValue)
                 note.noteContent = result!["noteContent"].stringValue
-                note.topics = result!["noteTopics"].stringValue
-                note.subtopics = result!["noteSubtopics"].stringValue
+                note.noteTopics = result!["noteTopics"].stringValue
+                note.noteSubTopics = result!["noteSubtopics"].stringValue
                 note.notePositions = result!["notePositions"].stringValue
-
-                print(result!["createTime"].stringValue)
-
+                
                 note.createTimeStr = "编辑于: \(result!["createTime"].stringValue)"
                 note.noteComments = result!["noteComments"].stringValue
                 note.noteOwner = result!["noteOwner"].intValue
@@ -40,22 +37,16 @@ extension NoteDetailViewController {
                 let decoder = JSONDecoder()
                 
                 if let imageBase64 = result!["notePhotos"].string {
-                    print("file")
                     let imageBase64 = NSData(base64Encoded: imageBase64)
                     let imageData = Data(referencing: imageBase64!)
-//                    let photosDataArr = try? decoder.decode(Data.self, from: imageData)
                     self.note?.notePhotos = imageData
-//                    for data in photosDataArr! {
-//                        note.notePhotos?.append(data)
-//                    }
+
                 }
                 
                 
             }
             print(note.createTime)
-//            print("notephotos: ",note.notePhotos)
 
-//            self.note = note
             DispatchQueue.main.async {
                 self.collectionView.reloadData()
                 self.titleLabel.text = note.noteTitle
@@ -68,13 +59,28 @@ extension NoteDetailViewController {
             }
         }
         group.leave()
-//        group.notify(queue: .main) {
-//            self.collectionView.reloadData()
-//            self.view.layoutIfNeeded()
-//            self.hideLoadingAni()
-//        }
-//
 
         return note
+    }
+    
+    func getNoteCommentById(noteId: Int) {
+        AF.request(kUrlGetCommentsByNoteId+"?noteId=\(noteId)",
+                   method: .get,
+                   headers: headers).response { response in
+            if let data = response.data, let result = try? JSON(data: data) {
+                for comment in result.arrayValue {
+                    
+                    let userId = comment["commentUserId"].intValue
+                    let noteId = comment["commentNoteId"].intValue
+                    let commentContent = comment["commentContent"].stringValue
+                    
+                    let comment = NoteComment(commentUserId: userId, commentNoteId: noteId, comment: commentContent)
+                    
+                    self.noteComments.append(comment)
+                    
+                }
+                self.commentTableView.reloadData()
+            }
+        }
     }
 }

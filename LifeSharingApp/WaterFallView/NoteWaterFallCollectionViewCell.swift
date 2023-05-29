@@ -20,18 +20,17 @@ class NoteWaterFallCollectionViewCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    private lazy var imageView: UIImageView = {
+    lazy var imageView: UIImageView = {
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.contentMode = .scaleToFill
         imageView.clipsToBounds =  true
         return imageView
     }()
+    
     var note: Note? {
         didSet {
             guard let note = note else { return }
-//            let image = UIImage(systemName: "exclamationmark.icloud.fill")
-//            let defaultImageData = image?.JPEGDataWithQuality(.medium)
             titleLabel.text = note.noteTitle.isEmpty ? "无标题" : note.noteTitle
 //            dateLabel.text = note.createTime?.formattedDate
             idLabel.text = "用户ID: \(note.noteOwner!)"

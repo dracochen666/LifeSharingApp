@@ -9,9 +9,10 @@ import Foundation
 
 struct NoteComment {
     
-    var commentId: Int
-    var fromUserId: Int
+    var commentId: Int?
+    var commentUserId: Int
+    var commentNoteId: Int
     var comment: String
-    var createTime: String
+    var createTime: String?
     
 }

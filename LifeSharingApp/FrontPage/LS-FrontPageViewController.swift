@@ -18,21 +18,21 @@ class LS_FrontPageViewController:UIViewController, PagedViewDelegate {
     
     var showDelegate: ShowDetail?
     lazy var viewPager: ViewPager = {
-        let viewPager = ViewPager(sizeConfiguration: .fillEqually(height: 44, spacing: 0))
+        let viewPager = ViewPager(sizeConfiguration: .fillEqually(height: 44, spacing: 0),false)
         
-        let view1 = UIView()
+        viewPager.isTopicViewHidden = false
+        viewPager.topicView.topicDelegate = self
+//        let view1 = UIView()
         let view2 = NoteWaterFallView(requestType: .getAll)
         view2.showNoteDetailDelegate = self
         view2.isGetAll = true
         let view3 = UIView()
         
-        viewPager.pagedView.pages = [view1,view2,view3]
+        viewPager.pagedView.pages = [view2,view3]
         viewPager.tabbedView.tabs = [
-            TabbedItem(title: "关注"),
-            TabbedItem(title: "发现"),
+            TabbedItem(title: "推荐"),
             TabbedItem(title: "附近")
         ]
-        
         return viewPager
     }()
     
@@ -54,13 +54,24 @@ class LS_FrontPageViewController:UIViewController, PagedViewDelegate {
 
     }
 
-
-    
-
 }
 
 extension LS_FrontPageViewController: ShowNoteDetailDelegate {
     func showDetail() {
         self.showDelegate?.showDetail()
+    }
+}
+
+extension LS_FrontPageViewController: PassTopicDelegate {
+    func passTopic(topic: String) {
+        let view = viewPager.pagedView.pages[0] as! NoteWaterFallView
+        view.notes = []
+        view.collectionView.reloadData()
+        if topic == "全部" {
+            view.getNotes(0,false,topic,requestType: .getAll)
+            return
+        }
+        view.getNotes(0,false,topic,requestType: .getTopicRelated)
+
     }
 }

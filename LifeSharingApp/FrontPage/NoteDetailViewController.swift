@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Alamofire
 import Anchorage
 
 class NoteDetailViewController: UIViewController, UICollectionViewDelegate {
@@ -18,7 +19,10 @@ class NoteDetailViewController: UIViewController, UICollectionViewDelegate {
         self.view.addGestureRecognizer(swipeRight)
         self.setupUI()
         self.note = getNoteById(noteId!)
-        
+        self.getNoteCommentById(noteId: noteId!)
+        let tap = UITapGestureRecognizer(target: self, action: #selector(endEdit))
+        tap.cancelsTouchesInView = false
+        self.view.addGestureRecognizer(tap)
     }
     
     // MARK:
@@ -26,10 +30,12 @@ class NoteDetailViewController: UIViewController, UICollectionViewDelegate {
 
     var note: Note?
 
-    var noteComments: [NoteComment] = kComments
+    var noteComments: [NoteComment] = []
     
     var currentIndex: Int = 0
 
+    var isLiked: Bool = false
+    
     lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
@@ -92,7 +98,7 @@ class NoteDetailViewController: UIViewController, UICollectionViewDelegate {
         return button
     }()
     
-    let commentButton: UIButton = {
+    let commentDisplayButton: UIButton = {
         let button = UIButton(type: .system)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setImage(UIImage(systemName: "message"), for: .normal)
@@ -103,10 +109,8 @@ class NoteDetailViewController: UIViewController, UICollectionViewDelegate {
     
     lazy var commentTableView: UITableView = {
         let tableView = UITableView(frame: .zero)
-        tableView.backgroundColor = .clear
+        tableView.backgroundColor = UIColor(named: kThirdLevelColor)
         tableView.register(CommentTableViewCell.self, forCellReuseIdentifier: "CommentTableViewCell")
-//        tableView.alwaysBounceVertical = true
-//        tableView.alwaysBounceHorizontal = false
         tableView.bounces = false
         tableView.separatorStyle = .none
         tableView.layer.cornerRadius = 8
@@ -120,6 +124,23 @@ class NoteDetailViewController: UIViewController, UICollectionViewDelegate {
         return tableView
     }()
  
+    lazy var commentTextField: UITextField = {
+        let textField = UITextField(frame: .zero, textColor: .label, bgColor: .clear, font: 16, placeholder: "输入评论", borderStyle: .roundedRect, isSecureTextEntry: false)
+        
+        return textField
+    }()
+    
+    lazy var sendCommentButton: UIButton = {
+        let button = UIButton(frame: .zero, tintColor: .label, buttonType: .roundedRect, title: "发送", bgColor: .systemRed, cornerRadius: kGlobalCornerRadius)
+        
+        return button
+    }()
+    
+    lazy var sendCommentView: UIView = {
+        let view = UIView(frame: .zero, bgColor: UIColor(named: kThirdLevelColor)!, cornerRadius: kGlobalCornerRadius)
+        
+        return view
+    }()
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -136,53 +157,57 @@ class NoteDetailViewController: UIViewController, UICollectionViewDelegate {
         view.addSubview(dateLabel)
         view.addSubview(userIdLabel)
         view.addSubview(likeButton)
-        view.addSubview(commentButton)
+        view.addSubview(commentDisplayButton)
         
+        view.addSubview(sendCommentView)
         view.addSubview(commentTableView)
-        
-        
-        
-        NSLayoutConstraint.activate([
-            collectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            collectionView.heightAnchor.constraint(equalToConstant: 300),
-            
-            titleLabel.topAnchor.constraint(equalTo: collectionView.bottomAnchor, constant: 16),
-            titleLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-            titleLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-            
-            bodyLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 16),
-            bodyLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-            bodyLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-            
-            dateLabel.topAnchor.constraint(equalTo: bodyLabel.bottomAnchor, constant: 16),
-            dateLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-            
-            userIdLabel.topAnchor.constraint(equalTo: dateLabel.bottomAnchor, constant: 16),
-            userIdLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-            
-            likeButton.topAnchor.constraint(equalTo: userIdLabel.bottomAnchor, constant: 16),
-            likeButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-            likeButton.widthAnchor.constraint(equalToConstant: 30),
-            likeButton.heightAnchor.constraint(equalToConstant: 30),
-            
-            commentButton.topAnchor.constraint(equalTo: userIdLabel.bottomAnchor, constant: 16),
-            commentButton.leadingAnchor.constraint(equalTo: likeButton.trailingAnchor, constant: 16),
-            commentButton.widthAnchor.constraint(equalToConstant: 30),
-            commentButton.heightAnchor.constraint(equalToConstant: 30),
-            
-//            commentTableView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -16),
-//            commentTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-//            commentTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-//            commentTableView.heightAnchor.constraint(equalToConstant: 200),
 
-        ])
+        sendCommentView.addSubview(commentTextField)
+        sendCommentView.addSubview(sendCommentButton)
+
+        collectionView.topAnchor == view.safeAreaLayoutGuide.topAnchor
+        collectionView.horizontalAnchors == view.horizontalAnchors
+        collectionView.heightAnchor == 300
         
-        commentTableView.bottomAnchor == view.safeAreaLayoutGuide.bottomAnchor
+        titleLabel.topAnchor == collectionView.bottomAnchor + 16
+        titleLabel.horizontalAnchors == view.horizontalAnchors + 16
+        
+        bodyLabel.topAnchor == titleLabel.bottomAnchor + 16
+        bodyLabel.horizontalAnchors == view.horizontalAnchors + 16
+        
+        dateLabel.topAnchor == bodyLabel.bottomAnchor + 16
+        dateLabel.leftAnchor == view.leftAnchor + 16
+        
+        userIdLabel.topAnchor == dateLabel.bottomAnchor + 16
+        userIdLabel.leftAnchor == view.leftAnchor + 16
+        
+        likeButton.topAnchor == userIdLabel.bottomAnchor + 16
+        likeButton.leftAnchor == view.leftAnchor + 16
+        likeButton.widthAnchor == 30
+        likeButton.heightAnchor == 30
+        
+        commentDisplayButton.topAnchor == userIdLabel.bottomAnchor + 16
+        commentDisplayButton.leftAnchor == likeButton.rightAnchor + 16
+        commentDisplayButton.widthAnchor == 30
+        commentDisplayButton.heightAnchor == 30
+        
+        
+
+        sendCommentView.bottomAnchor == view.safeAreaLayoutGuide.bottomAnchor - kCustomGlobalMargin
+        sendCommentView.horizontalAnchors == view.horizontalAnchors + 16
+        sendCommentView.heightAnchor == 40
+        
+        commentTextField.verticalAnchors == sendCommentView.verticalAnchors + 5
+        commentTextField.leftAnchor == sendCommentView.leftAnchor + kCustomGlobalMargin
+        commentTextField.widthAnchor == sendCommentView.widthAnchor * 0.80
+        
+        sendCommentButton.verticalAnchors == sendCommentView.verticalAnchors + 5
+        sendCommentButton.leftAnchor == commentTextField.rightAnchor + kCustomGlobalMargin
+        sendCommentButton.rightAnchor == sendCommentView.rightAnchor -  kCustomGlobalMargin
+        
+        commentTableView.bottomAnchor == sendCommentView.topAnchor - kCustomGlobalMargin
         commentTableView.horizontalAnchors == view.horizontalAnchors + 16
-        commentTableView.heightAnchor == 300
-        
+        commentTableView.heightAnchor == 200
         
         titleLabel.text = ""
         bodyLabel.text = ""
@@ -220,7 +245,6 @@ extension NoteDetailViewController: UICollectionViewDataSource {
         let decoder = JSONDecoder()
         if let photosData = note?.notePhotos {
             let imageDataArr = try? decoder.decode([Data].self, from: (note?.notePhotos)!)
-            print("1111")
             let image = UIImage(data: imageDataArr![indexPath.item])
             cell.imageView.image = image
             return cell
@@ -247,9 +271,9 @@ extension NoteDetailViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "CommentTableViewCell", for: indexPath) as! CommentTableViewCell
-        let commentFrom = noteComments[indexPath.item].fromUserId.description
+        let commentUserId = noteComments[indexPath.item].commentUserId.description
         let commentContent = noteComments[indexPath.item].comment
-        cell.commentFromLabel.text = "来自ID" + commentFrom + ": "
+        cell.commentFromLabel.text = "id " + commentUserId + ": "
         cell.commentLabel.text = commentContent
         
         return cell
@@ -259,23 +283,58 @@ extension NoteDetailViewController: UITableViewDataSource {
 }
 
 extension NoteDetailViewController {
+    
+    func likeNote() {
+        let userId = defaults.integer(forKey: AccountInfo().userId)
+
+        if let noteId = noteId {
+            if isLiked {//通过isLiked判断是点赞请求还是取消点赞请求
+                AF.request(kUrlDislikeNote+"?userId=\(userId)&noteId=\(noteId)", method: .get).responseString { response in
+                    self.showAlert(title: "取消点赞成功!", subtitle: "")
+                }
+                print("dislike")
+            }else {
+                AF.request(kUrlLikeNote+"?userId=\(userId)&noteId=\(noteId)", method: .get).responseString { response in
+                    self.showAlert(title: "点赞成功!", subtitle: "")
+                }
+                print("like")
+            }
+            isLiked = !isLiked
+            updateLikedNumber()
+        }else {
+            self.showAlert(title: "未知笔记ID", subtitle: "")
+        }
+
+        
+    }
+    
+    func updateLikedNumber() {//更新数据库内的笔记点赞数量
+        AF.request(kUrlUpdateLikedNumber, method: .get).responseString { response in }
+    }
+    
     @objc func handleSwipe() {
         self.navigationController?.popViewController(animated: true)
     }
     
     @objc func likeButtonTapped(_ sender: UIButton) {
-        print("like")
+        likeNote()
     }
 
     @objc func commentButtonTapped(_ sender: UIButton) {
-        print(commentTableView.isHidden)
-        print("comment")
         commentTableView.isHidden = commentTableView.isHidden ? false : true
+        sendCommentView.isHidden = sendCommentView.isHidden ? false : true
         if !commentTableView.isHidden {
             commentTableView.reloadData()
         }
     }
+    
+    @objc func endEdit() {
+        self.view.endEditing(false)
+    }
+    
 }
+
+
 
 
 class ImageCollectionViewCell: UICollectionViewCell {
@@ -283,7 +342,7 @@ class ImageCollectionViewCell: UICollectionViewCell {
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.contentMode = .scaleAspectFill
-        imageView.backgroundColor = .lightGray
+        imageView.backgroundColor = .clear
 //        imageView.clipsToBounds = true
         return imageView
     }()
@@ -292,12 +351,11 @@ class ImageCollectionViewCell: UICollectionViewCell {
         super.init(frame: frame)
         
         contentView.addSubview(imageView)
-        NSLayoutConstraint.activate([
-            imageView.topAnchor.constraint(equalTo: contentView.topAnchor),
-            imageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            imageView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            imageView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
-        ])
+        
+        imageView.topAnchor == contentView.topAnchor
+        imageView.leftAnchor == contentView.leftAnchor
+        imageView.edgeAnchors == contentView.edgeAnchors
+        
     }
     
     required init?(coder: NSCoder) {

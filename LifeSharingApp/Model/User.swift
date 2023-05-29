@@ -12,5 +12,6 @@ class User: Codable {
     var userId: String?
     var userName: String?
     var password: String?
+    var newPassword: String?
     var token: String?
 }

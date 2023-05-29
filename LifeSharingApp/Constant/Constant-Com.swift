@@ -7,4 +7,4 @@
 
 import Foundation
 
-let kComments = [NoteComment(commentId: 1, fromUserId: 1881, comment: "好看！", createTime: "2023-5-21"),NoteComment(commentId: 1, fromUserId: 6882, comment: "很有感觉", createTime: "2023-5-15"),NoteComment(commentId: 1, fromUserId: 3421, comment: "色调不错", createTime: "2023-5-15"),NoteComment(commentId: 1, fromUserId: 68828, comment: "很有质感。", createTime: "2023-5-5")]
+let kComments = [NoteComment( commentUserId: 1, commentNoteId: 1, comment: "拍的好")]
